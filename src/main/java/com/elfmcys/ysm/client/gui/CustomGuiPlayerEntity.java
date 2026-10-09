@@ -18,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public final class CustomGuiPlayerEntity extends CustomPlayerEntity implements IPreviewEntity {
     private final PreviewAnimationInfo guiAnimationInfo;
@@ -108,9 +109,14 @@ public final class CustomGuiPlayerEntity extends CustomPlayerEntity implements I
     }
 
     private static class FakePlayer extends AbstractClientPlayer {
+        private static final AtomicInteger NEXT_PREVIEW_ID = new AtomicInteger(-1);
+
         @SuppressWarnings("DataFlowIssue")
         public FakePlayer() {
             super(Minecraft.getInstance().level, createRandomGameProfile());
+            // Client worlds leave IDs at zero until a spawn packet assigns one.
+            // GUI players never receive that packet or join the world's entity map.
+            setId(NEXT_PREVIEW_ID.getAndDecrement());
         }
 
         private static GameProfile createRandomGameProfile() {

@@ -47,6 +47,13 @@ current session accepts the model, texture and permissions. Explicit selections
 and commands replace the saved intent. Restart and multi-view verification are
 pending; no world files are rewritten by the build or installation.
 
+Unofficial 5 development candidate assigns stable, distinct negative IDs to GUI
+preview players before host render-state extraction. These players do not receive
+spawn packets or join the world's entity map. Wings now use the animated locator
+pivot directly as their shoulder root, without the extra 1.5-block vertical
+translation. The host dimensions, texture selection and foil remain in use;
+Alt+Y and attachment positions still require manual verification.
+
 Native business code is unchanged from the recorded upstream revision. The
 Windows DLL is built from that source with the profile in release/windows-clang-profile.
 No Minecraft/NeoForge binary or external optional-mod JAR is bundled in this repository.

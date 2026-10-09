@@ -68,7 +68,9 @@ sequenceDiagram
 
 玩家 HUD、模型与贴图预览在同步 submit 内通过宿主 `extractEntity` 取得新的 `AvatarRenderState`，随后把该状态交给替换 renderer 的装备层；非玩家预览仍无 avatar 状态。状态提取发生在预览姿态和装备显示选项应用之后，鞘翅及肩部鹦鹉不依赖空缺的 GUI 状态，也不借用世界其他 pass 的可变状态。GUI 预览玩家在宿主提取前刷新当前 client level，没有世界时跳过提交，避免保留上一世界或空世界引用。纯矩阵的死亡、旋转攻击与睡眠姿态处理读取实体事实，不临时清除死亡 tick 或旋转攻击标志。
 
-鞘翅保留模型 locator 的位置、旋转与 authored scale，按所选物品 `Equippable.assetId` 交给宿主 `EquipmentLayerRenderer` 的 `WINGS` 层；宿主鞘翅模型已经使用标准方块单位，不再追加固定两倍放大。默认纹理由装备资源定义选择，玩家鞘翅/披风仅作为宿主允许的 override。装备资源、资源包、箔片、着色和提交次序由宿主处理，YSM 不使用旧实体纹理路径或复制装备资源。层与 baked model 跟随 `AddLayers` 的宿主资源代次重建。
+GUI 虚拟玩家在构造时分配独立的负数实体 ID，供宿主状态提取及物品渲染使用。Client level 的初始 ID 为零，真实玩家随后由网络分配 ID；预览玩家不接收 spawn packet，也不加入世界实体表，因此不能依赖该分配流程。ID 在预览玩家生命周期内保持稳定，刷新 level 或重用预览资源不重新分配。
+
+鞘翅保留模型 locator 的位置、旋转与 authored scale，按所选物品 `Equippable.assetId` 交给宿主 `EquipmentLayerRenderer` 的 `WINGS` 层。Locator 遍历已组合当前骨骼 pose 与 pivot，宿主翼片的肩部根节点位于局部 y=0，层仅用 Z 轴 180° 旋转转换坐标方向，不额外平移高度；宿主几何使用标准方块单位，不追加固定两倍放大。默认纹理由装备资源定义选择，玩家鞘翅/披风仅作为宿主允许的 override。装备资源、资源包、箔片、着色和提交次序由宿主处理，YSM 不使用旧实体纹理路径或复制装备资源。层与 baked model 跟随 `AddLayers` 的宿主资源代次重建。
 
 第一人称手臂仅在宿主实际绘制手臂的 `RenderArmEvent` 窗口替换，覆盖空主手及单手/双手地图。普通非空持物继续由宿主提交物品，不额外插入空手姿态手臂；空副手也不额外绘制。物品的装备、挥动和使用变换属于宿主。`DeferredModelDraw.submit` 返回是否捕获有效顶点并实际加入 collector；原有手臂只有在该结果为 true 时被取消，捕获失败保留原有绘制。
 

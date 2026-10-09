@@ -51,7 +51,8 @@ public class CustomPlayerElytraLayer extends GeoLayerRenderer<CustomPlayerEntity
         Identifier texture = wingsTexture(avatarState);
         ElytraModel model = avatarState.isBaby ? this.elytraBabyModel : this.elytraModel;
         renderData.modelState.visitLocatorGroup(PlayerLocator.get().elytra, poseStack, locatorPose -> {
-            locatorPose.translate(0, 1.5, 0);
+            // visitLocatorGroup already anchors this pose at the animated pivot.
+            // The host wing root is at the shoulders (y = 0); only flip its Y axis.
             locatorPose.rotate(Axis.ZP.rotationDegrees(180));
             // The host model already uses block units. Keep the authored locator
             // scale and avoid doubling the vanilla wing dimensions.

@@ -18,7 +18,9 @@
 
 ## 正确性与失败处理
 
-用户后续截图表明鞘翅贴图已经正常，但尺寸明显偏大。鞘翅层已移除沿用旧层的固定两倍缩放，保留 authored locator scale，按宿主标准几何尺寸提交。各模型的尺寸、背部位置、蹲伏/滑翔与资源重载后的结果仍需实机确认。
+用户确认移除固定两倍缩放后鞘翅尺寸正常，随后反馈 HUD 位置偏高。层现直接使用 animated locator pivot 作为宿主翼片的肩部根节点，取消额外 1.5 格高度补偿，保留 authored scale 和坐标方向转换。修复后的背部位置、蹲伏/滑翔与资源重载仍需实机确认，单个反馈不覆盖所有模型。
+
+Alt+Y 的宿主状态提取曾因 GUI 虚拟玩家实体 ID 为零而崩溃。虚拟玩家现在构造时分配稳定、独立的负数 ID，保留完整的宿主 avatar、持物和装备状态提取。模型页、贴图页和重进世界后的结果待用户实机复测。
 
 - `ModelState::Extract` 会先使旧状态失效；失败后 `GeoModelState` 没有完整失败分支，同一逻辑帧可能不再重试。Native render 失败时不会改用其他输出路径或 `VertexConsumer` fallback，本次模型直接无顶点。
 - Serialized baked cache payload 不能独立证明 SIMD capability 匹配；读取虽校验结构、层级、索引和计数，却未重新验证几何浮点值的有限性及语义域。Bake 对极端有限输入派生的 plane / tangent 也缺少完整结果域验证。
