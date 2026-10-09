@@ -1,14 +1,14 @@
 {
-  "version": "3.0-unofficial.2+mc26.3-nf58",
-  "tag": "v3.0-unofficial.2-mc26.3-nf58",
+  "version": "3.0-unofficial.8+mc26.3-nf58",
+  "tag": "v3.0-unofficial.8-mc26.3-nf58",
   "minecraft": "26.3",
   "neoforge": "26.3.0.58-beta",
   "java": 25,
   "platform": "Windows x86_64",
-  "jar": "ysm-3.0-unofficial.2+mc26.3-nf58.jar",
-  "size": 30750489,
-  "sha256": "52aca04a3239b5dd86c2e3456d3243ed60be0ce3d138ea6fb137b02a120a50cc",
-  "runtimeSourceCommit": "5601bec45ee2b7e6cda0b73084f9c61834413d28",
+  "jar": "ysm-3.0-unofficial.8+mc26.3-nf58.jar",
+  "size": 30759488,
+  "sha256": "5c01cbcf02ace20205838fba5a0e375d004f07d5e449b92e129bdb40376c6dd8",
+  "runtimeSourceCommit": "23909479583b9d4fedfd0384e6b0eb796d1e3d0e",
   "nativeSha256": "2ad9cea0568b600a7e917b81831dc9aaf7b1142c6956daf47fa20f4828285bc8",
   "builtinModelCount": 24,
   "licenseEntries": 75,
@@ -19,14 +19,13 @@
     "builtinFullMaterialization": "passed: 24 models",
     "mixinBytecodeAudit": "passed: 22 mixins, 114 static checks, 0 failures; not a runtime validation",
     "testsRunForThisFix": false,
-    "gameplay": "Maintainer started NeoForge 58 gameplay and reported model-loading and repeated-attack issues. Both have code fixes in this package; the latest attack fix awaits gameplay verification.",
+    "gameplay": "Maintainer reports that current gameplay testing is basically normal and requests publication. This feedback does not establish exhaustive model, device, GUI-scale, shader, audio, old-world or LAN coverage.",
     "unverified": [
-      "exit cleanup",
-      "repeated attacks and action sounds after the latest fix",
-      "LAN",
-      "shaders",
-      "old-world data migration",
-      "all optional mod integrations"
+      "exhaustive model, handedness, map and GUI-scale combinations",
+      "exit cleanup and action sounds across devices",
+      "LAN first-time resource transfer and reconnection",
+      "all shader and optional mod combinations",
+      "old-world data restoration followed by saving and re-entry"
     ]
   }
 }

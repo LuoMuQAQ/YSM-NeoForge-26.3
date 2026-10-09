@@ -85,6 +85,21 @@ Windows DLL is built from that source with the profile in release/windows-clang-
 No Minecraft/NeoForge binary or external optional-mod JAR is bundled in this repository.
 The two upstream QuickBuffers build JARs and Gradle wrapper are retained with their notices.
 
+## Unofficial 8 publication
+
+Unofficial 8 publishes the cumulative Unofficial 3 through 8 fixes above for
+Minecraft 26.3 / NeoForge 26.3.0.58-beta / Java 25 on Windows x86_64. The
+maintainer reports that current gameplay testing is basically normal. Earlier
+candidate-specific verification notes describe their original evidence; the
+current feedback does not establish exhaustive model, device, GUI-scale, shader,
+audio, world-migration or LAN coverage.
+
+The release reuses the exact installed and manually tested JAR built from runtime
+commit `23909479583b9d4fedfd0384e6b0eb796d1e3d0e`. This publication commit updates
+documentation and provenance only. The native DLL is unchanged. The package
+contains 24 licensed upstream builtin models and their notices, with no private
+third-party models, user configurations, worlds or logs.
+
 ## Files changed during the port relative to the pinned Java upstream
 
 - `build.gradle`

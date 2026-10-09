@@ -11,7 +11,7 @@ Maintained by LuoMuQAQ. This project is not affiliated with or endorsed by the Y
 ## 下载与安装
 
 1. 当前 `main` 源码使用 **Windows x64、Java 25、Minecraft 26.3、NeoForge 26.3.0.58-beta**。
-2. 从 [NeoForge 58 Release](https://github.com/LuoMuQAQ/YSM-NeoForge-26.3/releases/tag/v3.0-unofficial.2-mc26.3-nf58) 下载 `ysm-3.0-unofficial.2+mc26.3-nf58.jar`，放入对应实例的 `mods` 目录。旧版 Unofficial 1 Release 针对 52-beta，不能用于 58-beta 实例。
+2. 从 [Unofficial 8 Release](https://github.com/LuoMuQAQ/YSM-NeoForge-26.3/releases/tag/v3.0-unofficial.8-mc26.3-nf58) 下载 `ysm-3.0-unofficial.8+mc26.3-nf58.jar`，放入对应实例的 `mods` 目录。旧版 Unofficial 1 Release 针对 52-beta，不能用于 58-beta 实例。
 3. 确保实例中仅有一个 YSM JAR；更新时替换旧文件。
 4. 进入游戏后按 `Alt+Y` 打开模型选择，按 `Z` 打开动作轮盘。
 5. 自行取得合法授权的第三方模型放入实例游戏目录的 `ysm/custom/`。
@@ -35,10 +35,9 @@ Maintained by LuoMuQAQ. This project is not affiliated with or endorsed by the Y
 
 ## 当前状态
 
-当前 `main` 源码及本地候选为 `3.0-unofficial.8+mc26.3-nf58`，包含鞘翅装备层/HUD、尺寸与锚点、Alt+Y 虚拟玩家 ID、动画显示及重启后模型选择恢复修复。模型与贴图卡片直接绑定自身已就绪资源，补齐虚拟玩家纹理/初始化并增加预览诊断；此前全部空白反馈的最终原因与修复后的画面尚待实机确认。轮盘单选组按模型动作写入的实际值匹配选项，修复女仆小银狼“吐舌头”值为6却勾选“笑”的错误。模型名称/ID 开关移入左侧面板，避免较大 GUI 缩放时被窗口顶部裁掉；这些新交互仍待复测。该候选 JAR 尚未上传 Release，上方下载链接仍对应已发布的 Unofficial 2。
+当前公开版本为 `3.0-unofficial.8+mc26.3-nf58`。相较 Unofficial 2，累计修复鞘翅纹理、HUD 与模型页装备状态、尺寸及背部锚点，Alt+Y 虚拟玩家 ID 与卡片资源绑定，模型选择在重启后的恢复，以及动画朝向、骨骼可见性和移动判定。轮盘单选组按动作实际赋值匹配显示选项；名称/ID 开关移入左侧面板，使用短标签与完整悬停说明，避免顶部裁切。
 
-这是公开测试版。维护者已开始 NeoForge 58 实测，并据反馈修复了 Iris PBR 模型加载与攻击动画重播判定；
-本次攻击修复的连续攻击表现和完整组合仍待游戏内复测。
+维护者反馈当前测试已基本正常。本次发布沿用已安装并测试的同一 JAR，未重新构建；这是针对 NeoForge 58-beta 的公开测试版。
 源码编译、资源打包成功不等于所有模型、设备和模组组合都已经验证。
 
 目前已处理实体与第一人称提交、HUD 预览、模型卡片名称、持物、Z 轮盘等迁移问题。

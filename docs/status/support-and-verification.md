@@ -3,9 +3,11 @@
 
 “已接线”只表示主要代码链路存在，不代表稳定、完整或通过实机、跨平台及跨实现验证。格式与协议要求以[一致性标准](../standards/conformance.md)为准。
 
+当前 Windows x86_64 / Minecraft 26.3 / NeoForge 26.3.0.58-beta 的公开测试包收到维护者“测试基本正常”的总体反馈。该反馈支持当前基本使用情况，不覆盖全部模型、GUI 缩放、声音设备、光影、可选模组、旧世界保存重进或 LAN 首次资源传输；下列逐项验收缺口继续保留。
+
 | 能力 | 当前边界 |
 |---|---|
-| Minecraft 26.3 / NeoForge | Java 25 的全部生产源码和分发 `shadowJar` 已构建通过，包含默认模型契约、builtin index 与非默认内置模型完整物化检查。正式 payload/attachments、GUI/SDL3/HUD、实体/预览/截图及第一人称提交已接线；普通副手、真实目标 Sophisticated 背包和 Iris PBR 上传/采用边界已适配。所有已登记必需 Mixin 通过目标字节码静态检查，实际应用、视觉、声音设备、可选联动组合与 LAN 尚未验收。宿主退出清理、离线世界副本工具和旧 NeoForge 玩家及投射物/载具数据桥已接线；模型选择、授权、收藏、Molang 以及实际世界升级保存尚待实机确认。旧 ForgeCaps 桥、鞘翅箔片/装备资源层、特殊键覆盖、第一人称背景网格和部分女仆功能仍有缺口。可选联动的编译依赖不随 JAR 分发；未有目标 provider 证据的反射分支只能局部降级，不能称为恢复支持。 |
+| Minecraft 26.3 / NeoForge | Java 25 的全部生产源码和分发 `shadowJar` 已构建通过，包含默认模型契约、builtin index 与非默认内置模型完整物化检查。正式 payload/attachments、GUI/SDL3/HUD、实体/预览/截图及第一人称提交已接线；普通副手、真实目标 Sophisticated 背包和 Iris PBR 上传/采用边界已适配。所有已登记必需 Mixin 通过目标字节码静态检查，实际应用、视觉、声音设备、可选联动组合与 LAN 尚未验收。宿主退出清理、离线世界副本工具和旧 NeoForge 玩家及投射物/载具数据桥已接线；模型选择、授权、收藏、Molang 以及实际世界升级保存尚待实机确认。鞘翅已接入宿主 WINGS 装备资源层及 HUD/GUI avatar 状态，尺寸与背部锚点已修复；全部模型与姿态组合仍待逐项确认。旧 ForgeCaps 桥、特殊键覆盖、第一人称背景网格和部分女仆功能仍有缺口。可选联动的编译依赖不随 JAR 分发；未有目标 provider 证据的反射分支只能局部降级，不能称为恢复支持。 |
 | Asset Container / Model Schema `0.1.0-unstable` | 标准已定义 canonical `ModelId`、扩展 verification payload、preamble 与完整模型 profile；Java 主路径已接线核心结构、direct/zstd、BLAKE3、冻结 capture 和严格 preamble，当前 generic container 与 model profile 均精确写出/接受 `0.1.0-unstable`，尚未完成该版本跨实现 conformance，见[格式问题](known-issues/format-and-schema.md) |
 | ED25519 verification | 不支持 |
 | Protocol `0.3.0-unstable` | NeoForge payload 适配沿用原目标主线的 bounded frame、exact-connection session closure、四 collection typed full/delta、三类 model-distribution request、七类 typed fragment、server-private forced selection、全局 dispatch 及既有玩家/entity/control path 已接线。Player-state report/update 与收藏快照已退出 sequence/revision，报告机会采用 best-effort，真实 FULL baseline 留在 exact model session；资源侧由获取前已存在的 typed owner 将完整 packet 集合提交给唯一 dispatch，bytes/chunk/file 共用有界 range 生命周期。Schema/registry、typed producer/consumer、业务 bounds/assembly、replacement/late outcome、per-child admission/cancel、三种 source retry/close、dispatch closure 与完整 unsigned transfer ID range 已有自动化覆盖；真实 Forge 的 no-channel/buffer handoff、同 UUID replacement、逐观察者异常、LAN/集成 server frame、真正 version mismatch、长期资源回收及 secondary-login 单 session 仍缺机器可判定 observation，见[网络问题](known-issues/network.md) |
