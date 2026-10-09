@@ -11,6 +11,7 @@
     "commit": "e9ac162492a97c7222f652c41624ca150f450354"
   },
   "portCheckpoint": "de63cef127d805bf3549d24e05ddbb975145af77",
+  "runtimeSourceCommit": "5601bec45ee2b7e6cda0b73084f9c61834413d28",
   "target": {
     "minecraft": "26.3",
     "neoforge": "26.3.0.58-beta",

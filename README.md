@@ -11,7 +11,7 @@ Maintained by LuoMuQAQ. This project is not affiliated with or endorsed by the Y
 ## 下载与安装
 
 1. 此分支使用 **Windows x64、Java 25、Minecraft 26.3、NeoForge 26.3.0.58-beta**。
-2. 按构建指南生成 `ysm-3.0-unofficial.2+mc26.3-nf58.jar`，放入对应实例的 `mods` 目录。已公开的首个 Release 仍针对 52-beta，不能用于此分支的目标实例。
+2. 从 [NeoForge 58 Release](https://github.com/LuoMuQAQ/YSM-NeoForge-26.3/releases/tag/v3.0-unofficial.2-mc26.3-nf58) 下载 `ysm-3.0-unofficial.2+mc26.3-nf58.jar`，放入对应实例的 `mods` 目录。旧版 Unofficial 1 Release 针对 52-beta，不能用于 58-beta 实例。
 3. 确保实例中仅有一个 YSM JAR；更新时替换旧文件。
 4. 进入游戏后按 `Alt+Y` 打开模型选择，按 `Z` 打开动作轮盘。
 5. 自行取得合法授权的第三方模型放入实例游戏目录的 `ysm/custom/`。
@@ -35,13 +35,15 @@ Maintained by LuoMuQAQ. This project is not affiliated with or endorsed by the Y
 
 ## 当前状态
 
-这是公开测试版。维护者已对此前相同运行代码的本地版本手动测试，并反馈基本正常；
-公开包调整了内置资源和发行元数据，尚未取得单独的完整游戏验收。
+这是公开测试版。维护者已开始 NeoForge 58 实测，并据反馈修复了 Iris PBR 模型加载与攻击动画重播判定；
+本次攻击修复的连续攻击表现和完整组合仍待游戏内复测。
 源码编译、资源打包成功不等于所有模型、设备和模组组合都已经验证。
 
 目前已处理实体与第一人称提交、HUD 预览、模型卡片名称、持物、Z 轮盘等迁移问题。
 退出清理已接入 NeoForge 宿主生命周期，旧 NeoForge 玩家、投射物与载具记录的离线副本工具和来源校验迁移桥已接线。
-上述修复、LAN、光影组合、旧版世界升级保存和全部可选模组联动仍需实机验收。
+Iris 1.11.7 的 PBR holder 延迟加载已适配；默认攻击动画按实际新挥手触发重播，避免错过第 0 tick 后同名攻击只播放一次。
+生产构建、24 个内置模型物化、包内容及 22 个 Mixin 的 114 项字节码静态核对通过。
+退出清理、攻击动作与声音、LAN、光影组合、旧版世界升级保存和全部可选模组联动仍需完整实机验收。
 不要把旧世界直接用于迁移测试；保存副本后再尝试。
 
 问题请提交到 [本仓库 Issues](https://github.com/LuoMuQAQ/YSM-NeoForge-26.3/issues)，

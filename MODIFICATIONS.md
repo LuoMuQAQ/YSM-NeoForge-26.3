@@ -11,7 +11,7 @@ Publication changes add portable, hash-pinned compile-only build inputs and
 release documentation, a JDK 25 build helper and explicit Maven Central protoc resolution, identify the unofficial distribution in mod metadata,
 and exclude three built-in assets lacking a redistribution grant.
 
-The current local candidate rebuilds against NeoForge 58-beta, closes client and
+The Unofficial 2 release rebuilds against NeoForge 58-beta, closes client and
 process model owners before FML unloads their module, and adds an offline world
 copy tool plus persistent player and entity migration records. Legacy selection, grants,
 favorites, projectile/vehicle ownership and Molang values are retained; source bytes and current catalog
@@ -24,6 +24,12 @@ publication now drains that public queue before validating ownership of supplied
 normal/specular components, and logs underlying publication failures. It retains
 strict component checks and rejects actual upload/adoption failures.
 
+The default swing predicate reloads each newly accepted host swing by description
+identity instead of requiring an exact tick-zero observation. Entity-local tracking
+prevents the same swing from restarting across ticks or repeated render passes;
+model controller overrides keep their existing precedence. Repeated-attack gameplay
+after this change still requires manual verification.
+
 Native business code is unchanged from the recorded upstream revision. The
 Windows DLL is built from that source with the profile in release/windows-clang-profile.
 No Minecraft/NeoForge binary or external optional-mod JAR is bundled in this repository.
@@ -33,6 +39,7 @@ The two upstream QuickBuffers build JARs and Gradle wrapper are retained with th
 
 - `build.gradle`
 - `docs/README.md`
+- `docs/architecture/animation/controllers-and-playback.md`
 - `docs/architecture/animation/state-inputs-and-sync.md`
 - `docs/architecture/asset-pipeline/conversion-and-export.md`
 - `docs/architecture/client-presentation/README.md`
@@ -55,6 +62,7 @@ The two upstream QuickBuffers build JARs and Gradle wrapper are retained with th
 - `gradle/builtin-index.gradle`
 - `gradle/native.gradle`
 - `gradle/wrapper/gradle-wrapper.properties`
+- `scripts/prepare-world-copy.py`
 - `src/main/java/com/elfmcys/ysm/AssetPaths.java`
 - `src/main/java/com/elfmcys/ysm/YesSteveModel.java`
 - `src/main/java/com/elfmcys/ysm/accessor/IArrowExtraInfo.java`
@@ -76,6 +84,8 @@ The two upstream QuickBuffers build JARs and Gradle wrapper are retained with th
 - `src/main/java/com/elfmcys/ysm/capability/ClientRoamingSession.java`
 - `src/main/java/com/elfmcys/ysm/capability/ClientRuntimeAttachment.java`
 - `src/main/java/com/elfmcys/ysm/capability/EntityAttachments.java`
+- `src/main/java/com/elfmcys/ysm/capability/LegacyEntityData.java`
+- `src/main/java/com/elfmcys/ysm/capability/LegacyPlayerData.java`
 - `src/main/java/com/elfmcys/ysm/capability/ModelInfoCapability.java`
 - `src/main/java/com/elfmcys/ysm/capability/ModelInfoCapabilityProvider.java`
 - `src/main/java/com/elfmcys/ysm/capability/PlayerAnimatableCapability.java`
@@ -201,8 +211,10 @@ The two upstream QuickBuffers build JARs and Gradle wrapper are retained with th
 - `src/main/java/com/elfmcys/ysm/client/entity/CustomHumanoidEntity.java`
 - `src/main/java/com/elfmcys/ysm/client/entity/CustomProjectileEntity.java`
 - `src/main/java/com/elfmcys/ysm/client/entity/CustomVehicleEntity.java`
+- `src/main/java/com/elfmcys/ysm/client/entity/HumanoidStateTracker.java`
 - `src/main/java/com/elfmcys/ysm/client/event/ClientLoggedEvent.java`
 - `src/main/java/com/elfmcys/ysm/client/event/ClientSetupEvent.java`
+- `src/main/java/com/elfmcys/ysm/client/event/ClientShutdownEvent.java`
 - `src/main/java/com/elfmcys/ysm/client/event/ClientTickEvent.java`
 - `src/main/java/com/elfmcys/ysm/client/event/DownloadScreenInterModEvent.java`
 - `src/main/java/com/elfmcys/ysm/client/event/EntityLoadEvent.java`
@@ -295,6 +307,7 @@ The two upstream QuickBuffers build JARs and Gradle wrapper are retained with th
 - `src/main/java/com/elfmcys/ysm/event/LoggedOutEvent.java`
 - `src/main/java/com/elfmcys/ysm/event/LoginEvent.java`
 - `src/main/java/com/elfmcys/ysm/event/MobEffectSyncEvent.java`
+- `src/main/java/com/elfmcys/ysm/event/ServerRuntimeShutdownEvent.java`
 - `src/main/java/com/elfmcys/ysm/event/ServerStartingEvent.java`
 - `src/main/java/com/elfmcys/ysm/event/api/SpecialPlayerRenderEvent.java`
 - `src/main/java/com/elfmcys/ysm/format/schema/model/ModelFileWriter.java`
@@ -355,6 +368,7 @@ The two upstream QuickBuffers build JARs and Gradle wrapper are retained with th
 - `src/main/java/com/elfmcys/ysm/mixin/client/parcool/SpeedVaultAnimatorAccessor.java`
 - `src/main/java/com/elfmcys/ysm/mixin/client/parcool/WallJumpAnimatorAccessor.java`
 - `src/main/java/com/elfmcys/ysm/mixin/plugin/MixinTweaker.java`
+- `src/main/java/com/elfmcys/ysm/model/ModelRuntime.java`
 - `src/main/java/com/elfmcys/ysm/model/catalog/client/ClientCatalogManager.java`
 - `src/main/java/com/elfmcys/ysm/model/catalog/source/ModelCatalogSources.java`
 - `src/main/java/com/elfmcys/ysm/model/resource/client/ModelRenderTarget.java`
@@ -374,6 +388,7 @@ The two upstream QuickBuffers build JARs and Gradle wrapper are retained with th
 - `src/main/java/com/elfmcys/ysm/network/ProtocolInbound.java`
 - `src/main/java/com/elfmcys/ysm/network/YsmFramePayload.java`
 - `src/main/java/com/elfmcys/ysm/network/dispatch/ServerAssetTransfers.java`
+- `src/main/java/com/elfmcys/ysm/network/forge/ClientSessionRuntime.java`
 - `src/main/java/com/elfmcys/ysm/network/forge/ControlHandler.java`
 - `src/main/java/com/elfmcys/ysm/network/forge/ForgeTransportPort.java`
 - `src/main/java/com/elfmcys/ysm/network/forge/ForgeUniBufferIO.java`
