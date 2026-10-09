@@ -10,7 +10,7 @@ Maintained by LuoMuQAQ. This project is not affiliated with or endorsed by the Y
 
 ## 下载与安装
 
-1. 此分支使用 **Windows x64、Java 25、Minecraft 26.3、NeoForge 26.3.0.58-beta**。
+1. 当前 `main` 源码使用 **Windows x64、Java 25、Minecraft 26.3、NeoForge 26.3.0.58-beta**。
 2. 从 [NeoForge 58 Release](https://github.com/LuoMuQAQ/YSM-NeoForge-26.3/releases/tag/v3.0-unofficial.2-mc26.3-nf58) 下载 `ysm-3.0-unofficial.2+mc26.3-nf58.jar`，放入对应实例的 `mods` 目录。旧版 Unofficial 1 Release 针对 52-beta，不能用于 58-beta 实例。
 3. 确保实例中仅有一个 YSM JAR；更新时替换旧文件。
 4. 进入游戏后按 `Alt+Y` 打开模型选择，按 `Z` 打开动作轮盘。
@@ -35,7 +35,7 @@ Maintained by LuoMuQAQ. This project is not affiliated with or endorsed by the Y
 
 ## 当前状态
 
-当前开发候选为 `3.0-unofficial.5+mc26.3-nf58`，包含鞘翅装备层/HUD、尺寸与锚点、Alt+Y 虚拟玩家 ID、动画显示及重启后模型选择恢复修复，尚未发布。上方下载链接仍对应已发布的 Unofficial 2。
+当前 `main` 源码及本地测试包为 `3.0-unofficial.5+mc26.3-nf58`，包含鞘翅装备层/HUD、尺寸与锚点、Alt+Y 虚拟玩家 ID、动画显示及重启后模型选择恢复修复。该候选 JAR 尚未上传 Release，上方下载链接仍对应已发布的 Unofficial 2。
 
 这是公开测试版。维护者已开始 NeoForge 58 实测，并据反馈修复了 Iris PBR 模型加载与攻击动画重播判定；
 本次攻击修复的连续攻击表现和完整组合仍待游戏内复测。
@@ -53,6 +53,9 @@ Iris 1.11.7 的 PBR holder 延迟加载已适配；默认攻击动画按实际�
 本项目的移植问题由本仓库维护者处理。
 
 ## 源码与构建
+
+仓库统一使用 `main` 分支进行开发。历史版本保留在 Git 标签和 Releases 中；
+需要某个发行版的准确源码时，请检出对应标签。`main` 可能包含尚未发布 JAR 的修复。
 
 Java 源码位于仓库根目录，匹配的 Native 源码位于 `native/`。
 构建依赖的可选模组仅作为编译输入，脚本从作者发布地址获取并核对固定哈希，
