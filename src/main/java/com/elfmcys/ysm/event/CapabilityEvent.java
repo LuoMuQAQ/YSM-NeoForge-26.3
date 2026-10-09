@@ -89,6 +89,9 @@ public final class CapabilityEvent {
                 NetworkHandler.sendToClientPlayer(
                         StarredModelSnapshots.create(starModelCap.getStarModels()), serverPlayer);
             });
+        } else if (!event.getLevel().isClientSide()) {
+            ServerModelService.current().flatMap(ServerModelService::catalog).ifPresent(catalog ->
+                    com.elfmcys.ysm.capability.LegacyEntityData.apply(event.getEntity(), catalog));
         }
     }
 
@@ -102,7 +105,12 @@ public final class CapabilityEvent {
         }
         var players = event.getServer().getPlayerList().getPlayers();
         var lowBandwidthUsage = ServerConfig.LOW_BANDWIDTH_USAGE.get();
+        var migrationCatalog = ServerModelService.current()
+                .flatMap(ServerModelService::catalog).orElse(null);
         for (ServerPlayer player : players) {
+            if (migrationCatalog != null) {
+                com.elfmcys.ysm.capability.LegacyPlayerData.apply(player, migrationCatalog);
+            }
             getModelInfoCap(player).ifPresent(cap -> {
                 if (!NetworkHandler.isPlayerChannelPresent(player) && !cap.isMandatory()) {
                     cap.consumeDirty();
@@ -140,6 +148,7 @@ public final class CapabilityEvent {
             ProjectileModelInfoCapabilityProvider.get(projectile).ifPresent(cap -> {
                 ownerCap.executeWithMolangVars(molangVars -> {
                     cap.init(ownerCap.getModelId(), molangVars);
+                    com.elfmcys.ysm.capability.LegacyEntityData.cancel(projectile, "projectile_model_id");
                     NetworkHandler.broadcastToVisiblePlayers(
                             MinecraftStateHandler.projectile(projectile.getId(), cap), projectile);
                 });
@@ -156,6 +165,7 @@ public final class CapabilityEvent {
                 // 失败就丢弃
                 ownerCap.getMolangVars().ifPresent(molangVars -> {
                     cap.update(ownerCap.getModelId(), molangVars);
+                    com.elfmcys.ysm.capability.LegacyEntityData.cancel(vehicle, "vehicle_model_id");
                     NetworkHandler.broadcastToVisiblePlayers(
                             MinecraftStateHandler.vehicle(vehicle.getId(), cap), vehicle);
                 });

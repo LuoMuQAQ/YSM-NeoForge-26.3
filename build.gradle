@@ -16,7 +16,7 @@ group = 'com.elfmcys.ysm'
 base { archivesName = 'ysm' }
 java { toolchain.languageVersion = JavaLanguageVersion.of(25) }
 neoForge {
-    version = '26.3.0.52-beta'
+    version = '26.3.0.58-beta'
     mods { ysm { sourceSet sourceSets.main } }
 }
 // Only artifact tasks are invoked by the task runner; game runs are user controlled.

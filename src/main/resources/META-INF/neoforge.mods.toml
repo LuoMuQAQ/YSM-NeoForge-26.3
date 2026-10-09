@@ -11,12 +11,12 @@ issueTrackerURL="https://github.com/LuoMuQAQ/YSM-NeoForge-26.3/issues"
     logoFile="ysm.png"
     credits="bernie-g (GeckoLib), fadookie (mclib), TT432 & SQwatermark (helped me solve many difficult problems)"
     authors="YS Group, TartaricAcid, TomatoPuddin, AryochiL; unofficial port: LuoMuQAQ"
-    description="Unofficial Windows x86_64 port of Yes Steve Model for Minecraft 26.3 / NeoForge 26.3.0.52-beta. Based on upstream YSM; not an official release."
+    description="Unofficial Windows x86_64 port of Yes Steve Model for Minecraft 26.3 / NeoForge 26.3.0.58-beta. Based on upstream YSM; not an official release."
 
 [[dependencies.ysm]]
     modId="neoforge"
     type="required"
-    versionRange="[26.3.0.52-beta]"
+    versionRange="[26.3.0.58-beta]"
     ordering="NONE"
     side="BOTH"
 

@@ -2,7 +2,7 @@
 # YSM — Unofficial NeoForge 26.3 Port
 
 Unofficial Windows x86_64 port of [Yes Steve Model](https://github.com/YesSteveModel/YesSteveModel)
-for **Minecraft 26.3 / NeoForge 26.3.0.52-beta / Java 25**.
+for **Minecraft 26.3 / NeoForge 26.3.0.58-beta / Java 25**.
 Maintained by LuoMuQAQ. This project is not affiliated with or endorsed by the YSM authors.
 
 这是基于官方开源源码的非官方兼容移植版，支持替换玩家等实体模型，并读取第三方模型。
@@ -10,8 +10,8 @@ Maintained by LuoMuQAQ. This project is not affiliated with or endorsed by the Y
 
 ## 下载与安装
 
-1. 使用 **Windows x64、Java 25、Minecraft 26.3、NeoForge 26.3.0.52-beta**。
-2. 从 Release 下载 `ysm-3.0-unofficial.1+mc26.3.jar`，放入对应实例的 `mods` 目录。
+1. 此分支使用 **Windows x64、Java 25、Minecraft 26.3、NeoForge 26.3.0.58-beta**。
+2. 按构建指南生成 `ysm-3.0-unofficial.2+mc26.3-nf58.jar`，放入对应实例的 `mods` 目录。已公开的首个 Release 仍针对 52-beta，不能用于此分支的目标实例。
 3. 确保实例中仅有一个 YSM JAR；更新时替换旧文件。
 4. 进入游戏后按 `Alt+Y` 打开模型选择，按 `Z` 打开动作轮盘。
 5. 自行取得合法授权的第三方模型放入实例游戏目录的 `ysm/custom/`。
@@ -40,8 +40,8 @@ Maintained by LuoMuQAQ. This project is not affiliated with or endorsed by the Y
 源码编译、资源打包成功不等于所有模型、设备和模组组合都已经验证。
 
 目前已处理实体与第一人称提交、HUD 预览、模型卡片名称、持物、Z 轮盘等迁移问题。
-退出时曾出现 native 服务清理期间类加载失败，仍待排查。
-LAN、光影组合、旧版世界数据迁移和全部可选模组联动仍未完成验收。
+退出清理已接入 NeoForge 宿主生命周期，旧 NeoForge 玩家、投射物与载具记录的离线副本工具和来源校验迁移桥已接线。
+上述修复、LAN、光影组合、旧版世界升级保存和全部可选模组联动仍需实机验收。
 不要把旧世界直接用于迁移测试；保存副本后再尝试。
 
 问题请提交到 [本仓库 Issues](https://github.com/LuoMuQAQ/YSM-NeoForge-26.3/issues)，

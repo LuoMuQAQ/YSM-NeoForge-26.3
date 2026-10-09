@@ -2,7 +2,7 @@
 
 Maintainer: LuoMuQAQ. Upstream authors and license notices remain in place.
 This is an AI-assisted adaptation of upstream YSM for Minecraft 26.3 and
-NeoForge 26.3.0.52-beta, not an official upstream release.
+NeoForge 26.3.0.58-beta, not an official upstream release.
 
 Changes include NeoForge attachments, registry and animation inputs, texture
 upload and audio compatibility, SDL3 keys, submit-based entity/GUI/first-person
@@ -10,6 +10,14 @@ rendering, model labels, the Z action wheel, HUD preview and item locator indice
 Publication changes add portable, hash-pinned compile-only build inputs and
 release documentation, a JDK 25 build helper and explicit Maven Central protoc resolution, identify the unofficial distribution in mod metadata,
 and exclude three built-in assets lacking a redistribution grant.
+
+The current local candidate rebuilds against NeoForge 58-beta, closes client and
+process model owners before FML unloads their module, and adds an offline world
+copy tool plus persistent player and entity migration records. Legacy selection, grants,
+favorites, projectile/vehicle ownership and Molang values are retained; source bytes and current catalog
+admission bind each restored identity. Missing sources stay pending. No ignore-
+grants permission is introduced by migration. Game upgrade/save and LAN still
+require manual verification.
 
 Native business code is unchanged from the recorded upstream revision. The
 Windows DLL is built from that source with the profile in release/windows-clang-profile.

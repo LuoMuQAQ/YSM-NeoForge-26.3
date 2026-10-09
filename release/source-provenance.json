@@ -1,7 +1,7 @@
 {
   "project": "Yes Steve Model — Unofficial NeoForge 26.3 Port",
   "repository": "https://github.com/LuoMuQAQ/YSM-NeoForge-26.3",
-  "version": "3.0-unofficial.1+mc26.3",
+  "version": "3.0-unofficial.2+mc26.3-nf58",
   "upstreamJava": {
     "repository": "https://github.com/YesSteveModel/YesSteveModel",
     "commit": "74c53b58b2f9b680a6c6dc5d5d41e7422fc000bb"
@@ -13,7 +13,7 @@
   "portCheckpoint": "de63cef127d805bf3549d24e05ddbb975145af77",
   "target": {
     "minecraft": "26.3",
-    "neoforge": "26.3.0.52-beta",
+    "neoforge": "26.3.0.58-beta",
     "java": 25,
     "platform": "Windows x86_64"
   },

@@ -5,7 +5,7 @@
 
 ## 目标平台与构建状态
 
-当前开发目标为 Minecraft 26.3 / NeoForge 26.3.0.52-beta / Java 25，使用 ModDevGradle 2.0.148 和 Gradle 9.1.0。构建配置使用真实 NeoForge userdev/NeoForm 依赖，旧 Forge 编译与发行依赖不进入此工程。全部生产源码与 `shadowJar` 已构建通过；游戏启动、运行时 Mixin 应用和外观仍需实机验证，不能将构建成功解释为可运行支持。
+当前开发目标为 Minecraft 26.3 / NeoForge 26.3.0.58-beta / Java 25，使用 ModDevGradle 2.0.148 和 Gradle 9.1.0。构建配置使用真实 NeoForge userdev/NeoForm 依赖，旧 Forge 编译与发行依赖不进入此工程。全部生产源码与 `shadowJar` 已构建通过；游戏启动、运行时 Mixin 应用和外观仍需实机验证，不能将构建成功解释为可运行支持。
 
 Native/schema 业务实现沿用官方主线；builtin 构建工具同样运行在 Java 25，日志与 LWJGL 使用目标游戏实际解析版本。Windows 的 protoc 无法可靠处理中文物理项目路径，请将仓库克隆到仅含 ASCII 字符的路径；仅使用驱动器映射不足以避开 Gradle 的路径规范化。
 

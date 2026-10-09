@@ -1,3 +1,4 @@
+// Modified by LuoMuQAQ for the unofficial Minecraft 26.3 / NeoForge port (2026).
 package com.elfmcys.ysm.capability;
 
 import com.elfmcys.ysm.YesSteveModel;
@@ -38,6 +39,16 @@ public final class EntityAttachments {
                     state -> wrapList(state.serializeNBT()),
                     (state, data) -> state.deserializeNBT(data.getListOrEmpty("values")))
                     .copyOnDeath().build());
+
+    // Prepared by the offline world-copy migration. Unresolved paths and original
+    // records remain serializable across saves; they never become implicit grants.
+    public static final Supplier<AttachmentType<LegacyPlayerData>> LEGACY_PLAYER_DATA = TYPES.register(
+            "legacy_player_data", () -> persistent(LegacyPlayerData::new,
+                    LegacyPlayerData::serializeNBT, LegacyPlayerData::deserializeNBT)
+                    .copyOnDeath().build());
+    public static final Supplier<AttachmentType<LegacyEntityData>> LEGACY_ENTITY_DATA = TYPES.register(
+            "legacy_entity_data", () -> persistent(LegacyEntityData::new,
+                    LegacyEntityData::serializeNBT, LegacyEntityData::deserializeNBT).build());
     public static final Supplier<AttachmentType<ProjectileModelInfoCapability>> PROJECTILE_MODEL_INFO = TYPES.register(
             "projectile_model_id", () -> persistent(ProjectileModelInfoCapability::new,
                     ProjectileModelInfoCapability::serializeNBT,

@@ -341,6 +341,24 @@ public final class SessionProtocolHandler {
         refreshGrants(player, true);
     }
 
+    /** Restores persisted selection through the current session's ordinary permissions. */
+    public static boolean restoreLegacySelection(ServerPlayer player, Selection.Model selection) {
+        var service = ServerModelService.current().orElse(null);
+        var session = service == null ? null : service.session(player).orElse(null);
+        if (session == null || !session.active() || !session.hasPublishedCatalog()) {
+            return false;
+        }
+        var intrinsicDefault = service.catalog().orElseThrow().defaultModel()
+                .map(ManagedContainer::modelId).filter(selection.modelId()::equals).isPresent();
+        var result = intrinsicDefault ? session.select(new Selection.IntrinsicDefault())
+                : session.selectForced(selection, false);
+        if (result != ServerModelSession.SelectionResult.ACCEPTED) {
+            return false;
+        }
+        sendAuthorityDelta(player);
+        return true;
+    }
+
     public static boolean applyCommandSelection(ServerPlayer player,
                                                 ModelInfoCapability persistence,
                                                 Selection.Model selection,
@@ -360,6 +378,7 @@ public final class SessionProtocolHandler {
                 != ServerModelSession.SelectionResult.ACCEPTED) {
             return false;
         }
+        com.elfmcys.ysm.capability.LegacyPlayerData.cancelSelection(player);
         persistence.setCommandSelection(selection.modelId(), selection.textureId(),
                 ignoreGrants && !intrinsicDefault);
         persistence.stopAnimation(player);
@@ -565,6 +584,7 @@ public final class SessionProtocolHandler {
         var result = selection == null || !ServerConfig.CAN_SWITCH_MODEL.get()
                 ? ServerModelSession.SelectionResult.INVALID_REQUEST : session.select(selection);
         if (result == ServerModelSession.SelectionResult.ACCEPTED) {
+            com.elfmcys.ysm.capability.LegacyPlayerData.cancelSelection(player);
             ControlHandler.applyAcceptedModelSelection(player,
                     selection instanceof Selection.Model model ? model.modelId() : null,
                     selection instanceof Selection.Model model ? model.textureId() : "");

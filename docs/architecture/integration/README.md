@@ -20,7 +20,13 @@
 
 客户端动画使用单独的 transient attachment。Common registry 只引用不含 Minecraft client 类的 holder，实际玩家动画 owner 在客户端按实体建立；投射物/载具动画只在收到对应模型状态后创建。实体离开世界时仅释放已经存在的动画 owner，再移除 transient slot，不为 cleanup 创建新的动画对象。客户端玩家 Clone 将原实体已存在的 owner 状态转移到新实体。
 
-旧 ForgeCaps 存档字段到新 attachments 的迁移桥尚未实现，因此当前持久化实现不能视作旧世界数据迁移验收。实体替换、通用层和模型预览的提交路径已经接到宿主 submit；SDL3 热键、核心界面和 HUD 已适配宿主输入与状态提取入口。第一人称手臂在宿主空主手及地图绘制窗口替换，普通非空持物与空副手均不额外补交手臂；单侧可见性与既有资产的屏幕坐标偏移见[逐帧状态与调度](../rendering/frame-execution.md)。有真实目标依赖的联动已适配该依赖；其余旧联动通过反射桥保留逻辑并按能力降级。源码接线不等于实机支持，见[当前支持状态](../../status/support-and-verification.md)。
+旧 NeoForge 玩家 `yes_steve_model:model_id/own_models/star_models` 数据由离线世界副本工具 `scripts/prepare-world-copy.py`置入持久 `ysm:legacy_player_data`，保留完整原记录、来源路径及 SHA-256。服务端 tick 在模型 session 已发布后、每个新 Catalog snapshot 上尝试应用：仅在源文件内容吻合且 Catalog 已接纳时取得当前模型身份，原授权和收藏按各自列表迁移；缺失或失败来源继续保存待迁移记录。模型选择保留纹理、mandatory、disabled 和 Molang storage，通过现行 session 的普通权限恢复并发布 authority delta，不产生 ignore-grants 权限。每项成功只应用一次；显式选模或模型命令终止待恢复的旧选择。此桥覆盖已准备的玩家记录；ForgeCaps 结构和实际升级后的保存仍需独立验证。
+
+旧 NeoForge 投射物和载具的 `owner_model_id` 与服务端 Molang 参数也由副本工具迁移。空的未初始化 default 槽直接包装为当前附件；有实际归属的记录保存在 `ysm:legacy_entity_data`，仅在相同来源通过校验和 Catalog 准入后应用。服务端实体加入世界时以及目录发布后对已加载实体尝试，未加载实体以后加入时处理；成功通过现行 entity 状态消息通知观察者。每项只恢复一次，新权威 owner 或骑乘赋模取消该槽的待恢复旧记录。
+
+副本工具要求 `nbtlib==2.0.4`，输入为旧世界、空的目标目录和模型来源映射 JSON；运行 `python scripts/prepare-world-copy.py --help` 查看参数。映射把旧路径绑定到新实例 custom/auth 中的相对路径和原文件 SHA-256；仅已有完整导入证据的来源可附 `verified_model_hash` 以处理重复身份路径。`old_roaming_key` 由旧模型实际身份前四字节确定，不能从文件名猜测。工具拒绝覆盖已有世界，核对逐文件复制哈希及未改变的玩家字段，保留修改前玩家 NBT 和实体 region，核对其他模组附件及全部非 YSM 实体字段，重读 region 校验所有 chunk 内容和原时间戳；不改 terrain/POI 或 DataVersion，不替游戏执行世界升级。
+
+实体替换、通用层和模型预览的提交路径已经接到宿主 submit；SDL3 热键、核心界面和 HUD 已适配宿主输入与状态提取入口。第一人称手臂在宿主空主手及地图绘制窗口替换，普通非空持物与空副手均不额外补交手臂；单侧可见性与既有资产的屏幕坐标偏移见[逐帧状态与调度](../rendering/frame-execution.md)。有真实目标依赖的联动已适配该依赖；其余旧联动通过反射桥保留逻辑并按能力降级。源码接线不等于实机支持，见[当前支持状态](../../status/support-and-verification.md)。
 
 必需 Mixin 中，箭入地状态由额外信息接口的 `ysm$isInGround()` 委托宿主 protected `AbstractArrow.isInGround()`，避免接口公开方法与宿主同名，也不再 shadow 已删除字段；帧 profiler 注入目标为 `GameRenderer.render()V`。骑乘使用三参数 `startRiding`，箭的额外药水效果从 `PotionContents.customEffects()` 取得。全部已登记必需 Mixin 的目标、descriptor、静态属性、注入点和使用的局部变量已按宿主字节码检查；运行时变换与其他模组组合仍需实机验证。
 

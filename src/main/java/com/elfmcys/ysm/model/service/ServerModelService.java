@@ -73,6 +73,12 @@ public final class ServerModelService implements AutoCloseable {
                             player.getGameProfile().name(), failure);
                 }
             }
+            var migrationCatalog = new ServerCatalog(publication);
+            for (var level : server.getAllLevels()) {
+                for (var entity : level.getAllEntities()) {
+                    com.elfmcys.ysm.capability.LegacyEntityData.apply(entity, migrationCatalog);
+                }
+            }
         }
         exports.tick();
         connections.forEach(state -> state.assetTransfers.tick());

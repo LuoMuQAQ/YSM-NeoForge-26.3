@@ -402,6 +402,10 @@ public final class ClientSessionRuntime {
         owner.closeCatalogOwners();
     }
 
+    public static synchronized void shutdown() {
+        closeCurrent();
+    }
+
     private static boolean closeCurrent() {
         var owner = current;
         current = null;

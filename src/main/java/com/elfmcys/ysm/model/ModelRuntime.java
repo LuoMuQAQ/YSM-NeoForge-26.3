@@ -1,9 +1,8 @@
 package com.elfmcys.ysm.model;
 
-/** Lifecycle bridge between Forge common setup and the process model-system owner. */
+/** Lifecycle bridge between NeoForge setup/shutdown and the process model-system owner. */
 public final class ModelRuntime {
     private static ModelSystem system;
-    private static boolean shutdownHookRegistered;
 
     private ModelRuntime() {
     }
@@ -12,22 +11,9 @@ public final class ModelRuntime {
         if (system != null) {
             return;
         }
-        var created = ModelSystem.openDefault();
-        try {
-            if (!shutdownHookRegistered) {
-                Runtime.getRuntime().addShutdownHook(
-                        new Thread(ModelRuntime::close, "YSM Model Runtime Shutdown"));
-                shutdownHookRegistered = true;
-            }
-            system = created;
-        } catch (RuntimeException | Error error) {
-            try {
-                created.close();
-            } catch (RuntimeException closeError) {
-                error.addSuppressed(closeError);
-            }
-            throw error;
-        }
+        // JVM shutdown hooks run after FML has closed the mod module. Host lifecycle
+        // events close this owner while its classes can still be loaded.
+        system = ModelSystem.openDefault();
     }
 
     public static synchronized ModelSystem system() {
