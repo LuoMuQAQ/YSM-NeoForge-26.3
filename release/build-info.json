@@ -1,6 +1,6 @@
 {
   "version": "3.0-unofficial.9+mc26.3-nf58",
-  "tag": null,
+  "tag": "v3.0-unofficial.9-mc26.3-nf58",
   "minecraft": "26.3",
   "neoforge": "26.3.0.58-beta",
   "java": 25,
@@ -11,14 +11,14 @@
   "runtimeSourceCommit": "8b5eb122594ef1d74a975be0f171186af7bba8b6",
   "nativeSha256": "2ad9cea0568b600a7e917b81831dc9aaf7b1142c6956daf47fa20f4828285bc8",
   "builtinModelCount": 24,
-  "status": "local-candidate",
+  "status": "prerelease",
   "validation": {
     "shadowJar": "passed: 1m 8s",
     "packageContents": "passed: ZIP integrity, 24 licensed builtins, native hash and provenance",
     "builtinFullMaterialization": "passed: 24 models",
     "headLayerBytecode": "host HumanoidArmorLayer.shouldRender present; nullable equipment-slot override call absent",
     "testsRunForThisFix": false,
-    "gameplay": "Helmet classification correction awaits maintainer gameplay confirmation in third person and HUD; no game launched by agent.",
+    "gameplay": "Maintainer requests publication of the installed .9 candidate. No explicit visual confirmation of the helmet fix has been provided; cross-model helmet/headwear, LAN, shaders and old-world verification remain pending. No game or tests were run by the agent for publication.",
     "unverified": [
       "helmet and non-armor headwear visuals across models",
       "LAN first-time resource transfer and reconnection",

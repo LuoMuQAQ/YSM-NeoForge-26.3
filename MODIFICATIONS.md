@@ -117,6 +117,15 @@ Model-authored armor animations and geometry remain responsible for armor;
 non-armor head items retain their existing locator path. Third-person and player
 previews share this correction. Gameplay verification is pending.
 
+## Unofficial 9 publication
+
+Unofficial 9 publishes the helmet classification correction above, using the
+exact installed candidate JAR built from runtime commit
+`8b5eb122594ef1d74a975be0f171186af7bba8b6`. Publication updates documentation and
+build metadata only. The native DLL and 24 licensed builtin models are unchanged.
+The helmet correction has not received explicit visual acceptance; the release
+remains a prerelease with the existing LAN, shader and world verification limits.
+
 ## Files changed during the port relative to the pinned Java upstream
 
 - `build.gradle`
