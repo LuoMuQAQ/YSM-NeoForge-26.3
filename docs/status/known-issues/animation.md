@@ -23,6 +23,7 @@
 - 箭的效果查询通过纯 `@Invoker` 接口读取 `PotionContents.customEffects()`，继续排除基础药水效果。访问器中的普通 `default` helper 会触发 Mixin interface/class 类型不匹配；该 helper 已移到调用方，修复后的启动应用仍需实机确认。
 
 - `swing_time` 现在是挥手过程中的整数 tick，未挥手时为 0。tick 通过 `LivingEntity.SwingState` 的客户端 mixin accessor 读取。挥手结束后宿主会清空当前手，查询记住上一只手，缺省主手。`attack_time` 仍取 `getSwingAnimation` 的 0–1。
+- Coded 挥手重播按宿主新挥手描述的身份消费，已修复错过第 0 tick 后同名单次攻击无法再次启动的问题，机制见[Controller 与播放](../../architecture/animation/controllers-and-playback.md#播放状态)。星见雅持剑在第三人称和 HUD 的连续攻击、快速连击及其他模型仍待用户实机复测；模型自定义 controller 和第一人称独立运行时不在本次修复范围内。
 - `step_height_addition` 改为当前属性值减去基础值，属性缺失时为 0。旧值是额外高度且默认 0；现在的差值包含基础值变化，数值尺度不同。
 - `moon_phase` 使用主世界时钟 `(getOverworldClockTime() / 24000) % 8`，顺序仍是满月 0 到盈凸月 7。它不读取带位置的 `EnvironmentAttributes.MOON_PHASE`，月相被维度固定时不会单独反映。`time_of_day` 和 `time_stamp` 使用同一时钟。
 - `modified_distance_moved` 已恢复为实体实际碰撞裁剪后的水平移动距离累计值，比例为 0.6；披风使用该累计值的前后 tick 插值。累计路径与宿主步态的平滑、限速、baby scale 和骑乘/死亡清零相互独立，瞬移和重复渲染不增加它。宿主客户端的远端移动模拟路径与旧版不同，远端实体的实际数值仍需实机验收。

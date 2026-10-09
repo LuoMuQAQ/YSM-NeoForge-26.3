@@ -1,8 +1,6 @@
 // Modified by LuoMuQAQ for the unofficial Minecraft 26.3 / NeoForge port (2026).
 package com.elfmcys.ysm.client.animation.predicate;
 
-import com.elfmcys.ysm.client.animation.EntityTickStates;
-import com.elfmcys.ysm.client.animation.SwingQueries;
 import com.elfmcys.ysm.client.animation.condition.ConditionManager;
 import com.elfmcys.ysm.client.animation.condition.ConditionalSwing;
 import com.elfmcys.ysm.client.compat.ironsspellbooks.IronsSpellBooksCompat;
@@ -49,10 +47,11 @@ public class SwingPredicate implements IAnimationPredicate<CustomHumanoidEntity<
         }
 
         // 其他情况
-        if (SwingQueries.isSwinging(entity) && !entity.isSleeping()) {
-            InteractionHand swingingArm = SwingQueries.swingingArm(entity);
-            if (SwingQueries.swingTicks(entity) == 0 && event.getAnimatableEntity().getStateTracker().setEntityTickState(EntityTickStates.SWING)) {
-                // swing 开始时重置动画
+        var currentSwing = entity.getCurrentSwing();
+        if (currentSwing != null && !entity.isSleeping()) {
+            InteractionHand swingingArm = currentSwing.hand();
+            if (event.getAnimatableEntity().getStateTracker().consumeSwingStart(currentSwing)) {
+                // 首次观察到新 swing 时重置，不依赖渲染能否读到第 0 tick。
                 event.getCodedController().indicateReload();
             }
             ConditionManager conditionManager = event.getAnimatableEntity().getConditionManager();

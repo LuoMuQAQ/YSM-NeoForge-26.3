@@ -24,6 +24,8 @@ stateDiagram-v2
 
 Player 支持循环、单次播放和保持末帧。选择与当前相同的 animation 不会隐式重启；显式 reload 或状态重置才重建时间线。目标 animation 不存在时回到 idle，不以随机 fallback 掩盖资源错误；render target 不可用时的系统级回退另见[默认模型](../model-management/default-model.md)。Coded controller 还可返回继续、暂停或停止，用于区分推进时间、保持当前值和结束播放。
 
+Coded 挥手槽在首次观察到宿主的新 `SwingDescription` 时显式 reload，再按该挥手的手和持物选择动画。宿主每次接受挥手起始都会创建新描述；实体的 `HumanoidStateTracker` 按对象身份记录已消费的描述，跨 tick 和重复 render observation 不再重启，模型运行时 reset 时清空记录。判断不依赖恰好采样到第 0 tick，也不使用描述的值相等性，连续相同动作仍可重播。模型的 Bedrock controller 或 Molang override 继续拥有原覆盖优先级。
+
 ## Bedrock 状态机
 
 - 从声明的 default state 开始；每次按声明顺序检查 transition，第一个成立者获胜。
