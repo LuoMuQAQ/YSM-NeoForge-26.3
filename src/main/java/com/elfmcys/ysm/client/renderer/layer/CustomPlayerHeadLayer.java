@@ -9,6 +9,7 @@ import com.elfmcys.ysm.geckolib3.geo.GeoRenderData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -34,7 +35,9 @@ public class CustomPlayerHeadLayer extends GeoLayerRenderer<CustomPlayerEntity> 
     }
 
     private static boolean isArmorHead(ItemStack itemStack) {
-        return itemStack.getEquipmentSlot() == EquipmentSlot.HEAD;
+        // getEquipmentSlot() is only a nullable NeoForge override, not the
+        // resolved slot. Match the host's split between armor and head items.
+        return HumanoidArmorLayer.shouldRender(itemStack, EquipmentSlot.HEAD);
     }
 
     private static void submitHeadItem(PoseStack poseStack, SubmitNodeCollector collector, int packedLight, int overlay, int outline,

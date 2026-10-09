@@ -108,6 +108,15 @@ host-side online-mode, UUID and port settings. The companion is not embedded in
 YSM and this update changes no runtime code. Combined offline guest login,
 resource transfer, visibility and reconnection remain unverified.
 
+## Helmet classification
+
+The head item layer now uses the host's armor rendering predicate instead of
+NeoForge's nullable equipment-slot override. Ordinary helmets were incorrectly
+submitted as head items, showing their item appearance behind the model's head.
+Model-authored armor animations and geometry remain responsible for armor;
+non-armor head items retain their existing locator path. Third-person and player
+previews share this correction. Gameplay verification is pending.
+
 ## Files changed during the port relative to the pinned Java upstream
 
 - `build.gradle`

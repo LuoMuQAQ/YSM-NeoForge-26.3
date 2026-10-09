@@ -70,6 +70,8 @@ sequenceDiagram
 
 GUI 虚拟玩家在构造时分配独立的负数实体 ID，供宿主状态提取及物品渲染使用。Client level 的初始 ID 为零，真实玩家随后由网络分配 ID；预览玩家不接收 spawn packet，也不加入世界实体表，因此不能依赖该分配流程。ID 在预览玩家生命周期内保持稳定，刷新 level 或重用预览资源不重新分配。
 
+头部物品层使用宿主 `HumanoidArmorLayer.shouldRender(stack, HEAD)` 区分带头部装备资源的盔甲与普通头饰。NeoForge `ItemStack.getEquipmentSlot()` 只返回可空的槽位覆盖，不能用作盔甲分类；普通头盔在该接口没有覆盖时仍属于盔甲。盔甲外观继续由模型自带的装备动画和几何控制，不把头盔的物品图标再次提交到 Head locator。没有装备资源的雕刻南瓜、头颅和普通头饰仍进入原头部物品路径，Simple Hats 饰品维持独立入口；第三人称、HUD 与玩家预览共享此分类。
+
 鞘翅保留模型 locator 的位置、旋转与 authored scale，按所选物品 `Equippable.assetId` 交给宿主 `EquipmentLayerRenderer` 的 `WINGS` 层。Locator 遍历已组合当前骨骼 pose 与 pivot，宿主翼片的肩部根节点位于局部 y=0，层仅用 Z 轴 180° 旋转转换坐标方向，不额外平移高度；宿主几何使用标准方块单位，不追加固定两倍放大。默认纹理由装备资源定义选择，玩家鞘翅/披风仅作为宿主允许的 override。装备资源、资源包、箔片、着色和提交次序由宿主处理，YSM 不使用旧实体纹理路径或复制装备资源。层与 baked model 跟随 `AddLayers` 的宿主资源代次重建。
 
 第一人称手臂仅在宿主实际绘制手臂的 `RenderArmEvent` 窗口替换，覆盖空主手及单手/双手地图。普通非空持物继续由宿主提交物品，不额外插入空手姿态手臂；空副手也不额外绘制。物品的装备、挥动和使用变换属于宿主。`DeferredModelDraw.submit` 返回是否捕获有效顶点并实际加入 collector；原有手臂只有在该结果为 true 时被取消，捕获失败保留原有绘制。
