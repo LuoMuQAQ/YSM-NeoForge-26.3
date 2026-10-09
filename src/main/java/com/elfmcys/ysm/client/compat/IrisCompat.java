@@ -86,7 +86,16 @@ public class IrisCompat {
         int id = gpu.glId();
         // Custom model textures are not ReloadableTexture; publish their actual GPU identity.
         net.irisshaders.iris.pbr.TextureTracker.INSTANCE.trackTexture(id, texture);
-        var holder = net.irisshaders.iris.pbr.texture.PBRTextureManager.INSTANCE.getOrLoadHolder(id);
+        var manager = net.irisshaders.iris.pbr.texture.PBRTextureManager.INSTANCE;
+        // Iris 1.11.7 queues an unknown texture and returns its default holder.
+        // Drain that public loading queue on this render-owner publication window
+        // before treating missing components as a failed host adoption. The loader
+        // still owns component upload and restores Iris's active texture binding.
+        manager.getOrLoadHolder(id);
+        if (texture.getNormal() != null || texture.getSpecular() != null) {
+            manager.onNewFrame();
+        }
+        var holder = manager.getHolder(id);
         requireExpected(texture, holder.normalTexture(), holder.specularTexture(), hostOwnership);
     }
 

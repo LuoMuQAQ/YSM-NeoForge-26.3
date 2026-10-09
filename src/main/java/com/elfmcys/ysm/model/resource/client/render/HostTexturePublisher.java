@@ -98,6 +98,7 @@ final class MinecraftHostTexturePublisher implements HostTexturePublisher {
             return new PublishedTextureBinding(base, manager, mappings);
         } catch (RuntimeException | Error failure) {
             publicationFailure = failure;
+            YesSteveModel.LOGGER.warn("Failed to publish model texture set {}", base, failure);
             throw failure;
         } finally {
             if (!success) {

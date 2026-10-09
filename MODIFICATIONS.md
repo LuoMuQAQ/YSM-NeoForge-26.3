@@ -19,6 +19,11 @@ admission bind each restored identity. Missing sources stay pending. No ignore-
 grants permission is introduced by migration. Game upgrade/save and LAN still
 require manual verification.
 
+Iris 1.11.7 defers new PBR holders until its loading queue is drained. Model
+publication now drains that public queue before validating ownership of supplied
+normal/specular components, and logs underlying publication failures. It retains
+strict component checks and rejects actual upload/adoption failures.
+
 Native business code is unchanged from the recorded upstream revision. The
 Windows DLL is built from that source with the profile in release/windows-clang-profile.
 No Minecraft/NeoForge binary or external optional-mod JAR is bundled in this repository.
