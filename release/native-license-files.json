@@ -1,0 +1,198 @@
+[
+  {
+    "componentCache": "absei4952af007c91d",
+    "file": "LICENSE",
+    "sha256": "f54fff0b905df5b3464527c652a30e903b172d6dcab4d89b5e6f105d5e4a4603"
+  },
+  {
+    "componentCache": "avif40c08da64bf4d",
+    "file": "LICENSE",
+    "sha256": "6aaa88e4054f8bf2c4fa926cacc3a97fa3e0ec72d2ffc2e4cdaca6bb0eb16ec1"
+  },
+  {
+    "componentCache": "benchc80016370ab8e",
+    "file": "LICENSE",
+    "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+  },
+  {
+    "componentCache": "blake08afa2ab8e2cb",
+    "file": "LICENSE_A2",
+    "sha256": "3da8137480af96e14b27ac9474c6a76a0102596493e5ab075ba98c7ffc64d552"
+  },
+  {
+    "componentCache": "blake08afa2ab8e2cb",
+    "file": "LICENSE_A2LLVM",
+    "sha256": "b944109ea368e9bf114cb87a21a7ccf11edb6621fe0bd8357ae51dced0afbbb3"
+  },
+  {
+    "componentCache": "blake08afa2ab8e2cb",
+    "file": "LICENSE_CC0",
+    "sha256": "f4e7f373b9b996950337e8d41a4a2939c2d90b7725e9baf3d5084a22717ad328"
+  },
+  {
+    "componentCache": "cglmd6b84e41523be",
+    "file": "LICENSE",
+    "sha256": "35dd923c2aa0339cc6afeeff8c022b0823cf771fe8d5e9ab5b1775de273bf156"
+  },
+  {
+    "componentCache": "cpu_f37fdd3c63374c",
+    "file": "LICENSE",
+    "sha256": "34c5d6cb04305b64768e69d19aa2aff4247734c40689d7c55f6eec9f07939ec0"
+  },
+  {
+    "componentCache": "crypt968e2809a476e",
+    "file": "LICENSE",
+    "sha256": "706f8a27e7a69a198bc7c5752cabb59a1b6dcb683ee9a0819c4684088dd8a13c"
+  },
+  {
+    "componentCache": "dav1d285188967e84b",
+    "file": "COPYING",
+    "sha256": "225bbec3afc382f1bb85f7bb01655f3a37ed5e693a4fa18a64c0c5bab48c854e"
+  },
+  {
+    "componentCache": "dav1d285188967e84b",
+    "file": "doc/PATENTS",
+    "sha256": "5e50af2aef9c1cb2891dcd8a4b84e127eff42613abca86ef48c4f22d11e95e89"
+  },
+  {
+    "componentCache": "flatbcd2f0c1d6f11d",
+    "file": "LICENSE",
+    "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5"
+  },
+  {
+    "componentCache": "googl76ab23f007527",
+    "file": "LICENSE",
+    "sha256": "46c35a3c9ac8ef63c16ca69b5cf0166df9fcdb789e318175c92a219de517b8e7"
+  },
+  {
+    "componentCache": "jpeg-757df77373043",
+    "file": "LICENSE.md",
+    "sha256": "cff8701dc999e39b5044ece8f22ed65b3a10d6a8dbddca8ffb802d24580181db"
+  },
+  {
+    "componentCache": "jpeg-757df77373043",
+    "file": "README.ijg",
+    "sha256": "db16a04128171879c60708d171b88d97345a2dd20f9bfc173680a4497c73f704"
+  },
+  {
+    "componentCache": "lzma2e40cec223535",
+    "file": "lzma-sdk.txt",
+    "sha256": "7eeed79436de2b2fe77fc4f2be8beb65d68cec85ad570be88a1ca1cb2996e698"
+  },
+  {
+    "componentCache": "magicaf008b9f0ad62",
+    "file": "LICENSE",
+    "sha256": "807abee0c36b11f5d64c5c2652129b84b41cc9f8f9b8d324e0e53290b2542956"
+  },
+  {
+    "componentCache": "mimalf28d508b376dc",
+    "file": "LICENSE",
+    "sha256": "82ade5d7d9b029044b5fbbc326207fc47c2d44ee4dd71e8a559c36d728217de9"
+  },
+  {
+    "componentCache": "miniz1a072e7c11ee0",
+    "file": "LICENSE",
+    "sha256": "eb37439365f27aa153f9fd45422c931149f957ad656ab34df6063ce6b8e49d42"
+  },
+  {
+    "componentCache": "opuse9ff85e88b760",
+    "file": "COPYING",
+    "sha256": "cbd8bd07329a234413710c02b19d22c0cf78fc451882593e817130779b5455e3"
+  },
+  {
+    "componentCache": "opuse9ff85e88b760",
+    "file": "LICENSE_PLEASE_READ.txt",
+    "sha256": "e0f2e5f47e854bd07a7abb71744a65f367b57b3fba3cb0afeafb1d61e389636c"
+  },
+  {
+    "componentCache": "proxye58153970d99d",
+    "file": "LICENSE",
+    "sha256": "e150c8bc6497c72e418943056afc5464862f92d993ff07cac0afcff7e1298afa"
+  },
+  {
+    "componentCache": "pystrc6c7347912504",
+    "file": "LICENSE",
+    "sha256": "4568bd61c0054d7bea59ec3f57dc3821479f52e546662a14fd88560035653406"
+  },
+  {
+    "componentCache": "re227597c77718f9",
+    "file": "LICENSE",
+    "sha256": "503bb3cc66bd5f0d070ca6bb7002aa678403279cf3a8de648f32b6ddfc940184"
+  },
+  {
+    "componentCache": "spng6572de139220e",
+    "file": "LICENSE",
+    "sha256": "485cd091bd50f042461b9006681ba1a73261af2ab0d429225cb8d0289d78bdbf"
+  },
+  {
+    "componentCache": "svt-ab60a5c109fe53",
+    "file": "LICENSE-BSD2.md",
+    "sha256": "e952a50cacb241d49502b74b68e05f3a7fb9ba2f11ef41b74090abb50d19df7d"
+  },
+  {
+    "componentCache": "svt-ab60a5c109fe53",
+    "file": "LICENSE.md",
+    "sha256": "cd194fd72a4ba0378a843457879c6a5299c9934e049a697ec51f6d43a241fc43"
+  },
+  {
+    "componentCache": "svt-ab60a5c109fe53",
+    "file": "PATENTS.md",
+    "sha256": "e0ceb644e386248cb12d3e757637cc27aa2df1c0a7e6ecd218377daf16ca16e4"
+  },
+  {
+    "componentCache": "tracy5d35b820454fc",
+    "file": "LICENSE",
+    "sha256": "482a8eec0bf61f2ddabafcd6441c97a3b123c08bb2bba1423dd9bd79dbf57b7b"
+  },
+  {
+    "componentCache": "webp7b7b2817e3d2b",
+    "file": "COPYING",
+    "sha256": "17c029a902ad45a199dfe8e3a1c39305ab28d302b0703360c4a27351a4673dcb"
+  },
+  {
+    "componentCache": "webp7b7b2817e3d2b",
+    "file": "PATENTS",
+    "sha256": "d578b7a471d48406a16c64e3c6a8685e66292f3c6709214c49ca55b2f22ed7cd"
+  },
+  {
+    "componentCache": "yalanb36be18340b20",
+    "file": "LICENSE",
+    "sha256": "1eb85fc97224598dad1852b5d6483bbcf0aa8608790dcc657a5a2a761ae9c8c6"
+  },
+  {
+    "componentCache": "yalanb36be18340b20",
+    "file": "NOTICE",
+    "sha256": "49e0bfb9be76f26f58fe466cccdf878c22c507b4da4b40f61451136caf9f01fc"
+  },
+  {
+    "componentCache": "yuvf42d172919522",
+    "file": "LICENSE",
+    "sha256": "91b2be0a4696a7f98e38ec95d53fb3c1e8a476ce7246f54390276f94d9508ec2"
+  },
+  {
+    "componentCache": "yuvf42d172919522",
+    "file": "PATENTS",
+    "sha256": "aa979730dc3af81dc24323fd9e4ed6c603a4c1f14f14a187a8e2e8a65704f99c"
+  },
+  {
+    "componentCache": "zlib-c213c836ecd50",
+    "file": "LICENSE.md",
+    "sha256": "6c9f0d975b41afaa34d22f55bb8986ce69e5cb7ad327cb2b28820cd425edf5ee"
+  },
+  {
+    "componentCache": "zstdcd7a3b0917812",
+    "file": "COPYING",
+    "sha256": "f9c375a1be4a41f7b70301dd83c91cb89e41567478859b77eef375a52d782505"
+  },
+  {
+    "componentCache": "zstdcd7a3b0917812",
+    "file": "LICENSE",
+    "sha256": "7055266497633c9025b777c78eb7235af13922117480ed5c674677adc381c9d8"
+  },
+  {
+    "component": "STX CStringView",
+    "source": "https://raw.githubusercontent.com/lamarrr/STX/main/LICENSE",
+    "sha256": "f4d71cba170d906e2fb3f71974a0ec6d28315c347a3f4227257ee0b4f065ffdf",
+    "revision": "Imported upstream revision is not recorded; license text fetched from upstream."
+  }
+]

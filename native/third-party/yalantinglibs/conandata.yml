@@ -1,0 +1,22 @@
+sources:
+  0.6.1:
+    url: https://github.com/alibaba/yalantinglibs
+    tag: 0.6.1
+    commit: 8c1f2ea927a5a879046067a686599f825a370858
+patches:
+  0.6.1:
+  - patch_file: patches/yalantinglibs.patch
+  - patch_file: patches/package-only.patch
+  - patch_file: patches/struct-pb-optional.patch
+requirements:
+- mimalloc/3.5.3@ysm/stable
+build:
+  global_link_targets:
+  - mimalloc-static
+  options:
+    YLT_PACKAGE_ONLY: true
+    YLT_ENABLE_STRUCT_PACK_OPTIMIZE: true
+  install: true
+package:
+  cmake_file_name: yalantinglibs
+  cmake_target_name: yalantinglibs

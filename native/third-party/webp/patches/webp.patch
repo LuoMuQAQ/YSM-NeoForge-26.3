@@ -1,0 +1,52 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 39d3d8f..890740f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -339,7 +339,10 @@ target_link_libraries(sharpyuv ${SHARPYUV_DEP_LIBRARIES})
+ set_version(sharpyuv/Makefile.am sharpyuv sharpyuv)
+ target_include_directories(
+   sharpyuv PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
+-                   ${CMAKE_CURRENT_SOURCE_DIR}/src)
++                   ${CMAKE_CURRENT_SOURCE_DIR}/src
++           INTERFACE
++                   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
++)
+ set_target_properties(
+   sharpyuv
+   PROPERTIES PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/sharpyuv/sharpyuv.h;\
+@@ -384,7 +387,7 @@ target_include_directories(
+   webpdecoder
+   PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
+   INTERFACE
+-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR};${CMAKE_CURRENT_BINARY_DIR}>"
++    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src;${CMAKE_CURRENT_BINARY_DIR}>"
+     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+ set_target_properties(
+   webpdecoder
+diff --git a/sharpyuv/sharpyuv.c b/sharpyuv/sharpyuv.c
+index 25b842d..890acdd 100644
+--- a/sharpyuv/sharpyuv.c
++++ b/sharpyuv/sharpyuv.c
+@@ -24,6 +24,8 @@
+ #include "sharpyuv/sharpyuv_gamma.h"
+ #include "src/webp/types.h"
+ 
++#include <mimalloc-override.h>
++
+ //------------------------------------------------------------------------------
+ 
+ int SharpYuvGetVersion(void) {
+diff --git a/src/utils/utils.c b/src/utils/utils.c
+index b80bae0..66cd86b 100644
+--- a/src/utils/utils.c
++++ b/src/utils/utils.c
+@@ -21,6 +21,8 @@
+ #include "src/utils/palette.h"
+ #include "src/webp/encode.h"
+ 
++#include <mimalloc-override.h>
++
+ // If PRINT_MEM_INFO is defined, extra info (like total memory used, number of
+ // alloc/free etc) is printed. For debugging/tuning purpose only (it's slow,
+ // and not multi-thread safe!).
+

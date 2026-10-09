@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package ysm.baked.asset;
+
+message BakedAssetManifest {
+  bytes container_id = 1;
+  string render_target_id = 3;
+  bytes input_hash = 4;
+  repeated BakedAnimationEntry animations = 5;
+}
+
+message BakedAnimationEntry {
+  string name = 1;
+  string chunk_name = 2;
+  bytes source_hash = 3;
+}

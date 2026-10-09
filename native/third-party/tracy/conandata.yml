@@ -1,0 +1,33 @@
+sources:
+  0.13.1:
+    url: https://github.com/wolfpld/tracy
+    tag: v0.13.1
+    commit: 05cceee0df3b8d7c6fa87e9638af311dbabc63cb
+patches:
+  0.13.1: []
+requirements: []
+build:
+  options:
+    BUILD_SHARED_LIBS: false
+    TRACY_STATIC: true
+    TRACY_Fortran: false
+    TRACY_LTO: false
+    TRACY_ENABLE: true
+    TRACY_ON_DEMAND: true
+    TRACY_CALLSTACK: false
+    TRACY_NO_CALLSTACK: true
+    TRACY_NO_CODE_TRANSFER: true
+    TRACY_NO_CONTEXT_SWITCH: true
+    TRACY_NO_SAMPLING: true
+    TRACY_NO_VSYNC_CAPTURE: true
+    TRACY_NO_FRAME_IMAGE: true
+    TRACY_NO_SYSTEM_TRACING: true
+    TRACY_NO_CRASH_HANDLER: true
+  install: true
+package:
+  cmake_file_name: Tracy
+  cmake_target_name: Tracy::TracyClient
+  libs:
+  - TracyClient
+  includedirs:
+  - include/tracy

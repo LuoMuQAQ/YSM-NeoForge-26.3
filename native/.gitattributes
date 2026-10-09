@@ -1,0 +1,21 @@
+* text=auto
+
+*.md  text eol=lf
+
+*.sh  text eol=lf
+*.patch text eol=lf -whitespace
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+*.c       text eol=lf diff=c
+*.cc      text eol=lf diff=cpp
+*.cpp     text eol=lf diff=cpp
+*.cxx     text eol=lf diff=cpp
+*.h       text eol=lf diff=cpp
+*.hh      text eol=lf diff=cpp
+*.hpp     text eol=lf diff=cpp
+*.hxx     text eol=lf diff=cpp
+*.inc     text eol=lf diff=cpp
+*.ixx     text eol=lf
+*.cppm    text eol=lf
+*.py      text eol=lf diff=python

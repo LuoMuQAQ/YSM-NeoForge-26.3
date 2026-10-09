@@ -1,0 +1,37 @@
+{
+  "_ysm_port_notice": "Modified by LuoMuQAQ for the unofficial Minecraft 26.3 / NeoForge port (2026).",
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.elfmcys.ysm.mixin",
+  "plugin": "com.elfmcys.ysm.mixin.plugin.MixinTweaker",
+  "compatibilityLevel": "JAVA_25",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "client.ArrowEntityAccessor",
+    "client.AudioChannelMixin",
+    "client.EntityRenderDispatcherMixin",
+    "client.EntityMovementMixin",
+    "client.FishingHookAccessor",
+    "client.GameRendererMixin",
+    "client.InventoryScreenMixin",
+    "client.LivingEntityAccessor",
+    "client.LivingEntitySwingStateAccessor",
+    "client.NativeImageAccessor",
+    "client.PauseScreenMixin",
+    "client.ProjectionMatrixBufferMixin",
+    "client.ChannelHandleMixin",
+    "client.SoundEngineAccessor",
+    "client.SoundManagerAccessor",
+    "client.ThrowableItemProjectileAccessor",
+    "client.LevelExtractorMixin",
+    "client.LevelRendererMixin"
+  ],
+  "mixins": [
+    "AbstractArrowEntityMixin",
+    "ConnectionMixin",
+    "ProjectileEntityMixin",
+    "ServerPlayerMixin"
+  ]
+}

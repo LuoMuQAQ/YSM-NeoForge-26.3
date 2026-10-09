@@ -1,0 +1,18 @@
+sources:
+  0.9.8:
+    url: https://github.com/Neargye/magic_enum
+    tag: v0.9.8
+    commit: 1384769c66bd16ec9bb1353f45fe8ec8ccc12dbd
+patches:
+  0.9.8: []
+requirements: []
+build:
+  options: {}
+  install: false
+package:
+  cmake_file_name: magic_enum
+  cmake_target_name: magic_enum
+  manual_headers:
+  - dst: include
+    pattern: '*.hpp'
+    src: include/magic_enum

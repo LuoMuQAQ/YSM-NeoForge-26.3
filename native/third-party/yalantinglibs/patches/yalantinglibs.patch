@@ -1,0 +1,207 @@
+diff --git a/include/ylt/util/b_stacktrace.h b/include/ylt/util/b_stacktrace.h
+index 164c972..25316a7 100644
+--- a/include/ylt/util/b_stacktrace.h
++++ b/include/ylt/util/b_stacktrace.h
+@@ -19,16 +19,16 @@ file to create the implementation
+ char* b_stacktrace_get_string();
+     Returns a human-readable stack-trace string from the point of view of the
+     caller.
+-    The string is allocated with `malloc` and needs to be freed with `free`
++    The string is allocated with `mi_malloc` and needs to be freed with `free`
+ 
+ b_stacktrace_handle b_stacktrace_get();
+     Returns a stack-trace handle from the point of view of the caller which
+     can be expanded to a string via b_stacktrace_to_string.
+-    The handle is allocated with `malloc` and needs to be freed with `free`
++    The handle is allocated with `mi_malloc` and needs to be freed with `free`
+ 
+ b_stacktrace_to_string(b_stacktrace_handle stacktrace);
+     Converts a stack-trace handle to a human-readable string.
+-    The string is allocated with `malloc` and needs to be freed with `free`
++    The string is allocated with `mi_malloc` and needs to be freed with `free`
+ 
+ B_STACKTRACE_API int b_stacktrace_depth(b_stacktrace_handle stacktrace);
+     Returns the number of entries (frames) in the stack-trace handle.
+@@ -74,13 +74,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
+ 
++#include <mimalloc.h>
++
+ namespace ylt::util {
+ typedef struct b_stacktrace_tag* b_stacktrace_handle;
+ 
+ /*
+     Returns a stack-trace handle from the point of view of the caller which
+     can be expanded to a string via b_stacktrace_to_string.
+-    The handle is allocated with `malloc` and needs to be freed with `free`
++    The handle is allocated with `mi_malloc` and needs to be freed with `mi_free`
+ */
+ b_stacktrace_handle b_stacktrace_get();
+ 
+@@ -91,14 +93,14 @@ int b_stacktrace_depth(b_stacktrace_handle stacktrace);
+ 
+ /*
+     Converts a stack-trace handle to a human-readable string.
+-    The string is allocated with `malloc` and needs to be freed with `free`
++    The string is allocated with `mi_malloc` and needs to be freed with `mi_free`
+ */
+ char* b_stacktrace_to_string(b_stacktrace_handle stacktrace);
+ 
+ /*
+     Returns a human-readable stack-trace string from the point of view of the
+     caller.
+-    The string is allocated with `malloc` and needs to be freed with `free`
++    The string is allocated with `mi_malloc` and needs to be freed with `mi_free`
+ */
+ char* b_stacktrace_get_string(void);
+ }
+@@ -119,7 +121,7 @@ typedef struct print_buf {
+ 
+ inline print_buf buf_init(void) {
+     print_buf ret = {
+-        (char*) malloc(1024),
++        (char*) mi_malloc(1024),
+         0,
+         1024
+     };
+@@ -136,7 +138,7 @@ inline void buf_printf(print_buf* b, const char* fmt, ...) {
+ 
+     if (new_end > b->size) {
+         while (new_end > b->size) b->size *= 2;
+-        b->buf = (char*)realloc(b->buf, b->size);
++        b->buf = (char*)mi_realloc(b->buf, b->size);
+     }
+ 
+     va_start(args, fmt);
+@@ -147,7 +149,7 @@ inline void buf_printf(print_buf* b, const char* fmt, ...) {
+ inline char* b_stacktrace_get_string(void) {
+     b_stacktrace_handle h = b_stacktrace_get();
+     char* ret = b_stacktrace_to_string(h);
+-    free(h);
++    mi_free(h);
+     return ret;
+ }
+ }
+@@ -178,7 +180,7 @@ inline b_stacktrace_handle b_stacktrace_get(void) {
+     CONTEXT context;
+     STACKFRAME64 frame; /* in/out stackframe */
+     DWORD imageType;
+-    b_stacktrace_entry* ret = (b_stacktrace_entry*)malloc(B_STACKTRACE_MAX_DEPTH * sizeof(b_stacktrace_entry));
++    b_stacktrace_entry* ret = (b_stacktrace_entry*)mi_malloc(B_STACKTRACE_MAX_DEPTH * sizeof(b_stacktrace_entry));
+     int i = 0;
+ 
+     if (!SymInitialize_called) {
+@@ -262,7 +264,7 @@ inline char* b_stacktrace_to_string(b_stacktrace_handle h) {
+     int i = 0;
+     HANDLE process = GetCurrentProcess();
+     print_buf out = buf_init();
+-    IMAGEHLP_SYMBOL64* symbol = (IMAGEHLP_SYMBOL64*)malloc(sizeof(IMAGEHLP_SYMBOL64) + 1024);
++    IMAGEHLP_SYMBOL64* symbol = (IMAGEHLP_SYMBOL64*)mi_malloc(sizeof(IMAGEHLP_SYMBOL64) + 1024);
+     symbol->SizeOfStruct = sizeof(IMAGEHLP_SYMBOL64);
+     symbol->MaxNameLength = 1024;
+ 
+@@ -298,7 +300,7 @@ inline char* b_stacktrace_to_string(b_stacktrace_handle h) {
+         }
+     }
+ 
+-    free(symbol);
++    mi_free(symbol);
+     return out.buf;
+ }
+ 
+@@ -318,7 +320,7 @@ typedef struct b_stacktrace {
+ } b_stacktrace;
+ 
+ inline b_stacktrace_handle b_stacktrace_get(void) {
+-    b_stacktrace* ret = (b_stacktrace*)malloc(sizeof(b_stacktrace));
++    b_stacktrace* ret = (b_stacktrace*)mi_malloc(sizeof(b_stacktrace));
+     ret->trace_size = backtrace(ret->trace, B_STACKTRACE_MAX_DEPTH);
+     return (b_stacktrace_handle)(ret);
+ }
+@@ -359,7 +361,7 @@ typedef struct b_stacktrace {
+ } b_stacktrace;
+ 
+ inline b_stacktrace_handle b_stacktrace_get(void) {
+-    b_stacktrace* ret = (b_stacktrace*)malloc(sizeof(b_stacktrace));
++    b_stacktrace* ret = (b_stacktrace*)mi_malloc(sizeof(b_stacktrace));
+     ret->trace_size = backtrace(ret->trace, B_STACKTRACE_MAX_DEPTH);
+     return (b_stacktrace_handle)(ret);
+ }
+diff --git a/include/ylt/util/concurrentqueue.h b/include/ylt/util/concurrentqueue.h
+index 3a89b3b..5385b23 100644
+--- a/include/ylt/util/concurrentqueue.h
++++ b/include/ylt/util/concurrentqueue.h
+@@ -98,6 +98,8 @@
+ #include <type_traits>
+ #include <utility>
+ 
++#include <mimalloc.h>
++
+ // Platform-specific definitions of a numeric thread ID type and an invalid
+ // value
+ namespace ylt::detail::moodycamel {
+@@ -533,20 +535,8 @@ struct ConcurrentQueueDefaultTraits {
+   static const bool RECYCLE_ALLOCATED_BLOCKS = false;
+ 
+ #ifndef MCDBGQ_USE_RELACY
+-  // Memory allocation can be customized if needed.
+-  // malloc should return nullptr on failure, and handle alignment like
+-  // std::malloc.
+-#if defined(malloc) || defined(free)
+-  // Gah, this is 2015, stop defining macros that break standard code already!
+-  // Work around malloc/free being special macros:
+-  static inline void* WORKAROUND_malloc(size_t size) { return malloc(size); }
+-  static inline void WORKAROUND_free(void* ptr) { return free(ptr); }
+-  static inline void*(malloc)(size_t size) { return WORKAROUND_malloc(size); }
+-  static inline void(free)(void* ptr) { return WORKAROUND_free(ptr); }
+-#else
+-  static inline void* malloc(size_t size) { return std::malloc(size); }
+-  static inline void free(void* ptr) { return std::free(ptr); }
+-#endif
++  static inline void* malloc(size_t size) { return mi_malloc(size); }
++  static inline void free(void* ptr) { return mi_free(ptr); }
+ #else
+   // Debug versions when running under the Relacy race detector (ignore
+   // these in user code)
+diff --git a/include/ylt/util/ff_ptr.hpp b/include/ylt/util/ff_ptr.hpp
+index e407f02..b4191e0 100644
+--- a/include/ylt/util/ff_ptr.hpp
++++ b/include/ylt/util/ff_ptr.hpp
+@@ -15,6 +15,8 @@
+ #include "b_stacktrace.h"
+ #endif
+ 
++#include <mimalloc.h>
++
+ namespace ylt::util {
+ 
+ #if defined _MSC_VER
+@@ -143,7 +145,7 @@ inline static auto default_error_handler = [](ff_ptr_error_type error,
+ #else
+   auto str = b_stacktrace_get_string();
+   std::cerr << str << std::endl;
+-  free(str);
++  mi_free(str);
+ #endif
+ };
+ inline std::shared_ptr<std::function<void(ff_ptr_error_type, void*)>>
+@@ -362,7 +364,7 @@ void ff_delete(ff_ptr<T> p) {
+     if (p) {
+       p->~T();
+       poisoned(p);
+-      std::free(p);
++      mi_free(p);
+     }
+   }
+   else {
+@@ -376,7 +378,7 @@ ff_ptr<T> ff_new(Args&&... args) {
+     return new T{std::forward<Args>(args)...};
+   }
+   else if constexpr (sizeof(T) >= sizeof(uint64_t)) {
+-    T* buf = std::malloc(sizeof(T));
++    T* buf = mi_malloc(sizeof(T));
+     depoisoned(buf);
+     return new (buf) T{std::forward<Args>(args)...};
+   }
+

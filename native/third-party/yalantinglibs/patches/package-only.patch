@@ -1,0 +1,22 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 448a80d..7be1cb9 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -16,5 +16,8 @@ project(yaLanTingLibs
+         HOMEPAGE_URL "https://github.com/alibaba/yalantinglibs"
+         LANGUAGES ${PROJECT_LANGUAGES}
+         )
++
++option(YLT_PACKAGE_ONLY "Configure only installable library targets" OFF)
++
+ # load pack finder
+ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/Find/)
+@@ -24,7 +27,7 @@ link_libraries(Threads::Threads)
+ 
+ include(cmake/install.cmake)
+ 
+-if(CMAKE_PROJECT_NAME STREQUAL "yaLanTingLibs") # if ylt is top-level project
++if(CMAKE_PROJECT_NAME STREQUAL "yaLanTingLibs" AND NOT YLT_PACKAGE_ONLY) # if ylt is top-level project
+         # add include path
+         include_directories(include)
+         include_directories(include/ylt/thirdparty)

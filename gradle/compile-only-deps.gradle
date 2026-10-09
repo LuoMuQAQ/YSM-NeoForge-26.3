@@ -1,0 +1,18 @@
+// Unofficial 26.3 port: verified, local compile-only APIs; never bundled.
+import groovy.json.JsonSlurper
+import java.security.MessageDigest
+
+def manifestFile = file('release/compile-dependencies.json')
+def entries = new JsonSlurper().parse(manifestFile)
+def apiJars = entries.collect { entry ->
+    def apiJar = file("libs/compile-only/${entry.filename}")
+    if (!apiJar.isFile()) {
+        throw new GradleException("Missing ${entry.filename}; run scripts/prepare-build.ps1 first.")
+    }
+    def actualHash = MessageDigest.getInstance('SHA-256').digest(apiJar.bytes).encodeHex().toString()
+    if (actualHash != entry.sha256) {
+        throw new GradleException("Compile dependency hash mismatch: ${entry.filename}")
+    }
+    apiJar
+}
+dependencies { compileOnly files(apiJars) }

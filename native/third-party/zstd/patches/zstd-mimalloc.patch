@@ -1,0 +1,47 @@
+diff --git a/lib/common/xxhash.h b/lib/common/xxhash.h
+index b6af402..d674b30 100644
+--- a/lib/common/xxhash.h
++++ b/lib/common/xxhash.h
+@@ -2326,6 +2326,7 @@ static void XXH_free(void* p) { (void)p; }
+  * different memory routines for malloc() and free()
+  */
+ #include <stdlib.h>
++#include <mimalloc.h>
+ 
+ #if defined (__cplusplus)
+ extern "C" {
+@@ -2334,13 +2335,13 @@ extern "C" {
+  * @internal
+  * @brief Modify this function to use a different routine than malloc().
+  */
+-static XXH_MALLOCF void* XXH_malloc(size_t s) { return malloc(s); }
++static XXH_MALLOCF void* XXH_malloc(size_t s) { return mi_malloc(s); }
+ 
+ /*!
+  * @internal
+  * @brief Modify this function to use a different routine than free().
+  */
+-static void XXH_free(void* p) { free(p); }
++static void XXH_free(void* p) { mi_free(p); }
+ 
+ #if defined (__cplusplus)
+ } /* extern "C" */
+diff --git a/lib/common/zstd_deps.h b/lib/common/zstd_deps.h
+index 8a9c7cc..03a59bb 100644
+--- a/lib/common/zstd_deps.h
++++ b/lib/common/zstd_deps.h
+@@ -62,10 +62,11 @@
+ #define ZSTD_DEPS_MALLOC
+ 
+ #include <stdlib.h>
++#include <mimalloc.h>
+ 
+-#define ZSTD_malloc(s) malloc(s)
+-#define ZSTD_calloc(n,s) calloc((n), (s))
+-#define ZSTD_free(p) free((p))
++#define ZSTD_malloc(s) mi_malloc(s)
++#define ZSTD_calloc(n,s) mi_calloc((n), (s))
++#define ZSTD_free(p) mi_free((p))
+ 
+ #endif /* ZSTD_DEPS_MALLOC */
+ #endif /* ZSTD_DEPS_NEED_MALLOC */

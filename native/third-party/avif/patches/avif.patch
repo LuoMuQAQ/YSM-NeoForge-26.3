@@ -1,0 +1,153 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index cda82b0..bb24e6a 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -141,11 +141,7 @@ set_local_or_system_option(
+ # Whether the libavif library uses c++ indirectly (e.g. through linking to libyuv).
+ set(AVIF_LIB_USE_CXX OFF)
+
+-if(APPLE)
+-    set(XCRUN xcrun)
+-else()
+-    set(XCRUN)
+-endif()
++set(XCRUN)
+
+ # This is also needed to get shared libraries (e.g. pixbufloader-avif) to compile against a static libavif.
+ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+@@ -226,7 +222,10 @@ endif()
+ set_local_or_system_option("LIBYUV" "SYSTEM" "Use libyuv.")
+ # check_avif_option libyuv must precede libaom because the latter needs to link against the former
+ # when building libaom locally
+-check_avif_option(AVIF_LIBYUV TARGET yuv::yuv PKG_NAME libyuv)
++if (AVIF_LIBYUV)
++    set(AVIF_LIBYUV_ENABLED ON)
++    set(LIBYUV_VERSION 1941)
++endif ()
+ if(AVIF_LIBYUV_ENABLED)
+     # libyuv 1755 exposed all of the I*Matrix() functions, which libavif relies on.
+     # libyuv 1774 exposed ScalePlane_12 function, which libavif can use for some additional optimizations.
+@@ -246,18 +245,20 @@ if(AVIF_LIBYUV_ENABLED)
+ endif()
+ if(AVIF_LIBYUV_ENABLED)
+     target_compile_definitions(avif_obj PRIVATE -DAVIF_LIBYUV_ENABLED=1)
+-    avif_target_link_library(yuv::yuv)
++    avif_target_link_library(yuv)
+     set(AVIF_PKG_CONFIG_EXTRA_LIBS_PRIVATE "${AVIF_PKG_CONFIG_EXTRA_LIBS_PRIVATE} -lyuv")
+     set(AVIF_LIB_USE_CXX ON)
+ endif(AVIF_LIBYUV_ENABLED)
+ 
+ set_local_or_system_option("LIBSHARPYUV" "OFF" "Use libsharpyuv.")
+-check_avif_option(AVIF_LIBSHARPYUV TARGET sharpyuv::sharpyuv PKG_NAME libsharpyuv)
++if (AVIF_LIBSHARPYUV)
++    set(AVIF_LIBSHARPYUV_ENABLED ON)
++endif ()
+ if(AVIF_LIBSHARPYUV_ENABLED)
+     message(STATUS "libavif: libsharpyuv found; sharp rgb to yuv conversion enabled.")
+     set(AVIF_PKG_CONFIG_EXTRA_REQUIRES_PRIVATE "${AVIF_PKG_CONFIG_EXTRA_REQUIRES_PRIVATE} libsharpyuv")
+     target_compile_definitions(avif_obj PRIVATE -DAVIF_LIBSHARPYUV_ENABLED=1)
+-    avif_target_link_library(sharpyuv::sharpyuv)
++    avif_target_link_library(sharpyuv)
+ endif(AVIF_LIBSHARPYUV_ENABLED)
+ 
+ set_local_or_system_option(
+@@ -288,28 +289,6 @@ if(MSVC)
+     # Disable deprecation warnings about POSIX function names such as setmode (replaced by the ISO C and C++ conformant name _setmode).
+     # Disable deprecation warnings about unsafe CRT library functions such as fopen (replaced by fopen_s).
+     target_compile_definitions(avif_enable_warnings INTERFACE _CRT_NONSTDC_NO_WARNINGS _CRT_SECURE_NO_WARNINGS)
+-
+-    # clang-cl documentation says:
+-    #   /execution-charset:<value>
+-    #                           Runtime encoding, supports only UTF-8
+-    #   ...
+-    #   /source-charset:<value> Source encoding, supports only UTF-8
+-    # So we don't need to pass /source-charset:utf-8 to clang-cl, and we cannot pass /execution-charset:us-ascii to clang-cl.
+-    if(CMAKE_C_COMPILER_ID MATCHES "MSVC")
+-        target_compile_options(
+-            avif_obj
+-            PUBLIC $<BUILD_INTERFACE:
+-                   # This tells MSVC to read source code as UTF-8 and assume console can only use ASCII (minimal safe).
+-                   # libavif uses ANSI API to print to console, which is not portable between systems using different
+-                   # languages and results in mojibake unless we only use codes shared by every code page: ASCII.
+-                   # A C4556 warning will be generated on violation.
+-                   # Commonly used /utf-8 flag assumes UTF-8 for both source and console, which is usually not the case.
+-                   # Warnings can be suppressed but there will still be random characters printed to the console.
+-                   /source-charset:utf-8
+-                   /execution-charset:us-ascii
+-                   >
+-        )
+-    endif()
+ elseif(CMAKE_C_COMPILER_ID MATCHES "Clang")
+     message(STATUS "libavif: Enabling warnings for Clang")
+     target_compile_options(
+@@ -453,16 +432,14 @@ if(NOT AVIF_LIBYUV_ENABLED)
+     endif()
+ endif()
+ 
+-check_avif_option(AVIF_CODEC_DAV1D TARGET dav1d::dav1d PKG_NAME dav1d)
++if (AVIF_CODEC_DAV1D)
++    set(AVIF_CODEC_DAV1D_ENABLED ON)
++endif ()
+ if(AVIF_CODEC_DAV1D_ENABLED)
+     target_compile_definitions(avif_obj PRIVATE -DAVIF_CODEC_DAV1D=1)
+     target_sources(avif_obj PRIVATE src/codec_dav1d.c)
+ 
+-    if(UNIX AND NOT APPLE)
+-        target_link_libraries(dav1d::dav1d INTERFACE ${CMAKE_DL_LIBS}) # for dlsym
+-    endif()
+-
+-    avif_target_link_library(dav1d::dav1d)
++    avif_target_link_library(dav1d)
+ 
+     message(STATUS "libavif: Codec enabled: dav1d (decode)")
+     set(AVIF_PKG_CONFIG_EXTRA_REQUIRES_PRIVATE "${AVIF_PKG_CONFIG_EXTRA_REQUIRES_PRIVATE} dav1d")
+@@ -499,7 +476,9 @@ if(AVIF_CODEC_AVM)
+     enable_language(ASM)
+ endif()
+ 
+-check_avif_option(AVIF_CODEC_SVT TARGET SvtAv1Enc PKG_NAME svt)
++if (AVIF_CODEC_SVT)
++    set(AVIF_CODEC_SVT_ENABLED ON)
++endif ()
+ if(AVIF_CODEC_SVT_ENABLED)
+     target_compile_definitions(avif_obj PRIVATE -DAVIF_CODEC_SVT=1)
+     target_sources(avif_obj PRIVATE src/codec_svt.c)
+diff --git a/cmake/Modules/merge_static_libs.cmake b/cmake/Modules/merge_static_libs.cmake
+index 0a98965..654eed4 100644
+--- a/cmake/Modules/merge_static_libs.cmake
++++ b/cmake/Modules/merge_static_libs.cmake
+@@ -87,12 +87,12 @@ function(merge_static_libs target in_target)
+     add_custom_command(TARGET ${target} POST_BUILD COMMAND ${CMAKE_COMMAND} -E remove $<TARGET_FILE:${target}>)
+
+     if(APPLE)
+-        add_custom_command(
+-            TARGET ${target}
+-            POST_BUILD
+-            COMMENT "Merge static libraries with libtool"
+-            COMMAND xcrun libtool -static -o $<TARGET_FILE:${target}> -no_warning_for_no_symbols ${libs}
+-        )
++#       add_custom_command(
++#           TARGET ${target}
++#           POST_BUILD
++#           COMMENT "Merge static libraries with libtool"
++#           COMMAND xcrun libtool -static -o $<TARGET_FILE:${target}> -no_warning_for_no_symbols ${libs}
++#       )
+     elseif(CMAKE_C_COMPILER_ID MATCHES "^(Clang|GNU|Intel|IntelLLVM)$")
+         add_custom_command(
+             TARGET ${target}
+diff --git a/src/codec_svt.c b/src/codec_svt.c
+index 2b887e8..ce7987b 100644
+--- a/src/codec_svt.c
++++ b/src/codec_svt.c
+@@ -3,9 +3,9 @@
+ 
+ #include "avif/internal.h"
+ 
+-#include "svt-av1/EbSvtAv1.h"
++#include "EbSvtAv1.h"
+ 
+-#include "svt-av1/EbSvtAv1Enc.h"
++#include "EbSvtAv1Enc.h"
+ 
+ #include <stdbool.h>
+ #include <stdint.h>

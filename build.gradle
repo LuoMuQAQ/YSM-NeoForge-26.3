@@ -1,0 +1,83 @@
+// Modified by LuoMuQAQ for the unofficial Minecraft 26.3 / NeoForge port (2026).
+buildscript {
+    repositories { mavenCentral(); gradlePluginPortal() }
+    dependencies { classpath 'gradle.plugin.org.jetbrains.gradle.plugin.idea-ext:gradle-idea-ext:1.2' }
+}
+plugins {
+    id 'java-library'
+    id 'idea'
+    id 'net.neoforged.moddev' version '2.0.148'
+    id 'com.google.protobuf' version '0.9.4'
+    id 'com.gradleup.shadow' version '9.4.1'
+}
+apply plugin: 'org.jetbrains.gradle.plugin.idea-ext'
+version = mod_version
+group = 'com.elfmcys.ysm'
+base { archivesName = 'ysm' }
+java { toolchain.languageVersion = JavaLanguageVersion.of(25) }
+neoForge {
+    version = '26.3.0.52-beta'
+    mods { ysm { sourceSet sourceSets.main } }
+}
+// Only artifact tasks are invoked by the task runner; game runs are user controlled.
+apply from: 'gradle/local-properties.gradle'
+apply from: 'gradle/native.gradle'
+apply from: 'gradle/schema.gradle'
+apply from: 'gradle/builtin-index.gradle'
+apply from: 'gradle/compile-only-deps.gradle'
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+repositories {
+    mavenCentral()
+    // NeoForge's mirror has the protoc POM but not every native classifier.
+    exclusiveContent {
+        forRepository {
+            maven { name = 'ProtobufCentral'; url = 'https://repo.maven.apache.org/maven2' }
+        }
+        filter { includeGroup 'com.google.protobuf' }
+    }
+    flatDir { dir 'libs' }
+}
+configurations {
+    processorAsm { canBeConsumed = false; canBeResolved = true }
+    ysmImplementation
+    implementation.extendsFrom ysmImplementation
+}
+def relocateProcessorAsmTask = tasks.register('relocateProcessorAsm',
+        com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar) {
+    configurations = [project.configurations.processorAsm]
+    archiveFileName = 'ysm-processor-asm.jar'
+    destinationDirectory = layout.buildDirectory.dir('processor-libs')
+    relocate 'org.objectweb.asm', 'com.elfmcys.ysm.api.internal.processor.asm'
+}
+dependencies {
+    processorAsm 'org.ow2.asm:asm:9.10.1'
+    processorAsm 'org.ow2.asm:asm-tree:9.10.1'
+    compileOnly files(relocateProcessorAsmTask.flatMap { it.archiveFile })
+    compileOnly 'org.jetbrains:annotations:26.0.2'
+    ysmImplementation files('libs/quickbuf-runtime-1.4.1-ysm.jar')
+    ysmImplementation 'org.jetbrains:annotations:26.0.2'
+    implementation 'com.palantir.javapoet:javapoet:0.19.0'
+    implementation 'org.yaml:snakeyaml:2.2'
+}
+processResources {
+    inputs.property 'mod_version', project.version
+    filteringCharset 'UTF-8'
+    from('LICENSE')
+    from('NOTICE.md')
+    from('BUILTIN_MODELS.md')
+    from('release/source-provenance.json') { into 'META-INF/ysm' }
+    filesMatching('META-INF/neoforge.mods.toml') { expand mod_version: project.version }
+}
+tasks.named('shadowJar') {
+    dependsOn relocateProcessorAsmTask
+    from(relocateProcessorAsmTask.flatMap { it.archiveFile }.map { project.zipTree(it.asFile) })
+    configurations = [project.configurations.ysmImplementation]
+    archiveClassifier = ''
+    exclude '**/*.proto', 'META-INF/maven/**'
+    relocate 'us.hebi.quickbuf', 'com.elfmcys.quickbuf'
+    relocate 'mixel', 'com.elfmcys.mixel'
+}
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-parameters', '-Xmaxerrs', '2000']
+}

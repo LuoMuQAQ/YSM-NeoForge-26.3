@@ -1,0 +1,39 @@
+#pragma once
+
+#define YSM_MACROS_CONCAT_NAME_INNER(x, y) x##y
+#define YSM_MACROS_CONCAT_NAME(x, y) YSM_MACROS_CONCAT_NAME_INNER(x, y)
+
+#define YSM_PP_EMPTY()
+#define YSM_PP_DEFER(id) id YSM_PP_EMPTY()
+#define YSM_PP_OBSTRUCT(...) __VA_ARGS__ YSM_PP_DEFER(YSM_PP_EMPTY)()
+
+#define YSM_PP_EXPAND(...) \
+    YSM_PP_EXPAND4(YSM_PP_EXPAND4(YSM_PP_EXPAND4(YSM_PP_EXPAND4(__VA_ARGS__))))
+#define YSM_PP_EXPAND4(...) \
+    YSM_PP_EXPAND3(YSM_PP_EXPAND3(YSM_PP_EXPAND3(YSM_PP_EXPAND3(__VA_ARGS__))))
+#define YSM_PP_EXPAND3(...) \
+    YSM_PP_EXPAND2(YSM_PP_EXPAND2(YSM_PP_EXPAND2(YSM_PP_EXPAND2(__VA_ARGS__))))
+#define YSM_PP_EXPAND2(...) \
+    YSM_PP_EXPAND1(YSM_PP_EXPAND1(YSM_PP_EXPAND1(YSM_PP_EXPAND1(__VA_ARGS__))))
+#define YSM_PP_EXPAND1(...) __VA_ARGS__
+
+#define YSM_PP_FOR_EACH(macro, ...) \
+    __VA_OPT__(YSM_PP_EXPAND(YSM_PP_FOR_EACH_HELPER(macro, __VA_ARGS__)))
+
+#define YSM_PP_FOR_EACH_HELPER(macro, a1, ...) \
+    macro(a1) \
+    __VA_OPT__(YSM_PP_OBSTRUCT(YSM_PP_FOR_EACH_AGAIN)()(macro, __VA_ARGS__))
+
+#define YSM_PP_FOR_EACH_AGAIN() YSM_PP_FOR_EACH_HELPER
+
+#define YSM_PP_MAP_COMMA(macro, ...) \
+    __VA_OPT__(YSM_PP_EXPAND(YSM_PP_MAP_COMMA_HELPER(macro, __VA_ARGS__)))
+
+#define YSM_PP_MAP_COMMA_HELPER(macro, a1, ...) \
+    macro(a1) \
+    __VA_OPT__(, YSM_PP_OBSTRUCT(YSM_PP_MAP_COMMA_AGAIN)()(macro, __VA_ARGS__))
+
+#define YSM_PP_MAP_COMMA_AGAIN() YSM_PP_MAP_COMMA_HELPER
+
+#define YSM_SV_LITERAL(LIT) \
+    std::string_view((LIT), sizeof(LIT) - 1)

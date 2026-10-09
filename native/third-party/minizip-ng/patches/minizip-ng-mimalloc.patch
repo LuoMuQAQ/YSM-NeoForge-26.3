@@ -1,0 +1,156 @@
+diff --git a/compat/ioapi.c b/compat/ioapi.c
+index 9465f60..d19b8bb 100644
+--- a/compat/ioapi.c
++++ b/compat/ioapi.c
+@@ -3,6 +3,7 @@
+ #include "mz_strm_mem.h"
+ 
+ #include "ioapi.h"
++#include <mimalloc-override.h>
+ 
+ typedef struct mz_stream_ioapi_s {
+     mz_stream stream;
+diff --git a/compat/unzip.c b/compat/unzip.c
+index 27bc670..fe4c28e 100644
+--- a/compat/unzip.c
++++ b/compat/unzip.c
+@@ -19,6 +19,7 @@
+ #include <stdio.h> /* SEEK */
+ 
+ #include "unzip.h"
++#include <mimalloc-override.h>
+ 
+ /***************************************************************************/
+ 
+diff --git a/compat/zip.c b/compat/zip.c
+index 762ca1f..1c1d825 100644
+--- a/compat/zip.c
++++ b/compat/zip.c
+@@ -17,6 +17,7 @@
+ #include "mz_zip.h"
+ 
+ #include "zip.h"
++#include <mimalloc-override.h>
+ 
+ /***************************************************************************/
+ 
+diff --git a/mz_os.c b/mz_os.c
+index 07c3088..7e5c596 100644
+--- a/mz_os.c
++++ b/mz_os.c
+@@ -18,6 +18,7 @@
+ 
+ #include <ctype.h> /* tolower */
+ #include <string.h>
++#include <mimalloc-override.h>
+ 
+ /***************************************************************************/
+ 
+diff --git a/mz_os_posix.c b/mz_os_posix.c
+index 2074169..58b2a03 100644
+--- a/mz_os_posix.c
++++ b/mz_os_posix.c
+@@ -37,6 +37,7 @@
+ #if defined(HAVE_LIBBSD)
+ #  include <stdlib.h> /* arc4random_buf */
+ #endif
++#include <mimalloc-override.h>
+ 
+ #ifndef MZ_PRESERVE_NATIVE_STRUCTURE
+ #  define MZ_PRESERVE_NATIVE_STRUCTURE 1
+diff --git a/mz_strm.c b/mz_strm.c
+index 1bacb2e..c2eb5e5 100644
+--- a/mz_strm.c
++++ b/mz_strm.c
+@@ -10,6 +10,7 @@
+ 
+ #include "mz.h"
+ #include "mz_strm.h"
++#include <mimalloc-override.h>
+ 
+ /***************************************************************************/
+ 
+diff --git a/mz_strm_buf.c b/mz_strm_buf.c
+index 2ca8197..6f30d26 100644
+--- a/mz_strm_buf.c
++++ b/mz_strm_buf.c
+@@ -13,6 +13,7 @@
+ #include "mz.h"
+ #include "mz_strm.h"
+ #include "mz_strm_buf.h"
++#include <mimalloc-override.h>
+ 
+ /***************************************************************************/
+ 
+diff --git a/mz_strm_mem.c b/mz_strm_mem.c
+index 7669712..e49fd3c 100644
+--- a/mz_strm_mem.c
++++ b/mz_strm_mem.c
+@@ -19,6 +19,7 @@
+ #include "mz.h"
+ #include "mz_strm.h"
+ #include "mz_strm_mem.h"
++#include <mimalloc-override.h>
+ 
+ /***************************************************************************/
+ 
+diff --git a/mz_strm_os_posix.c b/mz_strm_os_posix.c
+index 1bb5dc4..061f74f 100644
+--- a/mz_strm_os_posix.c
++++ b/mz_strm_os_posix.c
+@@ -23,6 +23,7 @@
+ #include <sys/stat.h> /* S_IRUSR, S_IWUSR, ... */
+ #include <unistd.h>   /* open, close, ... */
+ #include <fcntl.h>    /* O_NOFOLLOW, ... */
++#include <mimalloc-override.h>
+ 
+ /***************************************************************************/
+ 
+diff --git a/mz_strm_split.c b/mz_strm_split.c
+index 0664446..91087bc 100644
+--- a/mz_strm_split.c
++++ b/mz_strm_split.c
+@@ -15,6 +15,7 @@
+ 
+ #include <stdio.h> /* snprintf */
+ #include <string.h>
++#include <mimalloc-override.h>
+ 
+ #if defined(_MSC_VER) && (_MSC_VER < 1900)
+ #  define snprintf _snprintf
+diff --git a/mz_strm_zlib.c b/mz_strm_zlib.c
+index bcd5f30..1dd562d 100644
+--- a/mz_strm_zlib.c
++++ b/mz_strm_zlib.c
+@@ -17,6 +17,7 @@
+ #else
+ #  include "zlib.h"
+ #endif
++#include <mimalloc-override.h>
+ 
+ /***************************************************************************/
+ 
+diff --git a/mz_zip.c b/mz_zip.c
+index 854f9bb..ca221e0 100644
+--- a/mz_zip.c
++++ b/mz_zip.c
+@@ -48,6 +48,7 @@
+ 
+ #include <ctype.h> /* tolower */
+ #include <stdio.h> /* snprintf */
++#include <mimalloc-override.h>
+ 
+ #if defined(_MSC_VER) || defined(__MINGW32__)
+ #  define localtime_r(t1, t2) (localtime_s(t2, t1) == 0 ? t1 : NULL)
+diff --git a/mz_zip_rw.c b/mz_zip_rw.c
+index 1f358c9..5265292 100644
+--- a/mz_zip_rw.c
++++ b/mz_zip_rw.c
+@@ -20,6 +20,7 @@
+ #include "mz_zip.h"
+ 
+ #include "mz_zip_rw.h"
++#include <mimalloc-override.h>
+ 
+ /***************************************************************************/
+ 

@@ -1,0 +1,238 @@
+syntax = "proto3";
+
+package ysm.network;
+
+message ServerHello {
+  string protocol_version = 1;
+  bool sync_roaming = 2;
+}
+
+message SessionResponse {
+  SessionDecision decision = 1;
+}
+
+enum SessionDecision {
+  SESSION_DECISION_UNSPECIFIED = 0;
+  SESSION_DECISION_ACCEPT = 1;
+  SESSION_DECISION_DECLINE = 2;
+}
+
+message SessionFullFragment {
+  uint64 transfer_id = 1;
+  uint32 sequence = 2;
+  bool final_fragment = 3;
+  oneof part {
+    CatalogCollectionOperation catalog = 4;
+    GrantCollectionOperation grants = 5;
+    PackPresentationCollectionOperation pack_presentations = 6;
+    DefaultAnimationCollectionOperation default_animations = 7;
+  }
+}
+
+message SessionDeltaFragment {
+  uint64 transfer_id = 1;
+  uint32 sequence = 2;
+  bool final_fragment = 3;
+  oneof part {
+    CatalogCollectionOperation catalog = 4;
+    GrantCollectionOperation grants = 5;
+    PackPresentationCollectionOperation pack_presentations = 6;
+    DefaultAnimationCollectionOperation default_animations = 7;
+  }
+}
+
+enum CollectionOperationType {
+  COLLECTION_OPERATION_UNSPECIFIED = 0;
+  COLLECTION_OPERATION_FULL = 1;
+  COLLECTION_OPERATION_ADD = 2;
+  COLLECTION_OPERATION_REMOVE = 3;
+  COLLECTION_OPERATION_CLEAR = 4;
+}
+
+message CatalogCollectionOperation {
+  CollectionOperationType op_type = 1;
+  repeated CatalogPublication entries = 2;
+  repeated bytes model_ids = 3;
+}
+
+message GrantCollectionOperation {
+  CollectionOperationType op_type = 1;
+  repeated bytes model_ids = 2;
+}
+
+message PackPresentationCollectionOperation {
+  CollectionOperationType op_type = 1;
+  repeated PackPresentation entries = 2;
+  repeated string hierarchy_paths = 3;
+}
+
+message DefaultAnimationCollectionOperation {
+  CollectionOperationType op_type = 1;
+  repeated DefaultAnimation entries = 2;
+  repeated string names = 3;
+}
+
+message MetadataPrefixRequest {
+  uint64 data_transfer_id = 1;
+  repeated bytes container_ids = 2;
+}
+
+message ModelChunkRequest {
+  uint64 data_transfer_id = 1;
+  bytes model_id = 2;
+  bytes container_id = 3;
+  repeated ChunkMember chunks = 4;
+}
+
+message ChunkMember {
+  string name = 1;
+  bytes expected_hash = 2;
+  uint64 stored_size = 3;
+  uint64 decoded_size = 4;
+  string encoding = 5;
+}
+
+message PresentationPageRequest {
+  uint64 data_transfer_id = 1;
+  repeated PreviewMember previews = 2;
+  repeated IconMember icons = 3;
+  repeated PackCoverMember pack_covers = 4;
+}
+
+message PreviewMember {
+  uint32 slot = 1;
+  bytes model_id = 2;
+  bytes container_id = 3;
+  reserved 4 to 8;
+}
+
+message IconMember {
+  uint32 slot = 1;
+  bytes model_id = 2;
+  bytes container_id = 3;
+  string name = 4;
+  bytes expected_hash = 5;
+  uint64 stored_size = 6;
+  uint64 decoded_size = 7;
+  string encoding = 8;
+}
+
+message PackCoverMember {
+  uint32 slot = 1;
+  string hierarchy_path = 2;
+  bytes expected_hash = 3;
+  uint64 stored_size = 4;
+  uint64 decoded_size = 5;
+  string encoding = 6;
+}
+
+message ResourceTransferCancel {
+  uint64 data_transfer_id = 1;
+}
+
+message ResourceTransferFailure {
+  uint64 data_transfer_id = 1;
+  ResourceFailureReason reason = 2;
+}
+
+enum ResourceFailureReason {
+  RESOURCE_FAILURE_UNSPECIFIED = 0;
+  RESOURCE_FAILURE_UNAUTHORIZED = 1;
+  RESOURCE_FAILURE_NOT_FOUND = 2;
+  RESOURCE_FAILURE_BUSY = 3;
+  RESOURCE_FAILURE_INVALID_REQUEST = 4;
+  RESOURCE_FAILURE_ITEM_TOO_LARGE = 5;
+  RESOURCE_FAILURE_UNAVAILABLE = 6;
+}
+
+message SelectModelRequest {
+  oneof selection {
+    bytes model_id = 1;
+    bool intrinsic_default = 2;
+  }
+  string texture_id = 3;
+}
+
+message SelectModelResult {
+  SelectionStatus status = 1;
+}
+
+enum SelectionStatus {
+  SELECTION_STATUS_UNSPECIFIED = 0;
+  SELECTION_STATUS_ACCEPTED = 1;
+  SELECTION_STATUS_UNAUTHORIZED = 2;
+  SELECTION_STATUS_NOT_FOUND = 3;
+  SELECTION_STATUS_INVALID_REQUEST = 4;
+}
+
+message MetadataPrefixFragment {
+  uint64 data_transfer_id = 1;
+  bytes container_id = 2;
+  uint32 sequence = 3;
+  bool final_fragment = 4;
+  bytes payload = 5;
+}
+
+message ChunkFragment {
+  uint64 data_transfer_id = 1;
+  string name = 2;
+  uint64 offset = 3;
+  bool final_fragment = 4;
+}
+
+enum PresentationDelivery {
+  PRESENTATION_DELIVERY_UNSPECIFIED = 0;
+  PRESENTATION_DELIVERY_DATA = 1;
+  PRESENTATION_DELIVERY_UNAVAILABLE = 2;
+}
+
+message PreviewFragment {
+  uint64 data_transfer_id = 1;
+  uint32 slot = 2;
+  uint64 offset = 3;
+  bool final_fragment = 4;
+  PresentationDelivery delivery = 5;
+}
+
+message IconFragment {
+  uint64 data_transfer_id = 1;
+  uint32 slot = 2;
+  uint64 offset = 3;
+  bool final_fragment = 4;
+  PresentationDelivery delivery = 5;
+}
+
+message PackCoverFragment {
+  uint64 data_transfer_id = 1;
+  uint32 slot = 2;
+  uint64 offset = 3;
+  bool final_fragment = 4;
+  PresentationDelivery delivery = 5;
+}
+
+message CatalogPublication {
+  bytes model_id = 1;
+  bytes container_id = 2;
+  string hierarchy_path = 3;
+  CatalogAccess access = 4;
+}
+
+enum CatalogAccess {
+  CATALOG_ACCESS_UNSPECIFIED = 0;
+  CATALOG_ACCESS_PUBLIC = 1;
+  CATALOG_ACCESS_AUTHORIZED = 2;
+}
+
+message PackPresentation {
+  string hierarchy_path = 1;
+  string display_name = 2;
+  string description = 3;
+  bytes cover_hash = 4;
+  string cover_format = 5;
+  uint32 cover_size = 6;
+}
+
+message DefaultAnimation {
+  string name = 1;
+  bytes hash = 2;
+}

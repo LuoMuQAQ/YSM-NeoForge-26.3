@@ -1,0 +1,34 @@
+sources:
+  1.9.5:
+    url: https://github.com/google/benchmark
+    tag: v1.9.5
+    commit: 192ef10025eb2c4cdd392bc502f0c852196baa48
+patches:
+  1.9.5: []
+requirements: []
+build:
+  options:
+    BUILD_SHARED_LIBS: false
+    BENCHMARK_DOWNLOAD_DEPENDENCIES: false
+    BENCHMARK_ENABLE_ASSEMBLY_TESTS: false
+    BENCHMARK_ENABLE_DOXYGEN: false
+    BENCHMARK_ENABLE_GTEST_TESTS: false
+    BENCHMARK_ENABLE_INSTALL: true
+    BENCHMARK_ENABLE_TESTING: false
+    BENCHMARK_ENABLE_WERROR: false
+    BENCHMARK_INSTALL_DOCS: false
+    BENCHMARK_INSTALL_TOOLS: false
+    BENCHMARK_USE_BUNDLED_GTEST: false
+  install: true
+package:
+  cmake_file_name: benchmark
+  cmake_target_name: benchmark
+  components:
+    benchmark:
+      target: benchmark::benchmark
+      libs:
+      - benchmark
+    benchmark_main:
+      target: benchmark::benchmark_main
+      libs:
+      - benchmark_main

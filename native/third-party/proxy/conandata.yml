@@ -1,0 +1,18 @@
+sources:
+  4.0.2:
+    url: https://github.com/ngcpp/proxy
+    tag: 4.0.2
+    commit: bcbe0c792cd42cb48edfbbdb1e272255cbe73cae
+patches:
+  4.0.2: []
+requirements: []
+build:
+  options: {}
+  install: false
+package:
+  cmake_file_name: proxy
+  cmake_target_name: msft_proxy4
+  manual_headers:
+  - dst: include
+    pattern: '*'
+    src: include

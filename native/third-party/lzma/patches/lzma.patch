@@ -1,0 +1,40 @@
+diff --git a/C/7zAlloc.c b/C/7zAlloc.c
+index 3a8e2cb..785bdbb 100644
+--- a/C/7zAlloc.c
++++ b/C/7zAlloc.c
+@@ -7,6 +7,8 @@
+ 
+ #include "7zAlloc.h"
+ 
++#include <mimalloc-override.h>
++
+ /* #define SZ_ALLOC_DEBUG */
+ /* use SZ_ALLOC_DEBUG to debug alloc/free operations */
+ 
+diff --git a/C/Alloc.c b/C/Alloc.c
+index 5525150..f7fe900 100644
+--- a/C/Alloc.c
++++ b/C/Alloc.c
+@@ -10,6 +10,8 @@
+ 
+ #include "Alloc.h"
+ 
++#include <mimalloc-override.h>
++
+ #if defined(Z7_LARGE_PAGES) && defined(_WIN32) && \
+     (!defined(Z7_WIN32_WINNT_MIN) || Z7_WIN32_WINNT_MIN < 0x0502)  // < Win2003 (xp-64)
+   #define Z7_USE_DYN_GetLargePageMinimum
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+new file mode 100644
+index 0000000..75ef3c9
+--- /dev/null
++++ b/CMakeLists.txt
+@@ -0,0 +1,6 @@
++cmake_minimum_required (VERSION 3.16.1)
++project(lzma C)
++
++FILE(GLOB lzmaCodeFiles C/*.c)
++add_library(lzma STATIC ${lzmaCodeFiles})
++target_include_directories(lzma INTERFACE C)
+\ No newline at end of file
+

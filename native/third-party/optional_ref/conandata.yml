@@ -1,0 +1,17 @@
+sources:
+  0.3.1:
+    url: https://github.com/gharveymn/optional_ref
+    commit: 252f1fe0e30d2654dbc3c60407e16f25b8a36a4c
+patches:
+  0.3.1: []
+requirements: []
+build:
+  options: {}
+  install: false
+package:
+  cmake_file_name: optional_ref
+  cmake_target_name: optional_ref
+  manual_headers:
+  - dst: include
+    pattern: optional_ref.hpp
+    src: source/include/gch

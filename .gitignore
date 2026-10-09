@@ -1,0 +1,45 @@
+# Modified by LuoMuQAQ for the unofficial Minecraft 26.3 / NeoForge port (2026).
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+.profileconfig.json
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+# gradle
+build
+.gradle
+/local.properties
+
+# native
+/src/main/resources/META-INF/native/*
+
+# other
+eclipse
+/run
+/logs
+__pycache__
+/.codegraph
+/.gitnexus/
+
+# Files from Forge MDK
+forge*changelog.txt
+
+# dark past
+hs_err_pid*
+
+# Public source keeps legal companions, not locally downloaded build inputs.
+!/src/main/resources/META-INF/native/THIRD_PARTY_LICENSES.md
+/libs/compile-only/
+/.build-downloads/
+/.gradle-user-home/
+/release-assets/

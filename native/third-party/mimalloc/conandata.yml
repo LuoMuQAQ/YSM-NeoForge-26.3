@@ -1,0 +1,37 @@
+sources:
+  3.5.3:
+    url: https://github.com/microsoft/mimalloc
+    tag: v3.5.3
+    commit: deac3dcf5f0614884013d411a5c07e16bec96c9f
+requirements: []
+build:
+  cache_variables:
+    YSM_DISABLE_TARGET_ISA:
+      windows: true
+      linux: true
+  options:
+    MI_BUILD_OBJECT: false
+    MI_BUILD_SHARED: false
+    MI_BUILD_TESTS: false
+    MI_OPT_ARCH:
+      windows: false
+      linux: false
+      android: armv8
+      default: DEFAULT
+    MI_OPT_SIMD: false
+    MI_TLS_MODEL:
+      linux: LOCAL_DYNAMIC
+      android: LOCAL_DYNAMIC
+      default: DEFAULT
+    MI_OSX_INTERPOSE: false
+    MI_OSX_ZONE: false
+    MI_OVERRIDE: false
+    MI_WIN_REDIRECT: false
+    MI_SKIP_COLLECT_ON_EXIT: true
+  install: true
+  copy_built_libraries: true
+package:
+  cmake_file_name: mimalloc
+  cmake_target_name: mimalloc-static
+  includedirs:
+  - include/mimalloc-3.5

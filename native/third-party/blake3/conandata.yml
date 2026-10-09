@@ -1,0 +1,17 @@
+sources:
+  1.8.5:
+    url: https://github.com/BLAKE3-team/BLAKE3
+    tag: 1.8.5
+    commit: 93a431c78a52d7ccf0f366f106467f5070e6075e
+patches:
+  1.8.5: []
+requirements: []
+build:
+  options:
+    BLAKE3_FETCH_TBB: false
+    BLAKE3_USE_TBB: false
+  install: true
+  subdir: c
+package:
+  cmake_file_name: blake3
+  cmake_target_name: blake3

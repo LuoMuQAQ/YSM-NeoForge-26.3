@@ -1,0 +1,9 @@
+// SPDX-License-Identifier: CC0-1.0
+syntax = "proto3";
+
+package mixel.manifest.info;
+
+message LanguageFile {
+  string locale = 1;
+  map<string, string> entries = 2;
+}

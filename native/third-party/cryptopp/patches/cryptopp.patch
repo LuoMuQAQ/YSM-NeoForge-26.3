@@ -1,0 +1,277 @@
+diff --git a/allocate.cpp b/allocate.cpp
+index 1cb42d9..4b573f5 100644
+--- a/allocate.cpp
++++ b/allocate.cpp
+@@ -23,6 +23,8 @@
+ # include <stdlib.h>
+ #endif
+ 
++#include <mimalloc-override.h>
++
+ NAMESPACE_BEGIN(CryptoPP)
+ 
+ void CallNewHandler()
+@@ -40,26 +42,9 @@ void CallNewHandler()
+ void * AlignedAllocate(size_t size)
+ {
+ 	byte *p;
+-#if defined(CRYPTOPP_MM_MALLOC_AVAILABLE)
+-	while ((p = (byte *)_mm_malloc(size, 16)) == NULLPTR)
+-#elif defined(CRYPTOPP_MEMALIGN_AVAILABLE)
+-	while ((p = (byte *)memalign(16, size)) == NULLPTR)
+-#elif defined(CRYPTOPP_MALLOC_ALIGNMENT_IS_16)
+-	while ((p = (byte *)malloc(size)) == NULLPTR)
+-#elif defined(CRYPTOPP_POSIX_MEMALIGN_AVAILABLE)
+-	while (posix_memalign(reinterpret_cast<void**>(&p), 16, size) != 0)
+-#else
+-	while ((p = (byte *)malloc(size + 16)) == NULLPTR)
+-#endif
++	while ((p = (byte *)mi_aligned_alloc(16, size)) == NULLPTR)
+ 		CallNewHandler();
+ 
+-#ifdef CRYPTOPP_NO_ALIGNED_ALLOC
+-	size_t adjustment = 16-((size_t)p%16);
+-	CRYPTOPP_ASSERT(adjustment > 0);
+-	p += adjustment;
+-	p[-1] = (byte)adjustment;
+-#endif
+-
+ 	// If this assert fires then there are problems that need
+ 	// to be fixed. Please open a bug report.
+ 	CRYPTOPP_ASSERT(IsAlignedOn(p, 16));
+@@ -75,14 +60,7 @@ void AlignedDeallocate(void *p)
+ 
+ 	if (p != NULLPTR)
+ 	{
+-#ifdef CRYPTOPP_MM_MALLOC_AVAILABLE
+-		_mm_free(p);
+-#elif defined(CRYPTOPP_NO_ALIGNED_ALLOC)
+-		p = (byte *)p - ((byte *)p)[-1];
+-		free(p);
+-#else
+-		free(p);
+-#endif
++		mi_free(p);
+ 	}
+ }
+ 
+diff --git a/config_os.h b/config_os.h
+index ed8e52c..c520c66 100644
+--- a/config_os.h
++++ b/config_os.h
+@@ -29,9 +29,9 @@
+ // https://www.cryptopp.com/wiki/Release_Process#Self_Tests
+ // The problems with Clang pretending to be other compilers is
+ // discussed at http://github.com/weidai11/cryptopp/issues/147.
+-#if (defined(_MSC_VER) && defined(__clang__))
+-# error: "Unsupported configuration"
+-#endif
++// #if (defined(_MSC_VER) && defined(__clang__))
++// # error: "Unsupported configuration"
++// #endif
+ 
+ // Windows platform
+ #if defined(_WIN32) || defined(_WIN64) || defined(__CYGWIN__)
+diff --git a/config_ver.h b/config_ver.h
+index 8765844..6d054d5 100644
+--- a/config_ver.h
++++ b/config_ver.h
+@@ -82,7 +82,7 @@
+ # define CRYPTOPP_INTEL_VERSION (__INTEL_COMPILER)
+ #endif
+ 
+-#if defined(_MSC_VER) && !defined(__clang__)
++#if defined(_MSC_VER)
+ # undef CRYPTOPP_LLVM_CLANG_VERSION
+ # define CRYPTOPP_MSC_VERSION (_MSC_VER)
+ #endif
+diff --git a/config_asm.h b/config_asm.h
+index 17b154e..940e7f0 100644
+--- a/config_asm.h
++++ b/config_asm.h
+@@ -91,7 +91,7 @@
+ 	#endif
+ #endif
+ 
+-#if defined(_MSC_VER) && defined(_M_X64)
++#if defined(_MSC_VER) && defined(_M_X64) && !defined(__clang__)
+ 	#define CRYPTOPP_X64_MASM_AVAILABLE 1
+ #endif
+ 
+diff --git a/cpu.cpp b/cpu.cpp
+index 44b57c4..1de2c40 100644
+--- a/cpu.cpp
++++ b/cpu.cpp
+@@ -18,6 +18,7 @@
+ // https://github.com/weidai11/cryptopp/issues/972
+ #if (CRYPTOPP_MSC_VERSION >= 1600) && (defined(_M_IX86) || defined(_M_X64))
+ # include <immintrin.h>
++# include <intrin.h>
+ #endif
+ 
+ // For IsProcessorFeaturePresent on Microsoft Arm64 platforms,
+@@ -81,7 +82,23 @@ unsigned long int getauxval(unsigned long int) { return 0; }
+ // Required by Visual Studio 2008 and below and Clang on Windows.
+ // Use it for all MSVC-compatible compilers.
+ // XGETBV64 and CPUID64 are in x64dll.asm.
+-#if defined(_M_X64) && defined(CRYPTOPP_MS_STYLE_INLINE_ASSEMBLY)
++#if defined(_M_X64) && defined(CRYPTOPP_MS_STYLE_INLINE_ASSEMBLY) && !defined(CRYPTOPP_X64_MASM_AVAILABLE)
++extern "C" unsigned long long __fastcall XGETBV64(unsigned int num)
++{
++	return _xgetbv(num);
++}
++
++extern "C" unsigned long long __fastcall CPUID64(unsigned int func, unsigned int subfunc, unsigned int* output)
++{
++	int regs[4];
++	__cpuidex(regs, static_cast<int>(func), static_cast<int>(subfunc));
++	output[0] = static_cast<unsigned int>(regs[0]);
++	output[1] = static_cast<unsigned int>(regs[1]);
++	output[2] = static_cast<unsigned int>(regs[2]);
++	output[3] = static_cast<unsigned int>(regs[3]);
++	return 1;
++}
++#elif defined(_M_X64) && defined(CRYPTOPP_MS_STYLE_INLINE_ASSEMBLY)
+ extern "C" unsigned long long __fastcall XGETBV64(unsigned int);
+ extern "C" unsigned long long __fastcall CPUID64(unsigned int, unsigned int, unsigned int*);
+ #endif
+diff --git a/dll.cpp b/dll.cpp
+index 37a4c87..29dd5df 100644
+--- a/dll.cpp
++++ b/dll.cpp
+@@ -64,6 +64,8 @@ NAMESPACE_END
+ 
+ #ifdef CRYPTOPP_EXPORTS
+ 
++#include <mimalloc.h>
++
+ USING_NAMESPACE(CryptoPP)
+ 
+ static PNew s_pNew = NULLPTR;
+@@ -72,7 +74,7 @@ static PDelete s_pDelete = NULLPTR;
+ static void * New (size_t size)
+ {
+ 	void *p;
+-	while ((p = malloc(size)) == NULLPTR)
++	while ((p = mi_malloc(size)) == NULLPTR)
+ 		CallNewHandler();
+ 
+ 	return p;
+@@ -108,7 +110,7 @@ static void SetNewAndDeleteFunctionPointers()
+ 		if (pSetNewAndDelete)
+ 		{
+ 			s_pNew = &New;
+-			s_pDelete = &free;
++			s_pDelete = &mi_free;
+ 			pSetNewAndDelete(s_pNew, s_pDelete, &std::set_new_handler);
+ 			return;
+ 		}
+diff --git a/integer.cpp b/integer.cpp
+index bf95ac7..b50e35d 100644
+--- a/integer.cpp
++++ b/integer.cpp
+@@ -3056,12 +3056,12 @@ Integer::Integer(const byte *encodedInteger, size_t byteCount, Signedness s, Byt
+ 	else
+ 	{
+ 		SecByteBlock block(byteCount);
+-#if (CRYPTOPP_MSC_VERSION >= 1500)
+-		std::reverse_copy(encodedInteger, encodedInteger+byteCount,
+-			stdext::make_checked_array_iterator(block.begin(), block.size()));
+-#else
++//#if (CRYPTOPP_MSC_VERSION >= 1500)
++//		std::reverse_copy(encodedInteger, encodedInteger+byteCount,
++//			stdext::make_checked_array_iterator(block.begin(), block.size()));
++//#else
+ 		std::reverse_copy(encodedInteger, encodedInteger+byteCount, block.begin());
+-#endif
++//#endif
+ 		Decode(block.begin(), block.size(), s);
+ 		return;
+ 	}
+diff --git a/rdrand.cpp b/rdrand.cpp
+index 15f3681..0a95b5c 100644
+--- a/rdrand.cpp
++++ b/rdrand.cpp
+@@ -29,20 +29,20 @@
+ #endif
+ 
+ #if defined(CRYPTOPP_RDRAND_AVAILABLE)
+-# if defined(CRYPTOPP_MSC_VERSION)
++# if defined(CRYPTOPP_MSC_VERSION) && !defined(__clang__)
+ #   define MASM_RDRAND_ASM_AVAILABLE 1
+ # endif
+-# if (__SUNPRO_CC >= 0x5100) || (CRYPTOPP_APPLE_CLANG_VERSION >= 30000) || \
++# if defined(__clang__) || (__SUNPRO_CC >= 0x5100) || (CRYPTOPP_APPLE_CLANG_VERSION >= 30000) || \
+      (CRYPTOPP_LLVM_CLANG_VERSION >= 20800) || (CRYPTOPP_GCC_VERSION >= 30200)
+ #   define GCC_RDRAND_ASM_AVAILABLE 1
+ # endif
+ #endif  // CRYPTOPP_RDRAND_AVAILABLE
+ 
+ #if defined(CRYPTOPP_RDSEED_AVAILABLE)
+-# if defined(CRYPTOPP_MSC_VERSION)
++# if defined(CRYPTOPP_MSC_VERSION) && !defined(__clang__)
+ #   define MASM_RDSEED_ASM_AVAILABLE 1
+ # endif
+-# if (__SUNPRO_CC >= 0x5100) || (CRYPTOPP_APPLE_CLANG_VERSION >= 30000) || \
++# if defined(__clang__) || (__SUNPRO_CC >= 0x5100) || (CRYPTOPP_APPLE_CLANG_VERSION >= 30000) || \
+      (CRYPTOPP_LLVM_CLANG_VERSION >= 20800) || (CRYPTOPP_GCC_VERSION >= 30200)
+ #   define GCC_RDSEED_ASM_AVAILABLE 1
+ # endif
+diff --git a/rijndael.cpp b/rijndael.cpp
+index 3d6665e..451ca68 100644
+--- a/rijndael.cpp
++++ b/rijndael.cpp
+@@ -112,6 +112,10 @@ NAMESPACE_BEGIN(CryptoPP)
+ # if (CRYPTOPP_SSE2_ASM_AVAILABLE || defined(CRYPTOPP_X64_MASM_AVAILABLE)) && !defined(CRYPTOPP_DISABLE_RIJNDAEL_ASM)
+ namespace rdtable {CRYPTOPP_ALIGN_DATA(16) word64 Te[256+2];}
+ using namespace rdtable;
++# elif defined(CRYPTOPP_X64_MASM_AVAILABLE)
++// Referenced from x64dll.asm even when Rijndael ASM is disabled.
++namespace rdtable {CRYPTOPP_ALIGN_DATA(16) word64 Te[256+2];}
++using namespace rdtable;
+ # else
+ static word64 Te[256];
+ # endif
+diff --git a/zdeflate.cpp b/zdeflate.cpp
+index b3514b5..515602e 100644
+--- a/zdeflate.cpp
++++ b/zdeflate.cpp
+@@ -418,11 +418,11 @@ unsigned int Deflator::LongestMatch(unsigned int &bestMatch) const
+ #else
+ 				std::mismatch
+ #endif
+-#if CRYPTOPP_MSC_VERSION >= 1600
+-				(stdext::make_unchecked_array_iterator(scan)+3, stdext::make_unchecked_array_iterator(scanEnd), stdext::make_unchecked_array_iterator(match)+3).first - stdext::make_unchecked_array_iterator(scan));
+-#else
++//#if CRYPTOPP_MSC_VERSION >= 1600
++//				(stdext::make_unchecked_array_iterator(scan)+3, stdext::make_unchecked_array_iterator(scanEnd), stdext::make_unchecked_array_iterator(match)+3).first - stdext::make_unchecked_array_iterator(scan));
++//#else
+ 				(scan+3, scanEnd, match+3).first - scan);
+-#endif
++//#endif
+ 			CRYPTOPP_ASSERT(len != bestLength);
+ 			if (len > bestLength)
+ 			{
+diff --git a/TestPrograms/test_arm_sha3.cpp b/TestPrograms/test_arm_sha3.cpp
+index bccebc2..7410503 100644
+--- a/TestPrograms/test_arm_sha3.cpp
++++ b/TestPrograms/test_arm_sha3.cpp
+@@ -12,5 +12,5 @@ int main(int argc, char* argv[])
+     // https://developer.arm.com/architectures/instruction-sets/simd-isas/neon/intrinsics
+     uint32x4_t x={0}, y={1}, z={2};
+     x=VEOR3(x,y,z);
+-    x=VXAR(y,z,6);
++    x=VXAR<6>(y,z);
+     x=VRAX1(y,z);
+diff --git a/TestPrograms/test_arm_sha512.cpp b/TestPrograms/test_arm_sha512.cpp
+index 5ef5caa..8c868da 100644
+--- a/TestPrograms/test_arm_sha512.cpp
++++ b/TestPrograms/test_arm_sha512.cpp
+@@ -9,6 +9,6 @@ int main(int argc, char* argv[])
+     // https://developer.arm.com/architectures/instruction-sets/simd-isas/neon/intrinsics?search=SHA512
+     uint32x4_t w={0}, x={0}, y={0}, z={0};
+     w=vsha512hq_u64(x,y,z);
+-    w=vsha512h2q_u64(x,y);
++    w=vsha512h2q_u64(x,y,z);
+     w=vsha512su0q_u64(x,y);
+     w=vsha512su1q_u64 (x,y,z);

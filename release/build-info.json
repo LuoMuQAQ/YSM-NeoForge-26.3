@@ -1,0 +1,27 @@
+{
+  "version": "3.0-unofficial.1+mc26.3",
+  "tag": "v3.0-unofficial.1-mc26.3",
+  "minecraft": "26.3",
+  "neoforge": "26.3.0.52-beta",
+  "java": 25,
+  "platform": "Windows x86_64",
+  "jar": "ysm-3.0-unofficial.1+mc26.3.jar",
+  "size": 30738736,
+  "sha256": "11180b1a7af0f04dc8ba6817d129ff5d0e3e8233be3d29d049668176146275b6",
+  "nativeSha256": "2ad9cea0568b600a7e917b81831dc9aaf7b1142c6956daf47fa20f4828285bc8",
+  "builtinModelCount": 24,
+  "licenseEntries": 75,
+  "status": "prerelease",
+  "validation": {
+    "shadowJar": "passed",
+    "packageContents": "passed",
+    "gameplay": "Maintainer feedback on the preceding local build: basically normal. This distribution package has not been separately play-tested.",
+    "unverified": [
+      "exit cleanup",
+      "LAN",
+      "shaders",
+      "old-world data migration",
+      "all optional mod integrations"
+    ]
+  }
+}

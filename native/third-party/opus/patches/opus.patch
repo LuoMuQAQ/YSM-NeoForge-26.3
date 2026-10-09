@@ -1,0 +1,87 @@
+diff --git a/celt/mini_kfft.c b/celt/mini_kfft.c
+index b2b9250..9fe78e7 100644
+--- a/celt/mini_kfft.c
++++ b/celt/mini_kfft.c
+@@ -12,6 +12,7 @@
+ #include <math.h>
+ #include <assert.h>
+ 
++#include <mimalloc-override.h>
+ 
+ #define mini_kiss_fft_scalar float
+ 
+diff --git a/celt/os_support.h b/celt/os_support.h
+index 48d742b..3992363 100644
+--- a/celt/os_support.h
++++ b/celt/os_support.h
+@@ -41,18 +41,20 @@
+ #include <string.h>
+ #include <stdlib.h>
+ 
++#include <mimalloc.h>
++
+ /** Opus wrapper for malloc(). To do your own dynamic allocation replace this function, opus_realloc, and opus_free */
+ #ifndef OVERRIDE_OPUS_ALLOC
+ static OPUS_INLINE void *opus_alloc (size_t size)
+ {
+-   return malloc(size);
++   return mi_malloc(size);
+ }
+ #endif
+ 
+ #ifndef OVERRIDE_OPUS_REALLOC
+ static OPUS_INLINE void *opus_realloc (void *ptr, size_t size)
+ {
+-   return realloc(ptr, size);
++   return mi_realloc(ptr, size);
+ }
+ #endif
+ 
+@@ -70,7 +72,7 @@ static OPUS_INLINE void *opus_alloc_scratch (size_t size)
+ #ifndef OVERRIDE_OPUS_FREE
+ static OPUS_INLINE void opus_free (void *ptr)
+ {
+-   free(ptr);
++   mi_free(ptr);
+ }
+ #endif
+ 
+diff --git a/dnn/dred_compare.c b/dnn/dred_compare.c
+index 478cc21..b6c3a85 100644
+--- a/dnn/dred_compare.c
++++ b/dnn/dred_compare.c
+@@ -31,6 +31,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ #include <string.h>
+ #include "mini_kfft.c"
+ 
++#include <mimalloc-override.h>
++
+ #define MAX(a,b) ((a)>(b) ? (a) : (b))
+ #define OPUS_PI (3.14159265F)
+ 
+diff --git a/src/opus_compare.c b/src/opus_compare.c
+index 1956e08..3d78ff6 100644
+--- a/src/opus_compare.c
++++ b/src/opus_compare.c
+@@ -30,6 +30,8 @@
+ #include <math.h>
+ #include <string.h>
+ 
++#include <mimalloc-override.h>
++
+ #define OPUS_PI (3.14159265F)
+ 
+ #define OPUS_COSF(_x)        ((float)cos(_x))
+diff --git a/src/qext_compare.c b/src/qext_compare.c
+index 534fb4c..31cd3d7 100644
+--- a/src/qext_compare.c
++++ b/src/qext_compare.c
+@@ -31,6 +31,8 @@
+ #include <string.h>
+ #include "mini_kfft.c"
+ 
++#include <mimalloc-override.h>
++
+ #define MAX(a,b) ((a)>(b) ? (a) : (b))
+ #define OPUS_PI (3.14159265F)
+ 

@@ -1,0 +1,297 @@
+diff --git a/include/ylt/standalone/iguana/pb_util.hpp b/include/ylt/standalone/iguana/pb_util.hpp
+index 486fe72..7c9aa3c 100644
+--- a/include/ylt/standalone/iguana/pb_util.hpp
++++ b/include/ylt/standalone/iguana/pb_util.hpp
+@@ -534,7 +534,7 @@ IGUANA_INLINE size_t pb_key_value_size(Type&& t, Arr& size_arr) {
+     if (!t.has_value()) {
+       return 0;
+     }
+-    return pb_key_value_size<key_size, omit_default_val>(*t, size_arr);
++    return pb_key_value_size<key_size, false>(*t, size_arr);
+   }
+   else {
+     return str_numeric_size<key_size, omit_default_val>(t);
+diff --git a/include/ylt/standalone/iguana/pb_writer.hpp b/include/ylt/standalone/iguana/pb_writer.hpp
+index 00b09da..0d3dc01 100644
+--- a/include/ylt/standalone/iguana/pb_writer.hpp
++++ b/include/ylt/standalone/iguana/pb_writer.hpp
+@@ -189,7 +189,7 @@ IGUANA_INLINE void to_pb_impl(Type&& t, uint32_t*& sz_ptr, Writer& writer) {
+     if (!t.has_value()) {
+       return;
+     }
+-    to_pb_impl<key, omit_default_val>(*t, sz_ptr, writer);
++    to_pb_impl<key, false>(*t, sz_ptr, writer);
+   }
+   else if constexpr (std::is_same_v<T, std::string> ||
+                      std::is_same_v<T, std::string_view>) {
+diff --git a/src/struct_pb/tools/proto_to_struct.cpp b/src/struct_pb/tools/proto_to_struct.cpp
+index aded6e2..05a8a98 100644
+--- a/src/struct_pb/tools/proto_to_struct.cpp
++++ b/src/struct_pb/tools/proto_to_struct.cpp
+@@ -41,6 +41,10 @@ class struct_code_generator : public google::protobuf::compiler::CodeGenerator {
+  public:
+   virtual ~struct_code_generator() {}
+ 
++  uint64_t GetSupportedFeatures() const override {
++    return FEATURE_PROTO3_OPTIONAL;
++  }
++
+   virtual bool Generate(const google::protobuf::FileDescriptor* file,
+                         const std::string& parameter,
+                         google::protobuf::compiler::GeneratorContext* context,
+@@ -68,6 +72,12 @@ class struct_code_generator : public google::protobuf::compiler::CodeGenerator {
+     std::vector<struct_tokenizer> proto_module_info;
+     std::vector<struct_enum> proto_enum_info;
+ 
++    for (int i = 0; i < file->enum_type_count(); ++i) {
++      struct_enum enum_token;
++      enum_token.get_enum_fields(file->enum_type(i));
++      proto_enum_info.emplace_back(enum_token);
++    }
++
+     for (int i = 0; i < file->message_type_count(); ++i) {
+       // struct name
+       const google::protobuf::Descriptor* descriptor = file->message_type(i);
+diff --git a/src/struct_pb/tools/struct_code_generator.hpp b/src/struct_pb/tools/struct_code_generator.hpp
+index 80cd730..cd76b76 100644
+--- a/src/struct_pb/tools/struct_code_generator.hpp
++++ b/src/struct_pb/tools/struct_code_generator.hpp
+@@ -6,7 +6,8 @@
+ char parameter_value[27] = "abcdefghijklmnopqrstuvwxyz";
+ 
+ std::string code_generate_header(const std::string &package_name) {
+-  std::string result = "#pragma once\n#include <ylt/struct_pb.hpp>\n\n";
++  std::string result =
++      "#pragma once\n#include <optional>\n#include <ylt/struct_pb.hpp>\n\n";
+ 
+   result.append("namespace ");
+   result.append(package_name);
+@@ -14,6 +15,12 @@ std::string code_generate_header(const std::string &package_name) {
+   return result;
+ }
+ 
++bool should_wrap_optional(const struct_token &token, bool add_optional) {
++  return token.explicit_optional ||
++         (add_optional && token.type != struct_token_type::pod &&
++          token.type != struct_token_type::enum_type);
++}
++
+ std::string code_generate_struct_default(const std::string &struct_name,
+                                          bool enable_inherit) {
+   std::string result = "struct ";
+@@ -42,6 +49,7 @@ std::string code_generate_struct_constructor(
+   int i = 0;
+   int list_size = lists.size() - 1;
+   for (auto it = lists.begin(); it != lists.end(); it++) {
++    const bool wrap_optional = should_wrap_optional(*it, add_optional);
+     if (it->type == struct_token_type::pod) {
+       if (it->lable == lable_type::lable_repeated) {
+         result.append("std::vector<");
+@@ -50,7 +58,13 @@ std::string code_generate_struct_constructor(
+         result += parameter_value[i];
+       }
+       else {
++        if (wrap_optional) {
++          result.append("std::optional<");
++        }
+         result.append(it->type_name);
++        if (wrap_optional) {
++          result.append(">");
++        }
+         result.append(" ");
+         result += parameter_value[i];
+       }
+@@ -60,23 +74,23 @@ std::string code_generate_struct_constructor(
+     }
+     else if (it->type == struct_token_type::proto_string) {
+       if (it->lable == lable_type::lable_repeated) {
+-        if (add_optional) {
++        if (wrap_optional) {
+           result.append("std::optional<");
+         }
+         result.append("std::vector<std::string>");
+-        if (add_optional) {
++        if (wrap_optional) {
+           result.append("> ");
+         }
+         result += parameter_value[i];
+       }
+       else {
+-        if (add_optional) {
++        if (wrap_optional) {
+           result.append("std::optional<");
+         }
+ 
+         result.append("std::");
+         result.append(it->type_name);
+-        if (add_optional) {
++        if (wrap_optional) {
+           result.append(">");
+         }
+         result.append(" ");
+@@ -88,7 +102,13 @@ std::string code_generate_struct_constructor(
+     }
+     else if (it->type == struct_token_type::enum_type) {
+       // enum no repeated type
++      if (wrap_optional) {
++        result.append("std::optional<");
++      }
+       result.append(it->type_name);
++      if (wrap_optional) {
++        result.append(">");
++      }
+       result.append(" ");
+       result += parameter_value[i];
+       if (i != list_size)
+@@ -97,7 +117,7 @@ std::string code_generate_struct_constructor(
+     }
+     else {
+       if (it->lable == lable_type::lable_repeated) {
+-        if (add_optional) {
++        if (wrap_optional) {
+           result.append("std::optional<");
+         }
+ 
+@@ -106,18 +126,18 @@ std::string code_generate_struct_constructor(
+         result.append(it->type_name);
+         result.append(">");
+ 
+-        if (add_optional) {
++        if (wrap_optional) {
+           result.append("> ");
+         }
+ 
+         result += parameter_value[i];
+       }
+       else {
+-        if (add_optional) {
++        if (wrap_optional) {
+           result.append("std::optional<");
+         }
+         result.append(it->type_name);
+-        if (add_optional) {
++        if (wrap_optional) {
+           result.append(">");
+         }
+         result.append(" ");
+@@ -175,28 +195,29 @@ std::string code_generate_body(const std::vector<struct_token> &lists,
+                                bool add_optional) {
+   std::string result;
+   for (auto ll : lists) {
++    const bool wrap_optional = should_wrap_optional(ll, add_optional);
+     result.append("\t");
+     if (ll.lable == lable_type::lable_repeated) {
+       if (ll.type == struct_token_type::proto_string) {
+-        if (add_optional) {
++        if (wrap_optional) {
+           result.append("std::optional<");
+         }
+ 
+         result.append("std::vector<std::string>");
+-        if (add_optional) {
++        if (wrap_optional) {
+           result.append("> ");
+         }
+         result.append(ll.var_name);
+         result.append(";\n");
+       }
+       else {
+-        if (ll.type == struct_token_type::message && add_optional) {
++        if (wrap_optional) {
+           result.append("std::optional<");
+         }
+         result.append("std::vector<");
+         result.append(ll.type_name);
+         result.append(">");
+-        if (ll.type == struct_token_type::message && add_optional) {
++        if (wrap_optional) {
+           result.append("> ");
+         }
+         result.append(ll.var_name);
+@@ -204,16 +225,14 @@ std::string code_generate_body(const std::vector<struct_token> &lists,
+       }
+     }
+     else {
+-      if (ll.type != struct_token_type::pod &&
+-          ll.type != struct_token_type::enum_type && add_optional) {
++      if (wrap_optional) {
+         result.append("std::optional<");
+       }
+ 
+       if (ll.type == struct_token_type::proto_string)
+         result.append("std::");
+       result.append(ll.type_name);
+-      if (ll.type != struct_token_type::pod &&
+-          ll.type != struct_token_type::enum_type && add_optional) {
++      if (wrap_optional) {
+         result.append(">");
+       }
+       result.append(" ");
+diff --git a/src/struct_pb/tools/struct_token.hpp b/src/struct_pb/tools/struct_token.hpp
+index 055cafa..82999a2 100644
+--- a/src/struct_pb/tools/struct_token.hpp
++++ b/src/struct_pb/tools/struct_token.hpp
+@@ -25,6 +25,7 @@ struct struct_token {
+     this->type_name = "";
+     this->type = struct_token_type::null_type;
+     this->lable = lable_type::lable_null;
++    this->explicit_optional = false;
+   }
+ 
+   void clear();
+@@ -32,6 +33,7 @@ struct struct_token {
+   std::string type_name;
+   struct_token_type type;
+   lable_type lable;
++  bool explicit_optional;
+ };
+ 
+ class struct_tokenizer {
+@@ -45,6 +47,7 @@ class struct_tokenizer {
+       const google::protobuf::FieldDescriptor* field = descriptor->field(j);
+ 
+       token.var_name = field->name();
++      token.explicit_optional = field->has_optional_keyword();
+       if (field->type() == google::protobuf::FieldDescriptor::TYPE_MESSAGE) {
+         token.type_name = field->message_type()->name();
+         token.type = struct_token_type::message;
+@@ -69,7 +72,15 @@ class struct_tokenizer {
+         }
+         else {
+           token.type = struct_token_type::pod;
+-          if (token.type_name.find("int") != std::string::npos)
++          if (field->type() == google::protobuf::FieldDescriptor::TYPE_SINT32 ||
++              field->type() == google::protobuf::FieldDescriptor::TYPE_SINT64 ||
++              field->type() == google::protobuf::FieldDescriptor::TYPE_FIXED32 ||
++              field->type() == google::protobuf::FieldDescriptor::TYPE_FIXED64 ||
++              field->type() == google::protobuf::FieldDescriptor::TYPE_SFIXED32 ||
++              field->type() == google::protobuf::FieldDescriptor::TYPE_SFIXED64) {
++            token.type_name = "iguana::" + token.type_name + "_t";
++          }
++          else if (token.type_name.find("int") != std::string::npos)
+             token.type_name += "_t";
+         }
+       }
+@@ -113,12 +124,16 @@ struct struct_enum {
+     for (int e = 0; e < descriptor->enum_type_count(); ++e) {
+       const google::protobuf::EnumDescriptor* enum_desc =
+           descriptor->enum_type(e);
+-      enum_name_ = enum_desc->name();
+-      for (int v = 0; v < enum_desc->value_count(); ++v) {
+-        const google::protobuf::EnumValueDescriptor* value_desc =
+-            enum_desc->value(v);
+-        fields_.push_back({value_desc->name(), value_desc->number()});
+-      }
++      get_enum_fields(enum_desc);
++    }
++  }
++
++  void get_enum_fields(const google::protobuf::EnumDescriptor* enum_desc) {
++    enum_name_ = enum_desc->name();
++    for (int v = 0; v < enum_desc->value_count(); ++v) {
++      const google::protobuf::EnumValueDescriptor* value_desc =
++          enum_desc->value(v);
++      fields_.push_back({value_desc->name(), value_desc->number()});
+     }
+   }
+   std::string enum_name_;

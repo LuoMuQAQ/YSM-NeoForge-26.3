@@ -1,0 +1,26 @@
+sources:
+  1.5.7:
+    url: https://github.com/facebook/zstd
+    tag: v1.5.7
+    commit: f8745da6ff1ad1e7bab384bd1f9d742439278e99
+patches:
+  1.5.7:
+  - patch_file: patches/zstd-mimalloc.patch
+requirements:
+- mimalloc/3.5.3@ysm/stable
+build:
+  global_link_targets:
+  - mimalloc-static
+  options:
+    ZSTD_BUILD_DICTBUILDER: false
+    ZSTD_BUILD_PROGRAMS: false
+    ZSTD_BUILD_SHARED: false
+    ZSTD_BUILD_TESTS: false
+    ZSTD_LEGACY_SUPPORT: false
+    ZSTD_MULTITHREAD_SUPPORT: false
+    ZSTD_USE_STATIC_RUNTIME: true
+  install: true
+  subdir: build/cmake
+package:
+  cmake_file_name: zstd
+  cmake_target_name: libzstd_static

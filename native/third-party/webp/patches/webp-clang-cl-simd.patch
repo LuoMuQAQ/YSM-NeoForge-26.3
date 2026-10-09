@@ -1,0 +1,15 @@
+diff --git a/cmake/cpu.cmake b/cmake/cpu.cmake
+index daff1c6..0d8f60d 100644
+--- a/cmake/cpu.cmake
++++ b/cmake/cpu.cmake
+@@ -42,6 +42,9 @@ set(WEBP_SIMD_FLAGS "AVX2;SSE41;SSE2;MIPS32;MIPS_DSP_R2;NEON;MSA")
+ set(WEBP_SIMD_FILE_EXTENSIONS
+     "_avx2.c;_sse41.c;_sse2.c;_mips32.c;_mips_dsp_r2.c;_neon.c;_msa.c")
+-if(MSVC AND CMAKE_C_COMPILER_ID STREQUAL "MSVC")
++if(MSVC AND CMAKE_C_COMPILER_ID STREQUAL "Clang")
++  set(SIMD_ENABLE_FLAGS "/clang:-mavx2;/clang:-msse4.1;/clang:-msse2;;;;")
++  set(SIMD_DISABLE_FLAGS)
++elseif(MSVC AND CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+   # With at least Visual Studio 12 (2013)+ /arch is not necessary to build SSE2
+   # or SSE4 code unless a lesser /arch is forced. MSVC does not have a SSE4
+   # flag, but an AVX one. Using that with SSE4 code risks generating illegal

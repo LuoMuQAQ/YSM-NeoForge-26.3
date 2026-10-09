@@ -1,0 +1,20 @@
+sources:
+  0.9.6:
+    url: https://github.com/recp/cglm
+    tag: v0.9.6
+    commit: 144d1e7c29b3b0c6dede7917a0476cc95248559c
+patches:
+  0.9.6:
+    - patch_file: patches/cglm-const-correctness.patch
+    - patch_file: patches/cglm-mat4-align-64.patch
+requirements: []
+build:
+  options: {}
+  install: false
+package:
+  cmake_file_name: cglm
+  cmake_target_name: cglm
+  manual_headers:
+    - dst: include
+      pattern: '*'
+      src: include

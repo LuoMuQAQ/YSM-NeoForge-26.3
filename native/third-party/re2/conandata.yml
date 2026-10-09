@@ -1,0 +1,27 @@
+sources:
+  '2025-11-05':
+    url: https://github.com/google/re2
+    tag: '2025-11-05'
+    commit: 927f5d53caf8111721e734cf24724686bb745f55
+patches:
+  '2025-11-05': []
+build:
+  options:
+    BUILD_SHARED_LIBS: false
+    RE2_USE_ICU: false
+    USEPCRE: false
+    RE2_TEST: false
+    RE2_BENCHMARK: false
+    RE2_BUILD_TESTING: false
+    RE2_INSTALL: true
+  install: true
+package:
+  cmake_file_name: re2
+  cmake_target_name: re2::re2
+  components:
+    re2:
+      target: re2::re2
+      includedirs:
+      - include
+      libs:
+      - re2

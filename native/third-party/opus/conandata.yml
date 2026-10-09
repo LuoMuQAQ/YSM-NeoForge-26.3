@@ -1,0 +1,28 @@
+sources:
+  1.6.1:
+    url: https://github.com/xiph/opus
+    tag: v1.6.1
+    commit: 22244de5a79bd1d6d623c32e72bf1954b56235be
+patches:
+  1.6.1:
+  - patch_file: patches/opus.patch
+  - patch_file: patches/opus-clang-cl-avx.patch
+requirements:
+- mimalloc/3.5.3@ysm/stable
+build:
+  global_link_targets:
+  - mimalloc-static
+  options:
+    OPUS_BUILD_SHARED_LIBRARY: false
+    OPUS_BUILD_TESTING: false
+    OPUS_CHECK_ASM: true
+    OPUS_FORTIFY_SOURCE: false
+    OPUS_STACK_PROTECTOR: false
+    OPUS_STATIC_RUNTIME: true
+  install: true
+package:
+  cmake_file_name: opus
+  cmake_target_name: opus
+  includedirs:
+  - include
+  - include/opus

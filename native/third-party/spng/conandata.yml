@@ -1,0 +1,18 @@
+sources:
+  0.7.4:
+    url: https://github.com/randy408/libspng
+    tag: v0.7.4
+    commit: fb768002d4288590083a476af628e51c3f1d47cd
+patches:
+  0.7.4:
+  - patch_file: patches/spng.patch
+requirements:
+- zlib-ng/2.3.3@ysm/stable
+build:
+  options:
+    BUILD_EXAMPLES: false
+    SPNG_SHARED: false
+  install: true
+package:
+  cmake_file_name: spng
+  cmake_target_name: spng_static

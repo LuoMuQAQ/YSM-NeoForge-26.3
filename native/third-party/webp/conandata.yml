@@ -1,0 +1,42 @@
+sources:
+  1.6.0:
+    url: https://github.com/webmproject/libwebp
+    tag: v1.6.0
+    commit: 4fa21912338357f89e4fd51cf2368325b59e9bd9
+patches:
+  1.6.0:
+  - patch_file: patches/webp.patch
+  - patch_file: patches/webp-clang-cl-simd.patch
+requirements:
+- mimalloc/3.5.3@ysm/stable
+build:
+  global_link_targets:
+  - mimalloc-static
+  options:
+    WEBP_BUILD_ANIM_UTILS: false
+    WEBP_BUILD_CWEBP: false
+    WEBP_BUILD_DWEBP: false
+    WEBP_BUILD_EXTRAS: false
+    WEBP_BUILD_FUZZTEST: false
+    WEBP_BUILD_GIF2WEBP: false
+    WEBP_BUILD_IMG2WEBP: false
+    WEBP_BUILD_LIBWEBPMUX: false
+    WEBP_BUILD_VWEBP: false
+    WEBP_BUILD_WEBPINFO: false
+    WEBP_BUILD_WEBPMUX: false
+    WEBP_USE_THREAD: false
+  install: true
+package:
+  cmake_file_name: webp
+  cmake_target_name: webp
+  components:
+    sharpyuv:
+      includedirs:
+      - include/webp
+      libs:
+      - sharpyuv
+      target: sharpyuv
+    webp:
+      libs:
+      - webp
+      target: webp

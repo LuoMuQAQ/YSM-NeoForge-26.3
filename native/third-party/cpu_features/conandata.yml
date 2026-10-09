@@ -1,0 +1,20 @@
+sources:
+  0.11.0:
+    url: https://github.com/google/cpu_features
+    tag: v0.11.0
+    commit: 81d13c49649f0714dd41fb56bb246398b6584085
+patches:
+  0.11.0:
+  - patch_file: patches/cpu_features.patch
+requirements: []
+build:
+  options:
+    BUILD_EXECUTABLE: false
+    BUILD_TESTING: false
+  install: true
+  copy_built_libraries: true
+package:
+  cmake_file_name: cpu_features
+  cmake_target_name: cpu_features
+  includedirs:
+  - include

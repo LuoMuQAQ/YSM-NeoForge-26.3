@@ -1,0 +1,13 @@
+diff --git a/include/cglm/types.h b/include/cglm/types.h
+index 26e6467..85c534e 100644
+--- a/include/cglm/types.h
++++ b/include/cglm/types.h
+@@ -87,7 +87,7 @@ typedef vec4                    mat3x4[3];  /* [col (3), row (4)] */
+ typedef CGLM_ALIGN_IF(16) vec2  mat2[2];
+ typedef vec3                    mat2x3[2];  /* [col (2), row (3)] */
+ typedef vec4                    mat2x4[2];  /* [col (2), row (4)] */
+-typedef CGLM_ALIGN_MAT    vec4  mat4[4];
++typedef CGLM_ALIGN(64)    vec4  mat4[4];
+ typedef vec2                    mat4x2[4];  /* [col (4), row (2)] */
+ typedef vec3                    mat4x3[4];  /* [col (4), row (3)] */
+ 

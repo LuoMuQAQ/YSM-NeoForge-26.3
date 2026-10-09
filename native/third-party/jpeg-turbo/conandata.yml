@@ -1,0 +1,26 @@
+sources:
+  3.1.90:
+    url: https://github.com/libjpeg-turbo/libjpeg-turbo
+    tag: 3.1.90
+    commit: e1dbfa7be7b7e54922020051dc77781e92739700
+patches:
+  3.1.90:
+  - patch_file: patches/jpeg-turbo.patch
+  - patch_file: patches/jpeg-turbo-mimalloc.patch
+requirements:
+- mimalloc/3.5.3@ysm/stable
+build:
+  global_link_targets:
+  - mimalloc-static
+  options:
+    ENABLE_SHARED: false
+    WITH_ARITH_ENC: false
+    WITH_TESTS: false
+    WITH_TOOLS: false
+  install: true
+  copy_built_libraries: true
+package:
+  cmake_file_name: jpeg-turbo
+  cmake_target_name: turbojpeg-static
+  includedirs:
+  - include

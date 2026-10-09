@@ -1,0 +1,38 @@
+# Modified by LuoMuQAQ for the unofficial Minecraft 26.3 / NeoForge port (2026).
+license="Apache-2.0"
+issueTrackerURL="https://github.com/LuoMuQAQ/YSM-NeoForge-26.3/issues"
+
+[[mods]]
+    modId="ysm"
+    version="${mod_version}"
+    displayName="Yes Steve Model (Unofficial 26.3)"
+    displayURL="https://github.com/LuoMuQAQ/YSM-NeoForge-26.3"
+    # updateJSONURL="https://change.me.example.invalid/updates.json"
+    logoFile="ysm.png"
+    credits="bernie-g (GeckoLib), fadookie (mclib), TT432 & SQwatermark (helped me solve many difficult problems)"
+    authors="YS Group, TartaricAcid, TomatoPuddin, AryochiL; unofficial port: LuoMuQAQ"
+    description="Unofficial Windows x86_64 port of Yes Steve Model for Minecraft 26.3 / NeoForge 26.3.0.52-beta. Based on upstream YSM; not an official release."
+
+[[dependencies.ysm]]
+    modId="neoforge"
+    type="required"
+    versionRange="[26.3.0.52-beta]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.ysm]]
+    modId="minecraft"
+    type="required"
+    versionRange="[26.3]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.ysm]]
+    modId="tacz"
+    type="optional"
+    versionRange="[1.0.2,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[mixins]]
+config="ysm.mixins.json"

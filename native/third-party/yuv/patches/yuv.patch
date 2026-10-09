@@ -1,0 +1,110 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 77e0527..a5a370c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -171,9 +171,12 @@ endif()
+ 
+ # this creates the static library (.a)
+ add_library( ${ly_lib_static} STATIC ${ly_lib_parts})
++target_include_directories( ${ly_lib_static} INTERFACE ${ly_inc_dir})
+ 
+ # this creates the shared library (.so)
+ add_library( ${ly_lib_shared} SHARED ${ly_lib_parts})
++target_include_directories( ${ly_lib_shared} INTERFACE ${ly_inc_dir})
++target_compile_definitions( ${ly_lib_shared} INTERFACE LIBYUV_USING_SHARED_LIBRARY=1)
+ set_target_properties( ${ly_lib_shared} PROPERTIES OUTPUT_NAME "${ly_lib_name}" )
+ set_target_properties( ${ly_lib_shared} PROPERTIES PREFIX "lib" )
+ if(WIN32)
+diff --git a/include/libyuv/row.h b/include/libyuv/row.h
+index 529b3d6..9180e52 100644
+--- a/include/libyuv/row.h
++++ b/include/libyuv/row.h
+@@ -17,6 +17,8 @@
+ #include "libyuv/basic_types.h"
+ #include "libyuv/cpu_support.h"
+ 
++#include <mimalloc.h>
++
+ #ifdef __cplusplus
+ namespace libyuv {
+ extern "C" {
+@@ -1043,11 +1045,11 @@ struct ArgbConstants {
+ #define IS_ALIGNED(p, a) (!((uintptr_t)(p) & ((a)-1)))
+ 
+ #define align_buffer_64(var, size)                                         \
+-  void* var##_mem = malloc((size) + 63);                      /* NOLINT */ \
+-  uint8_t* var = (uint8_t*)(((intptr_t)var##_mem + 63) & ~63) /* NOLINT */
++  void* var##_mem = mi_malloc_aligned((size), 64);                      /* NOLINT */ \
++  uint8_t* var = (uint8_t*)var##_mem /* NOLINT */
+ 
+ #define free_aligned_buffer_64(var) \
+-  free(var##_mem);                  \
++  mi_free(var##_mem);                  \
+   var = NULL
+ 
+ #if defined(__APPLE__) || defined(__x86_64__) || defined(__llvm__)
+diff --git a/source/convert_to_argb.cc b/source/convert_to_argb.cc
+index 72d21b0..f9ac804 100644
+--- a/source/convert_to_argb.cc
++++ b/source/convert_to_argb.cc
+@@ -22,6 +22,8 @@
+ #include "libyuv/row.h"
+ #include "libyuv/video_common.h"
+ 
++#include <mimalloc-override.h>
++
+ #ifdef __cplusplus
+ namespace libyuv {
+ extern "C" {
+diff --git a/source/convert_to_i420.cc b/source/convert_to_i420.cc
+index aab071e..bb6521b 100644
+--- a/source/convert_to_i420.cc
++++ b/source/convert_to_i420.cc
+@@ -17,6 +17,8 @@
+ 
+ #include "libyuv/video_common.h"
+ 
++#include <mimalloc-override.h>
++
+ #ifdef __cplusplus
+ namespace libyuv {
+ extern "C" {
+diff --git a/source/scale_argb.cc b/source/scale_argb.cc
+index eb6caa5..11acb70 100644
+--- a/source/scale_argb.cc
++++ b/source/scale_argb.cc
+@@ -22,6 +22,8 @@
+ #include "libyuv/scale_argb.h"
+ #include "libyuv/scale_row.h"
+ 
++#include <mimalloc-override.h>
++
+ #ifdef __cplusplus
+ namespace libyuv {
+ extern "C" {
+diff --git a/source/scale_rgb.cc b/source/scale_rgb.cc
+index 5e69fe3..0718d69 100644
+--- a/source/scale_rgb.cc
++++ b/source/scale_rgb.cc
+@@ -22,6 +22,8 @@
+ #include "libyuv/scale_argb.h"
+ #include "libyuv/scale_rgb.h"
+ 
++#include <mimalloc-override.h>
++
+ #ifdef __cplusplus
+ namespace libyuv {
+ extern "C" {
+diff --git a/source/row_win.cc b/source/row_win.cc
+--- a/source/row_win.cc
++++ b/source/row_win.cc
+@@ -366,5 +366,9 @@ void RGB24ToARGBRow_AVX512BW(const uint8_t* src_rgb24, uint8_t* dst_argb, int w
+ #ifdef HAS_ARGBTOUVMATRIXROW_AVX2
++#if defined(__clang__) || defined(__GNUC__)
+ LIBYUV_TARGET_AVX2 __attribute__((no_sanitize("cfi-icall")))
++#else
++LIBYUV_TARGET_AVX2
++#endif
+ void ARGBToUVMatrixRow_AVX2(const uint8_t* src_argb,
+                             int src_stride_argb,
+                             uint8_t* dst_u,

@@ -1,0 +1,118 @@
+// Modified by LuoMuQAQ for the unofficial Minecraft 26.3 / NeoForge port (2026).
+import com.elfmcys.ysm.gradle.BuiltinModelToolTask
+
+sourceSets {
+    builtinIndexTool {
+        java.srcDir 'src/builtinIndexTool/java'
+        compileClasspath += sourceSets.main.output.classesDirs + sourceSets.main.compileClasspath
+        runtimeClasspath = output + sourceSets.main.output.classesDirs +
+                configurations.builtinIndexToolRuntimeClasspath + configurations.runtimeClasspath
+    }
+}
+
+dependencies {
+    builtinIndexToolRuntimeOnly 'org.apache.logging.log4j:log4j-core:2.26.0'
+    builtinIndexToolRuntimeOnly 'org.apache.logging.log4j:log4j-slf4j2-impl:2.26.0'
+    builtinIndexToolRuntimeOnly 'org.slf4j:slf4j-api:2.0.17'
+}
+
+// CPU materialization still uses LWJGL MemoryUtil and the Vorbis STB decoder.
+// Supply their matching native libraries to the build tool, without bundling them in the mod.
+if (System.getProperty('os.name').startsWith('Windows')) {
+    dependencies {
+        builtinIndexToolRuntimeOnly 'org.lwjgl:lwjgl:3.4.3:natives-windows'
+        builtinIndexToolRuntimeOnly 'org.lwjgl:lwjgl-stb:3.4.3:natives-windows'
+    }
+}
+
+sourceSets.test {
+    compileClasspath += sourceSets.builtinIndexTool.output
+    runtimeClasspath += sourceSets.builtinIndexTool.output
+}
+
+def builtinModelRoot = layout.projectDirectory.dir('src/main/resources/assets/ysm/builtin')
+def builtinDefaultRoot = builtinModelRoot.dir('default')
+def builtinAnimationHistory = layout.projectDirectory.file(
+        'src/main/resources/assets/ysm/default-animation-history.json')
+def builtinDefaultContract = layout.buildDirectory.file(
+        'intermediates/builtinIndex/default-contract.json')
+def builtinIndexFile = layout.buildDirectory.file(
+        'generated/resources/builtinIndex/assets/ysm/builtin-index.json')
+def builtinVerificationReceipt = layout.buildDirectory.file(
+        'verification/builtinIndex/full-materialization.json')
+def builtinToolLauncher = javaToolchains.launcherFor {
+    languageVersion = JavaLanguageVersion.of(25)
+}
+
+def configureBuiltinToolTask = { BuiltinModelToolTask task, String command ->
+    task.command.set(command)
+    task.toolClasspath.from(sourceSets.builtinIndexTool.runtimeClasspath)
+    task.nativeLibrary.set(ysmNativeLibraryFile)
+    task.operatingSystem.set(providers.systemProperty('os.name'))
+    task.architecture.set(providers.systemProperty('os.arch'))
+    task.javaExecutable.set(builtinToolLauncher.map {
+        it.executablePath.asFile.absolutePath
+    })
+    task.javaRuntimeVersion.set(builtinToolLauncher.map {
+        it.metadata.javaRuntimeVersion
+    })
+    task.javaVendor.set(builtinToolLauncher.map {
+        it.metadata.vendor
+    })
+}
+
+tasks.register('generateBuiltinDefaultContract', BuiltinModelToolTask) {
+    group = 'build'
+    description = 'Materializes builtin/default and generates its reusable identity contract.'
+    dependsOn tasks.named('compileJava'), tasks.named('compileBuiltinIndexToolJava')
+    configureBuiltinToolTask(delegate, BuiltinModelToolTask.GENERATE_DEFAULT_CONTRACT)
+    sourceRoot.set(builtinDefaultRoot)
+    sourceFiles.from(builtinDefaultRoot.asFileTree)
+    resultFile.set(builtinDefaultContract)
+    workDirectory.set(layout.buildDirectory.dir('tmp/generateBuiltinDefaultContract'))
+}
+
+tasks.register('generateBuiltinModelIndex', BuiltinModelToolTask) {
+    group = 'build'
+    description = 'Scans builtin raw models and generates the production builtin index.'
+    dependsOn tasks.named('generateBuiltinDefaultContract')
+    configureBuiltinToolTask(delegate, BuiltinModelToolTask.GENERATE_INDEX)
+    sourceRoot.set(builtinModelRoot)
+    sourceFiles.from(builtinModelRoot.asFileTree)
+    defaultContractFile.set(builtinDefaultContract)
+    animationHistoryFile.set(builtinAnimationHistory)
+    resultFile.set(builtinIndexFile)
+    workDirectory.set(layout.buildDirectory.dir('tmp/generateBuiltinModelIndex'))
+}
+
+tasks.register('verifyBuiltinModelIndex', BuiltinModelToolTask) {
+    group = 'verification'
+    description = 'Fully converts and materializes every non-default builtin model.'
+    dependsOn tasks.named('generateBuiltinModelIndex')
+    configureBuiltinToolTask(delegate, BuiltinModelToolTask.VERIFY)
+    sourceRoot.set(builtinModelRoot)
+    sourceFiles.from(builtinModelRoot.asFileTree.matching {
+        exclude 'default/**'
+    })
+    indexFile.set(builtinIndexFile)
+    defaultContractFile.set(builtinDefaultContract)
+    resultFile.set(builtinVerificationReceipt)
+    workDirectory.set(layout.buildDirectory.dir('tmp/verifyBuiltinModelIndex'))
+}
+
+tasks.named('processResources') {
+    dependsOn tasks.named('generateBuiltinModelIndex')
+    from(builtinIndexFile) {
+        into 'assets/ysm'
+    }
+}
+
+tasks.named('check') {
+    dependsOn tasks.named('verifyBuiltinModelIndex')
+}
+
+tasks.withType(Jar).configureEach {
+    if (name != 'relocateProcessorAsm') {
+        dependsOn tasks.named('verifyBuiltinModelIndex')
+    }
+}

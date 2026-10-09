@@ -1,0 +1,37 @@
+sources:
+  8.9.0:
+    url: https://github.com/abdes/cryptopp-cmake
+    tag: CRYPTOPP_8_9_0
+    commit: f815f6284684be6ab03af4b6c273359331c61241
+    extra_git:
+    - commit: 843d74c7c97f9e19a615b8ff3c0ca06599ca501b
+      tag: CRYPTOPP_8_9_0
+      target: cryptopp-src
+      url: https://github.com/weidai11/cryptopp
+patches:
+  8.9.0:
+  - patch_file: patches/cryptopp-cmake.patch
+  - patch_file: patches/cryptopp.patch
+    base_path: cryptopp-src
+  - patch_file: patches/cmake-entry.patch
+requirements:
+- mimalloc/3.5.3@ysm/stable
+- cpu_features/0.11.0@ysm/stable
+build:
+  global_link_targets:
+  - mimalloc-static
+  options:
+    CRYPTOPP_BUILD_TESTING: false
+    CRYPTOPP_INSTALL: true
+    CRYPTOPP_SOURCES: '{source_folder}/cryptopp-src'
+    CRYPTOPP_USE_OPENMP: false
+    cryptopp_SOURCE_DIR: '{source_folder}/cryptopp-src'
+  install: true
+  subdir: cryptopp
+package:
+  cmake_file_name: cryptopp
+  cmake_target_name: cryptopp
+  manual_headers:
+  - dst: include/cryptopp
+    pattern: '*.h'
+    src: cryptopp-src

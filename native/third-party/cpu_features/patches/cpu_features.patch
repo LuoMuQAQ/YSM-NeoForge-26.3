@@ -1,0 +1,12 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -197,7 +197,7 @@ endif()
+ # ndk_compat
+ #
+ 
+-if(ANDROID)
++if(ANDROID OR "${TARGET_OS}" STREQUAL "ANDROID")
+ add_subdirectory(ndk_compat)
+ endif()
+ 

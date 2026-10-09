@@ -1,0 +1,58 @@
+def generatedProtobufDir = layout.buildDirectory.dir('generated/source/proto/main')
+def generatedProtobufDescriptor = layout.buildDirectory.file('generated/descriptors/ysm-main.pb')
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.21.12'
+    }
+    plugins {
+        quickbuf {
+            artifact = 'libs:protoc-gen-quickbuf:1.4.1-ysm:shaded@jar'
+        }
+    }
+    generateProtoTasks {
+        all().configureEach { task ->
+            task.builtins {
+                remove java
+            }
+            task.plugins {
+                quickbuf {
+                    option "replace_package=ysm=com.elfmcys.ysm.proto"
+                    option "replace_package=^mixel=com.elfmcys.ysm.proto.mixel"
+                    option 'indent=4'
+                }
+            }
+            if (task.name == 'generateProto') {
+                task.generateDescriptorSet = true
+                task.descriptorSetOptions.path = generatedProtobufDescriptor.get().asFile.absolutePath
+                task.descriptorSetOptions.includeImports = true
+                task.descriptorSetOptions.includeSourceInfo = false
+            }
+        }
+    }
+}
+
+tasks.register('generateSchemaSources') {
+    group = 'build'
+    dependsOn tasks.named('generateProto')
+}
+
+sourceSets.main.java {
+    srcDir generatedProtobufDir
+}
+
+tasks.named('compileJava') {
+    dependsOn tasks.named('generateSchemaSources')
+}
+
+tasks.named('processTestResources') {
+    dependsOn tasks.named('generateProto')
+    from(generatedProtobufDescriptor) {
+        into 'proto'
+        rename { 'ysm-main.pb' }
+    }
+}
+
+idea.project.settings.taskTriggers {
+    afterSync tasks.named('generateSchemaSources')
+}

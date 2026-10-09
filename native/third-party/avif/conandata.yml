@@ -1,0 +1,41 @@
+sources:
+  1.4.1:
+    url: https://github.com/AOMediaCodec/libavif
+    tag: v1.4.1
+    commit: 6543b22b5bc706c53f038a16fe515f921556d9b3
+patches:
+  1.4.1:
+  - patch_file: patches/avif.patch
+  - patch_file: patches/avif-mimalloc.patch
+requirements:
+- yuv/0.0.1892@ysm/stable
+- dav1d/1.5.3@ysm/stable
+- webp/1.6.0@ysm/stable
+- mimalloc/3.5.3@ysm/stable
+- ref: svt-av1/4.1.0@ysm/stable
+  skip_os:
+  - Android
+build:
+  global_link_targets:
+  - mimalloc-static
+  options:
+    AVIF_BUILD_APPS: false
+    AVIF_BUILD_TESTS: false
+    AVIF_CODEC_DAV1D: true
+    AVIF_CODEC_SVT:
+      Android: false
+      default: true
+    AVIF_ENABLE_NODISCARD: true
+    AVIF_LIBSHARPYUV: true
+    AVIF_LIBYUV: true
+    BUILD_SHARED_LIBS: false
+  install: false
+package:
+  cmake_file_name: avif
+  cmake_target_name: avif
+  libs:
+  - avif_internal
+  manual_headers:
+  - dst: include
+    pattern: '*'
+    src: include

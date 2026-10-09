@@ -1,0 +1,13 @@
+Legacy ChaCha/HChaCha attribution
+
+The portable legacy importer implementation follows the ChaCha and HChaCha
+reference implementation from floodyberry/chacha-opt:
+https://github.com/floodyberry/chacha-opt
+
+The upstream project declares its license as:
+
+    Public Domain, or MIT
+
+The historical YSM source snapshot did not record an exact upstream commit.
+This implementation is retained only to reproduce the legacy file-format state
+transitions and does not include the upstream runtime-selected assembly library.

@@ -1,0 +1,64 @@
+diff --git a/gzlib.c b/gzlib.c
+index 016a0a6..b2b52e0 100644
+--- a/gzlib.c
++++ b/gzlib.c
+@@ -8,6 +8,8 @@
+ #include "zutil_p.h"
+ #include "gzguts.h"
+ 
++#include <mimalloc-override.h>
++
+ #if defined(_WIN32)
+ #  define LSEEK _lseeki64
+ #else
+diff --git a/gzread.c b/gzread.c
+index d52fea8..133ca65 100644
+--- a/gzread.c
++++ b/gzread.c
+@@ -8,6 +8,8 @@
+ #include "gzguts.h"
+ #include "gzread_mangle.h"
+ 
++#include <mimalloc-override.h>
++
+ /* Local functions */
+ static int gz_read_init(gz_state *state);
+ static int gz_load(gz_state *, unsigned char *, unsigned, unsigned *);
+diff --git a/gzwrite.c b/gzwrite.c
+index 5d1fdd7..1a01960 100644
+--- a/gzwrite.c
++++ b/gzwrite.c
+@@ -8,6 +8,8 @@
+ #include <stdarg.h>
+ #include "gzguts.h"
+ 
++#include <mimalloc-override.h>
++
+ /* Local functions */
+ static int gz_write_init(gz_state *);
+ static int gz_comp(gz_state *, int);
+diff --git a/zutil_p.h b/zutil_p.h
+index 866a52f..4ba9385 100644
+--- a/zutil_p.h
++++ b/zutil_p.h
+@@ -5,16 +5,16 @@
+ #ifndef ZUTIL_P_H
+ #define ZUTIL_P_H
+ 
+-#include <stdlib.h>
++#include <mimalloc.h>
+ 
+ // Zlib-ng's default alloc/free implementation, used unless
+ // application supplies its own alloc/free functions.
+ static inline void *zng_alloc(size_t size) {
+-    return (void *)malloc(size);
++    return (void *)mi_malloc(size);
+ }
+ 
+ static inline void zng_free(void *ptr) {
+-    free(ptr);
++    mi_free(ptr);
+ }
+ 
+ #endif
+

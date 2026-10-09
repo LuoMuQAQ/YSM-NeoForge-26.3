@@ -1,0 +1,32 @@
+sources:
+  4.1.0:
+    url: https://gitlab.com/AOMediaCodec/SVT-AV1
+    tag: v4.1.0
+    commit: c04f951541ad600e0d9c10836f2ab7b9bc69816d
+patches:
+  4.1.0:
+  - patch_file: patches/svt-av1.patch
+  - patch_file: patches/svt-av1-mimalloc.patch
+requirements:
+- mimalloc/3.5.3@ysm/stable
+build:
+  global_link_targets:
+  - mimalloc-static
+  options:
+    BUILD_APPS: false
+    BUILD_SHARED_LIBS: false
+    BUILD_TESTING: false
+    COVERAGE: false
+    ENABLE_AVX512: true
+    LOG_QUIET: true
+    NATIVE: false
+    SVT_AV1_LTO: true
+    SVT_AV1_PGO: false
+    SVT_INTERNAL_PGO_GENERATE: false
+    SVT_INTERNAL_PGO_USE: false
+  install: true
+package:
+  cmake_file_name: svt-av1
+  cmake_target_name: SvtAv1Enc
+  includedirs:
+  - include/svt-av1

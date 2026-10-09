@@ -1,0 +1,30 @@
+{
+  "project": "Yes Steve Model — Unofficial NeoForge 26.3 Port",
+  "repository": "https://github.com/LuoMuQAQ/YSM-NeoForge-26.3",
+  "version": "3.0-unofficial.1+mc26.3",
+  "upstreamJava": {
+    "repository": "https://github.com/YesSteveModel/YesSteveModel",
+    "commit": "74c53b58b2f9b680a6c6dc5d5d41e7422fc000bb"
+  },
+  "upstreamNative": {
+    "repository": "https://github.com/YesSteveModel/YesSteveModel-Native",
+    "commit": "e9ac162492a97c7222f652c41624ca150f450354"
+  },
+  "portCheckpoint": "de63cef127d805bf3549d24e05ddbb975145af77",
+  "target": {
+    "minecraft": "26.3",
+    "neoforge": "26.3.0.52-beta",
+    "java": 25,
+    "platform": "Windows x86_64"
+  },
+  "nativeDllSha256": "2ad9cea0568b600a7e917b81831dc9aaf7b1142c6956daf47fa20f4828285bc8",
+  "builtinModels": {
+    "included": 24,
+    "excludedWithoutRedistributionGrant": [
+      "wine_fox/09_hailuo",
+      "wine_fox/10_zhiban",
+      "wine_fox/17_mini"
+    ]
+  },
+  "development": "AI-assisted port; manual gameplay feedback by the maintainer. No affiliation or endorsement by upstream."
+}

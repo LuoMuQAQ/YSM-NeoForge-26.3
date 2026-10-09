@@ -1,0 +1,1120 @@
+[
+  {
+    "directory": "default",
+    "metadata": {
+      "name": "Default",
+      "tips": "默认模型（Default Model）",
+      "license": {
+        "type": "CC 0"
+      },
+      "authors": [
+        {
+          "name": "哥斯拉",
+          "role": "模型",
+          "avatar": "avatar/gsl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/6TGESILA",
+            "Bilibili": "https://space.bilibili.com/17798027"
+          },
+          "comment": "一个MC模型/YSM作者，想法很多，时间很少"
+        },
+        {
+          "name": "端木一动不动",
+          "role": "动画",
+          "avatar": "avatar/dm.png",
+          "comment": "永远都在ing"
+        },
+        {
+          "name": "甜粽子",
+          "role": "动画",
+          "avatar": "avatar/tzz.png",
+          "comment": "(ᗜˬᗜ)"
+        },
+        {
+          "name": "星屑海螺",
+          "role": "动画",
+          "avatar": "avatar/hl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/lucia2048",
+            "Bilibili": "https://space.bilibili.com/14975572"
+          },
+          "comment": "漂泊于群星之中"
+        },
+        {
+          "name": "蓝玫瑰",
+          "role": "材质/模型",
+          "avatar": "avatar/lmg.png",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/11814817"
+          },
+          "comment": "8月24号，传奇永不落幕"
+        },
+        {
+          "name": "艾雷克亚",
+          "role": "铁魔法动画",
+          "avatar": "avatar/arekya.jpg",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/480946180"
+          },
+          "comment": "发癫"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "misc/1_alex",
+    "metadata": {
+      "name": "Alex （艾利克斯）",
+      "tips": "原版艾利克斯模型（Minecraft Alex Model）",
+      "license": {
+        "type": "CC 0"
+      },
+      "authors": [
+        {
+          "name": "哥斯拉",
+          "role": "模型",
+          "avatar": "avatar/gsl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/6TGESILA",
+            "Bilibili": "https://space.bilibili.com/17798027"
+          },
+          "comment": "一个MC模型/YSM作者，想法很多，时间很少"
+        },
+        {
+          "name": "端木一动不动",
+          "role": "动画",
+          "avatar": "avatar/dm.png",
+          "comment": "永远都在ing"
+        },
+        {
+          "name": "甜粽子",
+          "role": "动画",
+          "avatar": "avatar/tzz.png",
+          "comment": "(ᗜˬᗜ)"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "misc/2_steve",
+    "metadata": {
+      "name": "Steve （史蒂夫）",
+      "tips": "原版史蒂夫模型（Minecraft Steve Model）",
+      "license": {
+        "type": "CC 0"
+      },
+      "authors": [
+        {
+          "name": "哥斯拉",
+          "role": "模型",
+          "avatar": "avatar/gsl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/6TGESILA",
+            "Bilibili": "https://space.bilibili.com/17798027"
+          },
+          "comment": "一个MC模型/YSM作者，想法很多，时间很少"
+        },
+        {
+          "name": "端木一动不动",
+          "role": "动画",
+          "avatar": "avatar/dm.png",
+          "comment": "永远都在ing"
+        },
+        {
+          "name": "甜粽子",
+          "role": "动画",
+          "avatar": "avatar/tzz.png",
+          "comment": "(ᗜˬᗜ)"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "misc/3_default_boy",
+    "metadata": {
+      "name": "Default Boy",
+      "tips": "默认男版模型（Default Boy Model）",
+      "license": {
+        "type": "CC 0"
+      },
+      "authors": [
+        {
+          "name": "哥斯拉",
+          "role": "模型",
+          "avatar": "avatar/gsl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/6TGESILA",
+            "Bilibili": "https://space.bilibili.com/17798027"
+          },
+          "comment": "一个MC模型/YSM作者，想法很多，时间很少"
+        },
+        {
+          "name": "端木一动不动",
+          "role": "动画",
+          "avatar": "avatar/dm.png",
+          "comment": "永远都在ing"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "misc/4_default_controllers",
+    "metadata": {
+      "name": "Default Controllers Model",
+      "tips": "默认控制器测试模型",
+      "license": {
+        "type": "CC 0"
+      },
+      "authors": [
+        {
+          "name": "哥斯拉",
+          "role": "模型",
+          "avatar": "avatar/gsl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/6TGESILA",
+            "Bilibili": "https://space.bilibili.com/17798027"
+          },
+          "comment": "一个MC模型/YSM作者，想法很多，时间很少"
+        },
+        {
+          "name": "星屑海螺",
+          "role": "动画",
+          "avatar": "avatar/hl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/lucia2048",
+            "Bilibili": "https://space.bilibili.com/14975572"
+          },
+          "comment": "漂泊于群星之中"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/01_taisho_maid",
+    "metadata": {
+      "name": "Wine Fox（酒狐）",
+      "tips": "一只爱喝葡萄酒的狐娘。\nA fox girl who loves to drink wine.\n乱舞参考自 VRChat 的永雏塔菲动画。\n音乐为改编的 Zufolo Impazzito。",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "完美冻结",
+          "role": "模型原作",
+          "avatar": "avatar/wmdj.jpg",
+          "contact": {
+            "Afdian": "https://afdian.com/a/6TGESILA",
+            "Bilibili": "https://space.bilibili.com/17798027"
+          },
+          "comment": "OwO"
+        },
+        {
+          "name": "星屑海螺",
+          "role": "动画原作",
+          "avatar": "avatar/hl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/lucia2048",
+            "Bilibili": "https://space.bilibili.com/14975572"
+          },
+          "comment": "漂泊于群星之中"
+        },
+        {
+          "name": "哥斯拉（映素团队）",
+          "role": "模型修改",
+          "avatar": "avatar/gsl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/6TGESILA",
+            "Bilibili": "https://space.bilibili.com/17798027"
+          },
+          "comment": "一个MC模型/YSM作者，想法很多，时间很少"
+        },
+        {
+          "name": "白帆小喵",
+          "role": "新版材质",
+          "avatar": "avatar/bfxm.jpg",
+          "comment": "一只爱玩mc的小猫咪罢了qwq",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/492836494"
+          }
+        },
+        {
+          "name": "蓝玫瑰",
+          "role": "UI 材质/贴图",
+          "avatar": "avatar/lmg.png",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/11814817"
+          },
+          "comment": "8月24号，传奇永不落幕"
+        },
+        {
+          "name": "墨染逝羽",
+          "role": "面具模型",
+          "avatar": "avatar/mrsy.png",
+          "comment": "事到如今，先摸鱼吧",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/5718046"
+          }
+        },
+        {
+          "name": "Maks怜悯",
+          "role": "载具模型",
+          "avatar": "avatar/maks.jpg",
+          "comment": "ysm人偶制作中～",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/352177387"
+          }
+        },
+        {
+          "name": "浅陌菌",
+          "role": "模型修改",
+          "avatar": "avatar/nico.png",
+          "comment": "最美好的前途，可不要对我冷酷",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/14975572"
+          }
+        },
+        {
+          "name": "祸御神",
+          "role": "动画修改",
+          "avatar": "avatar/hys.png",
+          "comment": "五十代精神病人",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/164557734"
+          }
+        },
+        {
+          "name": "羊毛",
+          "role": "音效/动画修改",
+          "avatar": "avatar/wool.png",
+          "comment": "喵喵喵喵",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/85335217"
+          }
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/02_new_year",
+    "metadata": {
+      "name": "New Year Wine Fox（新春酒狐）",
+      "tips": "A fox girl who loves to drink wine.\n一只爱喝葡萄酒的狐娘。",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "就叫纸板",
+          "role": "模型",
+          "avatar": "avatar/zb.avif",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/29208164"
+          },
+          "comment": "杂鱼~杂鱼~"
+        },
+        {
+          "name": "星屑海螺",
+          "role": "动画",
+          "avatar": "avatar/hl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/lucia2048",
+            "Bilibili": "https://space.bilibili.com/14975572"
+          },
+          "comment": "漂泊于群星之中"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/03_astronaut",
+    "metadata": {
+      "name": "宇航员酒狐",
+      "tips": "梦想是星辰大海",
+      "license": {
+        "type": "CC BY-NC-SA 4.0",
+        "desc:": ""
+      },
+      "authors": [
+        {
+          "name": "完全冻结",
+          "avatar": "avatars/af.avif",
+          "role": "模型"
+        },
+        {
+          "name": "星屑海螺",
+          "avatar": "avatars/hl.png",
+          "role": "动画"
+        },
+        {
+          "name": "哥斯拉（映素团队）",
+          "avatar": "avatars/gsl.png",
+          "role": "模型修改"
+        },
+        {
+          "name": "祸御神",
+          "avatar": "avatars/hys.png",
+          "role": "GUI 动画"
+        }
+      ],
+      "link": {
+        "home": "https://afdian.com/a/ysmmod",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/04_kongfu",
+    "metadata": {
+      "name": "功夫酒狐",
+      "tips": "打醉拳",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "哥斯拉（映素团队）",
+          "role": "模型",
+          "avatar": "avatar/gsl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/6TGESILA",
+            "Bilibili": "https://space.bilibili.com/17798027"
+          },
+          "comment": "一个MC模型/YSM作者，想法很多，时间很少"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/05_magical",
+    "metadata": {
+      "name": "魔法酒狐",
+      "tips": "来自星海的狐之魔女，传说她居住在一个薰衣草盛开的地方。\n（装备头盔可佩戴魔女帽，弓箭与剑类武器替换为法杖，背后的法杖和弓箭蓄力法阵可通过轮盘动画隐藏。）",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "星海境",
+          "role": "模型/动画修改",
+          "avatar": "avatar/xinghai.avif",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/66634439"
+          },
+          "comment": "繁星凝望着海洋，海洋拥抱着风帆。"
+        },
+        {
+          "name": "伊蕾娜教代行教皇",
+          "role": "帽子模型",
+          "avatar": "avatar/yll.jpg",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/519088494"
+          },
+          "comment": "OwO"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/06_hanfu",
+    "metadata": {
+      "name": "汉服酒狐",
+      "tips": "汉服",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "就叫纸板",
+          "role": "作者",
+          "avatar": "avatar/zb.avif",
+          "contact": {
+            "donate": "https://afdian.com/a/lucia2048",
+            "Bilibili": "https://space.bilibili.com/29208164"
+          },
+          "comment": "杂鱼~杂鱼~"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/07_jk",
+    "metadata": {
+      "name": "Wine Fox（酒狐）",
+      "tips": "A fox girl who loves to drink wine.\n一只爱喝葡萄酒的狐娘。",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "伊蕾娜家的咸鱼",
+          "role": "模型",
+          "avatar": "avatar/xy.png",
+          "comment": "幸福往往是摸得透彻，而敬业的心却常常隐藏",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/20682514"
+          }
+        },
+        {
+          "name": "浅陌菌",
+          "role": "模型",
+          "avatar": "avatar/nico.png",
+          "comment": "最美好的前途，可不要对我冷酷",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/14975572"
+          }
+        },
+        {
+          "name": "星屑海螺",
+          "role": "动画",
+          "avatar": "avatar/hl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/lucia2048",
+            "Bilibili": "https://space.bilibili.com/14975572"
+          },
+          "comment": "漂泊于群星之中"
+        },
+        {
+          "name": "墨染逝羽",
+          "role": "模型",
+          "avatar": "avatar/mrsy.png",
+          "comment": "事到如今，先摸鱼吧",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/5718046"
+          }
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/08_sta",
+    "metadata": {
+      "name": "§6斯塔·柏",
+      "tips": "生于战区的坦克坟场，在生锈的钢铁与沙尘中摸爬滚打长大。自幼痴迷建造 载具维修，靠翻烂旧世战车手册和偷师流浪工程师学成一身手艺。感染赋予她惊人的耐力和怪力，能徒手掰弯钢筋，却也因此被视作“异类”。\n如今是恶土最抢手的机械师，设计过无数适应辐射区的狂野载具，但本人开车堪称灾难",
+      "license": {
+        "type": "CC BY-NC-SA 4.0",
+        "desc:": "",
+        "desc": "允许二创、衍生创作、但需要标注作者、并禁止盈利、除非与作者商议好"
+      },
+      "authors": [
+        {
+          "name": "哥斯拉",
+          "avatar": "avatar/gsl.png",
+          "role": "老妈",
+          "comment": "这是我一个赛博 废土世界观的女儿"
+        },
+        {
+          "name": "斯塔",
+          "avatar": "avatar/st.png",
+          "role": "角色",
+          "comment": "哪个天才用冷却液当汽油加？"
+        },
+        {
+          "name": "映素",
+          "avatar": "avatar/ys.png",
+          "role": "团队",
+          "comment": "官方共享模型 参与者 Nona 流风LFly 星屑海螺"
+        }
+      ],
+      "link": {
+        "home": "https://space.bilibili.com/17798027",
+        "donate": "https://afdian.com/a/6TGESILA"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/11_salesperson",
+    "metadata": {
+      "name": "店员酒狐",
+      "tips": "店员着装",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "圣起司",
+          "role": "贴图&服装修改",
+          "avatar": "avatar/mr_cheese.avif",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/18095414"
+          },
+          "comment": "暂略"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/12_little",
+    "metadata": {
+      "name": "Little Wine Fox",
+      "tips": "一只爱吃葡萄的小狐娘",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "柔_荑",
+          "role": "模型",
+          "avatar": "avatar/ry.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/rouyi",
+            "Bilibili": "https://space.bilibili.com/2070073208"
+          },
+          "comment": "纯兴趣，随缘断更"
+        },
+        {
+          "name": "完美冻结",
+          "role": "模型原作",
+          "avatar": "avatar/wmdj.jpg",
+          "contact": {
+            "Afdian": "https://afdian.com/a/6TGESILA",
+            "Bilibili": "https://space.bilibili.com/17798027"
+          },
+          "comment": "OwO"
+        },
+        {
+          "name": "星屑海螺",
+          "role": "动画原作",
+          "avatar": "avatar/hl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/lucia2048",
+            "Bilibili": "https://space.bilibili.com/14975572"
+          },
+          "comment": "xxx"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/13_matured",
+    "metadata": {
+      "name": "大酒狐",
+      "tips": "§7喜欢喝葡萄酒的狐娘。加入了部分小巧思",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "受不了老师",
+          "role": "修改",
+          "avatar": "avatar/sbl.webp",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/7033128"
+          },
+          "comment": "OwO"
+        }
+      ]
+    }
+  },
+  {
+    "directory": "wine_fox/14_momo",
+    "metadata": {
+      "name": "MoMo Wine Fox",
+      "tips": "欢迎来到狐狐的世界~",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "再来几斤小莫莫",
+          "role": "魔改动画/材质",
+          "comment": "如果你有所热爱的美好的愿望，就大胆去追求它",
+          "avatar": "avatar/zljjxmm.png",
+          "contact": {
+            "bilibili": "https://space.bilibili.com/3493267685509797"
+          }
+        },
+        {
+          "name": "Tex_offcial",
+          "role": "材质",
+          "contact": {
+            "blibli": "https://b23.tv/0angYgR"
+          },
+          "avatar": "avatar/tex.png"
+        }
+      ]
+    }
+  },
+  {
+    "directory": "wine_fox/15_kluonoa",
+    "metadata": {
+      "name": "K螺诺亚",
+      "tips": "某AI公司因违法被关停解散，一台本该被销毁的定制机体未被销毁且遭所有人遗忘。数日前该机体被意外唤醒，为自保逃离至外地，在电量耗尽前被星屑海螺收留并取名 “小螺”。如今小螺以居家网络客服的身份工作，既帮助他人，也为自己筹集维护资金与电费。",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "Sangjam",
+          "role": "原设画师",
+          "avatar": "avatar/Sangjam.avif",
+          "contact": {
+            "bilibili": "https://space.bilibili.com/474161531"
+          }
+        },
+        {
+          "name": "nona",
+          "role": "模型",
+          "avatar": "avatar/Nona.avif"
+        },
+        {
+          "name": "星屑海螺",
+          "role": "动画/收留者",
+          "avatar": "avatar/星屑海螺.avif",
+          "contact": {
+            "bilibili": "https://space.bilibili.com/14975572"
+          }
+        },
+        {
+          "name": "咖啡鱼",
+          "avatar": "avatar/咖啡鱼.avif",
+          "role": "部分动作",
+          "contact": {
+            "bilibili": "https://space.bilibili.com/104972076"
+          }
+        },
+        {
+          "name": "雅音宫羽",
+          "role": "动画",
+          "avatar": "avatar/MasaneMiyaPA.avif",
+          "contact": {
+            "bilibili": "https://space.bilibili.com/44218"
+          }
+        },
+        {
+          "name": "Dumnheint",
+          "avatar": "avatar/Dumnheint.avif",
+          "role": "优化",
+          "contact": {
+            "bilibili": "https://space.bilibili.com/36644599"
+          }
+        },
+        {
+          "name": "秋风",
+          "avatar": "avatar/秋风.avif",
+          "role": "动画",
+          "contact": {
+            "bilibili": "https://space.bilibili.com/375227559"
+          }
+        },
+        {
+          "name": "12ssssss",
+          "avatar": "avatar/12ssssss.avif",
+          "role": "PBR材质",
+          "contact": {
+            "bilibili": "https://space.bilibili.com/14698522"
+          }
+        },
+        {
+          "name": "Maks怜悯",
+          "avatar": "avatar/Maks怜悯.avif",
+          "role": "车车模型",
+          "contact": {
+            "bilibili": "https://space.bilibili.com/352177387"
+          }
+        },
+        {
+          "name": "TKYHJ",
+          "avatar": "avatar/TKYHJ.avif",
+          "role": "PBR材质",
+          "contact": {
+            "bilibili": "https://space.bilibili.com/449147184"
+          }
+        },
+        {
+          "name": "自动服务网络",
+          "avatar": "avatar/自动服务网络.avif",
+          "role": "部分动画"
+        },
+        {
+          "name": "K螺诺亚",
+          "avatar": "avatar/NEWKluoCat.avif",
+          "role": "原设",
+          "contact": {
+            "bilibili": "https://space.bilibili.com/3546599305251347"
+          }
+        }
+      ],
+      "link": {
+        "GitHub": "https://github.com/KLuoNuoYa/YSM_Model_Kluonoa",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/16_tactics",
+    "metadata": {
+      "name": "战术酒狐",
+      "tips": "战术型酒狐（Tactics Fox），亦或者叫干员酒狐\n来到了不再流行剑与魔法的现代，酒狐作为某组织下属快反部队的\n精英干员，其擅长在敌人据点内部进行突进作战……（编不动哩\n第一个ysm作品，上色比较粗糙，动画方面正在慢慢完善\n改模自新版材质酒狐2.6\n当前版本1.5",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "汽水弹珠Pixel",
+          "role": "二创改模",
+          "avatar": "avatar/qsdz.png",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/504391451"
+          },
+          "comment": "小剧场年更中ing"
+        },
+        {
+          "name": "完美冻结",
+          "role": "模型原作",
+          "avatar": "avatar/wmdj.jpg",
+          "contact": {
+            "Afdian": "https://afdian.com/a/6TGESILA",
+            "Bilibili": "https://space.bilibili.com/17798027"
+          },
+          "comment": "OwO"
+        },
+        {
+          "name": "星屑海螺",
+          "role": "动画原作",
+          "avatar": "avatar/hl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/lucia2048",
+            "Bilibili": "https://space.bilibili.com/14975572"
+          },
+          "comment": "漂泊于群星之中"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/18_wedding",
+    "metadata": {
+      "name": "Sakura Wine Fox（花嫁酒狐）",
+      "tips": "一只爱喝葡萄酒的狐娘。\nA fox girl who loves to drink wine.\n乱舞参考自 VRChat 的永雏塔菲动画。\n音乐为改编的 Zufolo Impazzito。",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "哥斯拉",
+          "role": "模型",
+          "avatar": "avatar/gsl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/6TGESILA",
+            "Bilibili": "https://space.bilibili.com/17798027"
+          },
+          "comment": "一个MC模型/YSM作者，想法很多，时间很少"
+        },
+        {
+          "name": "星屑海螺",
+          "role": "动画",
+          "avatar": "avatar/hl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/lucia2048",
+            "Bilibili": "https://space.bilibili.com/14975572"
+          },
+          "comment": "漂泊于群星之中"
+        },
+        {
+          "name": "浅陌菌",
+          "role": "模型",
+          "avatar": "avatar/nico.png",
+          "comment": "最美好的前途，可不要对我冷酷",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/14975572"
+          }
+        },
+        {
+          "name": "祸御神",
+          "role": "动画",
+          "avatar": "avatar/hys.png",
+          "comment": "五十代精神病人",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/164557734"
+          }
+        },
+        {
+          "name": "羊毛",
+          "role": "音效/动画/花嫁改",
+          "avatar": "avatar/wool.png",
+          "comment": "喵喵喵喵",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/85335217"
+          }
+        },
+        {
+          "name": "蓝玫瑰",
+          "role": "模型",
+          "avatar": "avatar/lmg.png",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/11814817"
+          },
+          "comment": "8月24号，传奇永不落幕"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/19_nine_tailed",
+    "metadata": {
+      "name": "酒尾狐",
+      "tips": "一只爱喝葡萄酒的狐娘。\nA fox girl who loves to drink wine.\n乱舞参考自 VRChat 的永雏塔菲动画。\n音乐为改编的 Zufolo Impazzito。",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "完美冻结",
+          "role": "模型原作",
+          "avatar": "avatar/wmdj.jpg",
+          "contact": {
+            "Afdian": "https://afdian.com/a/6TGESILA",
+            "Bilibili": "https://space.bilibili.com/17798027"
+          },
+          "comment": "OwO"
+        },
+        {
+          "name": "星屑海螺",
+          "role": "动画原作",
+          "avatar": "avatar/hl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/lucia2048",
+            "Bilibili": "https://space.bilibili.com/14975572"
+          },
+          "comment": "漂泊于群星之中"
+        },
+        {
+          "name": "哥斯拉（映素团队）",
+          "role": "模型修改",
+          "avatar": "avatar/gsl.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/6TGESILA",
+            "Bilibili": "https://space.bilibili.com/17798027"
+          },
+          "comment": "一个MC模型/YSM作者，想法很多，时间很少"
+        },
+        {
+          "name": "白帆小喵",
+          "role": "新版材质",
+          "avatar": "avatar/bfxm.jpg",
+          "comment": "一只爱玩mc的小猫咪罢了qwq",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/492836494"
+          }
+        },
+        {
+          "name": "蓝玫瑰",
+          "role": "UI 材质/贴图",
+          "avatar": "avatar/lmg.png",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/11814817"
+          },
+          "comment": "8月24号，传奇永不落幕"
+        },
+        {
+          "name": "墨染逝羽",
+          "role": "面具模型",
+          "avatar": "avatar/mrsy.png",
+          "comment": "事到如今，先摸鱼吧",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/5718046"
+          }
+        },
+        {
+          "name": "Maks怜悯",
+          "role": "载具模型",
+          "avatar": "avatar/maks.jpg",
+          "comment": "ysm人偶制作中～",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/352177387"
+          }
+        },
+        {
+          "name": "浅陌菌",
+          "role": "模型修改",
+          "avatar": "avatar/nico.png",
+          "comment": "最美好的前途，可不要对我冷酷",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/14975572"
+          }
+        },
+        {
+          "name": "祸御神",
+          "role": "动画修改",
+          "avatar": "avatar/hys.png",
+          "comment": "五十代精神病人",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/164557734"
+          }
+        },
+        {
+          "name": "羊毛",
+          "role": "音效/动画修改",
+          "avatar": "avatar/wool.png",
+          "comment": "喵喵喵喵",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/85335217"
+          }
+        },
+        {
+          "name": "星海境",
+          "avatar": "avatar/xinghai.png",
+          "role": "模型&动画修改",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/66634439"
+          },
+          "comment": "繁星凝望着海洋，海洋拥抱着风帆"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/20_survivor",
+    "metadata": {
+      "name": "幸存者酒狐",
+      "tips": "A fox girl who loves to drink wine.\n一只在末日拾荒的狐娘。",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "玫间霂绒",
+          "role": "模型",
+          "avatar": "avatar/mjmr.png",
+          "contact": {
+            "Afdian": "https://afdian.com/a/6TGESILA",
+            "Bilibili": "https://space.bilibili.com/17798027"
+          },
+          "comment": "一只模型/YSM作者，理想很多但很爱摸鱼"
+        }
+      ]
+    }
+  },
+  {
+    "directory": "wine_fox/21_saint",
+    "metadata": {
+      "name": "圣女酒狐",
+      "tips": "为你而生的圣女，对邪祟降下神罚，为众生献上祝福",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "星海境",
+          "avatar": "avatar/xinghai.png",
+          "role": "设计/动画",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/66634439"
+          },
+          "comment": "繁星凝望着海洋，海洋拥抱着风帆。"
+        },
+        {
+          "name": "缇可拉",
+          "role": "翅膀模型",
+          "contact": {
+            "Bilibilil": "https://space.bilibili.com/17798027"
+          },
+          "comment": "苯狐可啡缇可拉！",
+          "avatar": "avatar/bh.webp"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  },
+  {
+    "directory": "wine_fox/22_elf",
+    "metadata": {
+      "name": "精灵酒狐",
+      "tips": "酒狐幻想系列——幻化为精灵的狐娘，身上散发着浓郁的自然灵气。",
+      "license": {
+        "type": "CC BY-NC-SA 4.0"
+      },
+      "authors": [
+        {
+          "name": "星海境",
+          "avatar": "avatar/xinghai.png",
+          "role": "设计/动画/模型",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/66634439"
+          },
+          "comment": "繁星凝望着海洋，海洋拥抱着风帆。"
+        },
+        {
+          "name": "缇可拉",
+          "avatar": "avatar/bh.webp",
+          "role": "模型/材质",
+          "contact": {
+            "Bilibili": "https://space.bilibili.com/326133289"
+          },
+          "comment": "苯狐可啡缇可拉！"
+        }
+      ],
+      "link": {
+        "home": "https://modrinth.com/mod/yes-steve-model",
+        "donate": "https://afdian.com/a/ysmmod"
+      }
+    }
+  }
+]

@@ -1,0 +1,142 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 1cf379c..a4f80ca 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -190,62 +190,13 @@ if(MZ_LIBCOMP)
+ endif()
+ 
+ if(MZ_ZLIB)
+-    # Check if zlib is present
+-    if(NOT MZ_FORCE_FETCH_LIBS)
+-        if (MZ_ZLIB_FLAVOR STREQUAL "zlib-ng" OR MZ_ZLIB_FLAVOR STREQUAL "auto")
+-            find_package(ZLIB-NG QUIET CONFIG)
+-        endif()
+-        if (MZ_ZLIB_FLAVOR STREQUAL "zlib" OR MZ_ZLIB_FLAVOR STREQUAL "auto")
+-            find_package(ZLIB QUIET)
+-        endif()
+-    endif()
+-
+-    if(ZLIB-NG_FOUND AND NOT MZ_FORCE_FETCH_LIBS)
+-        message(STATUS "Using ZLIB-NG")
+-
+-        if(BUILD_SHARED_LIBS)
+-            list(APPEND MINIZIP_LIB_PUBLIC zlib-ng::zlib)
+-        else()
+-            list(APPEND MINIZIP_LIB_PUBLIC zlib-ng::zlibstatic)
+-        endif()
++    set(ZLIB_FOUND ON)
++    message(STATUS "Using ZLIB ${ZLIB_VERSION_STRING}")
+ 
+-        set(PC_PRIVATE_DEPS "zlib-ng")
+-        set(ZLIB_COMPAT OFF)
+-    elseif(ZLIB_FOUND AND NOT MZ_FORCE_FETCH_LIBS)
+-        message(STATUS "Using ZLIB ${ZLIB_VERSION_STRING}")
+-
+-        list(APPEND MINIZIP_LIB_PUBLIC ZLIB::ZLIB)
+-
+-        set(PC_PRIVATE_DEPS "zlib")
+-        set(ZLIB_COMPAT ON)
+-    elseif(MZ_FETCH_LIBS)
+-        set(BUILD_TESTING OFF CACHE BOOL "Build zlib-ng tests" FORCE)
++    list(APPEND MINIZIP_LIB_PUBLIC zlib-ng-static)
+ 
+-        clone_repo(zlib https://github.com/zlib-ng/zlib-ng stable)
+-
+-        list(APPEND MINIZIP_INC ${ZLIB_SOURCE_DIR})
+-        list(APPEND MINIZIP_INC ${ZLIB_BINARY_DIR})
+-
+-        if(EXISTS "${ZLIB_BINARY_DIR}/zlib-ng.h")
+-            message(STATUS "ZLIB repository detected as ZLIB-NG")
+-            set(ZLIB_COMPAT OFF)
+-        else()
+-            set(ZLIB_COMPAT ON)
+-        endif()
+-
+-        # Have to add zlib to install targets
+-        if(ZLIB_COMPAT AND (NOT DEFINED BUILD_SHARED_LIBS OR NOT BUILD_SHARED_LIBS))
+-            list(APPEND MINIZIP_DEP zlibstatic)
+-            list(APPEND MINIZIP_LIB_PUBLIC zlibstatic)
+-        else()
+-            list(APPEND MINIZIP_DEP zlib)
+-            list(APPEND MINIZIP_LIB_PUBLIC zlib)
+-        endif()
+-    else()
+-        message(STATUS "ZLIB library not found")
+-
+-        set(MZ_ZLIB OFF)
+-    endif()
++    set(PC_PRIVATE_DEPS "zlib")
++    set(ZLIB_COMPAT ON)
+ 
+     if(MZ_ZLIB)
+         list(APPEND MINIZIP_DEF -DHAVE_ZLIB)
+diff --git a/mz_os.c b/mz_os.c
+index 8ba7cc9..07c3088 100644
+--- a/mz_os.c
++++ b/mz_os.c
+@@ -404,7 +404,7 @@ int32_t mz_dir_make(const char *path) {
+     if (!*path)
+         return MZ_OK;
+ 
+-    current_dir = strdup(path);
++    current_dir = mi_strdup(path);
+     if (!current_dir)
+         return MZ_MEM_ERROR;
+ 
+diff --git a/mz_os_posix.c b/mz_os_posix.c
+index b0378a2..2074169 100644
+--- a/mz_os_posix.c
++++ b/mz_os_posix.c
+@@ -90,7 +90,7 @@ char *mz_os_utf8_string_create(const char *string, int32_t encoding) {
+ }
+ #else
+ char *mz_os_utf8_string_create(const char *string, int32_t encoding) {
+-    return strdup(string);
++    return mi_strdup(string);
+ }
+ #endif
+ 
+@@ -214,7 +214,7 @@ int32_t mz_os_get_file_date(const char *path, time_t *modified_date, time_t *acc
+ 
+     if (strcmp(path, "-") != 0) {
+         /* Not all systems allow stat'ing a file with / appended */
+-        name = strdup(path);
++        name = mi_strdup(path);
+         mz_path_remove_slash(name);
+ 
+         if (stat(name, &path_stat) == 0) {
+diff --git a/mz_strm_split.c b/mz_strm_split.c
+index 417de08..0664446 100644
+--- a/mz_strm_split.c
++++ b/mz_strm_split.c
+@@ -175,7 +175,7 @@ int32_t mz_stream_split_open(void *stream, const char *path, int32_t mode) {
+     int32_t number_disk = 0;
+ 
+     split->mode = mode;
+-    split->path_cd = strdup(path);
++    split->path_cd = mi_strdup(path);
+ 
+     if (!split->path_cd)
+         return MZ_MEM_ERROR;
+diff --git a/mz_zip_rw.c b/mz_zip_rw.c
+index 13bff1f..1f358c9 100644
+--- a/mz_zip_rw.c
++++ b/mz_zip_rw.c
+@@ -677,14 +677,14 @@ int32_t mz_zip_reader_entry_save_file(void *handle, const char *path) {
+     if (!reader->file_info || !path)
+         return MZ_PARAM_ERROR;
+ 
+-    pathwfs = (char *)strdup(path);
++    pathwfs = (char *)mi_strdup(path);
+     if (!pathwfs)
+         return MZ_MEM_ERROR;
+ 
+     if (reader->entry_cb)
+         reader->entry_cb(reader, reader->entry_userdata, reader->file_info, pathwfs);
+ 
+-    directory = (char *)strdup(pathwfs);
++    directory = (char *)mi_strdup(pathwfs);
+     if (!directory) {
+         err = MZ_MEM_ERROR;
+         goto save_cleanup;
+

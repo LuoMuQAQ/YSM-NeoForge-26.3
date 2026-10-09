@@ -1,0 +1,158 @@
+diff --git a/cryptopp/CMakeLists.txt b/cryptopp/CMakeLists.txt
+index 7a78807..bc4bcab 100644
+--- a/cryptopp/CMakeLists.txt
++++ b/cryptopp/CMakeLists.txt
+@@ -170,6 +170,7 @@ function(check_compile_link_option opt var prog)
+         COMMAND_SUCCESS
+         ${CMAKE_BINARY_DIR}
+         ${prog}
++        CMAKE_FLAGS "-DINCLUDE_DIRECTORIES=${cryptopp_SOURCE_DIR}"
+         COMPILE_DEFINITIONS ${definitions}
+     )
+     if(COMMAND_SUCCESS)
+@@ -321,6 +322,10 @@ endif()
+ 
+ # ##############################################################################
+ 
++if(MSVC AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
++    set(MSVC_CLANG_CL TRUE)
++endif()
++
+ if(MSVC)
+     set(CRYPTOPP_MSVC_COMPILE_OPTIONS)
+ 
+@@ -336,9 +341,9 @@ if(MSVC)
+     if(HAVE_WINAPIFAMILY_H AND (NOT (USE_CCACHE)))
+         list(APPEND CRYPTOPP_MSVC_COMPILE_OPTIONS "/FIwinapifamily.h")
+     endif()
+-
++    list(APPEND CRYPTOPP_MSVC_COMPILE_OPTIONS "/clang:-Wno-macro-redefined")
+     list(APPEND CRYPTOPP_MSVC_COMPILE_OPTIONS "/GR")
+-    list(APPEND CRYPTOPP_MSVC_COMPILE_OPTIONS "/MP")
++    list(APPEND CRYPTOPP_MSVC_COMPILE_OPTIONS "/D_HAS_STATIC_RTTI=1")
+     list(APPEND CRYPTOPP_MSVC_COMPILE_OPTIONS "/EHsc")
+ endif()
+ 
+@@ -415,6 +420,37 @@ endif()
+ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+ include(sources)
+ 
++if(MSVC_CLANG_CL AND (CRYPTOPP_I386 OR CRYPTOPP_AMD64))
++    set(_ysm_cryptopp_x86_v3_flags "/clang:-march=x86-64-v3")
++    set(_ysm_cryptopp_aes_flags ${_ysm_cryptopp_x86_v3_flags} "/clang:-maes")
++    set(_ysm_cryptopp_pclmul_flags ${_ysm_cryptopp_x86_v3_flags} "/clang:-mpclmul")
++    set(_ysm_cryptopp_sha_flags ${_ysm_cryptopp_x86_v3_flags} "/clang:-msha")
++
++    list(APPEND CRYPTOPP_AES_FLAGS ${_ysm_cryptopp_aes_flags})
++    list(APPEND CRYPTOPP_ARIA_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_BLAKE2B_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_BLAKE2S_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_CHACHA_AVX2_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_CHACHA_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_CHAM_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_CRC_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_DONNA_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_GCM_FLAGS ${_ysm_cryptopp_pclmul_flags})
++    list(APPEND CRYPTOPP_GF2N_FLAGS ${_ysm_cryptopp_pclmul_flags})
++    list(APPEND CRYPTOPP_KECCAK_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_LEA_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_LSH256_AVX2_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_LSH256_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_LSH512_AVX2_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_LSH512_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_SHA3_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_SHA_FLAGS ${_ysm_cryptopp_sha_flags})
++    list(APPEND CRYPTOPP_SIMON128_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++    list(APPEND CRYPTOPP_SM3_FLAGS "/clang:-msha")
++    list(APPEND CRYPTOPP_SM4_FLAGS ${_ysm_cryptopp_aes_flags})
++    list(APPEND CRYPTOPP_SPECK128_FLAGS ${_ysm_cryptopp_x86_v3_flags})
++endif()
++
+ # ==============================================================================
+ # Compiler and architecture specific options
+ # ==============================================================================
+@@ -821,12 +857,6 @@ if(CRYPTOPP_ARMV8)
+         )
+         if(CRYPTOPP_HAVE_ARM_SHA1)
+             list(APPEND CRYPTOPP_SHA_FLAGS -march=armv8-a+crypto)
+-        else()
+-            list(
+-                APPEND
+-                CRYPTOPP_COMPILE_DEFINITIONS
+-                "CRYPTOPP_DISABLE_ARM_SHA1=1"
+-            )
+         endif()
+
+         check_compile_link_option("-march=armv8-a+crypto"     CRYPTOPP_HAVE_ARM_SHA2
+@@ -834,20 +864,20 @@ if(CRYPTOPP_ARMV8)
+         )
+         if(CRYPTOPP_HAVE_ARM_SHA2)
+             list(APPEND CRYPTOPP_SHA_FLAGS -march=armv8-a+crypto)
+-        else()
+-            list(
+-                APPEND
+-                CRYPTOPP_COMPILE_DEFINITIONS
+-                "CRYPTOPP_DISABLE_ARM_SHA2=1"
+-            )
++        endif()
++
++        # Crypto++ 8.9 only recognizes the aggregate ARM SHA disable macro.
++        # Keep all ARM SHA intrinsics out when either required probe fails.
++        if(NOT CRYPTOPP_HAVE_ARM_SHA1 OR NOT CRYPTOPP_HAVE_ARM_SHA2)
++            list(APPEND CRYPTOPP_COMPILE_DEFINITIONS "CRYPTOPP_DISABLE_ARM_SHA=1")
+         endif()
+
+-        check_compile_link_option("-march=armv8.4-a+sm3"     CRYPTOPP_HAVE_ARM_SM3
++        check_compile_link_option("-march=armv8.4-a+sm4"     CRYPTOPP_HAVE_ARM_SM3
+                                   "${TEST_PROG_DIR}/test_arm_sm3.cpp"
+         )
+         if(CRYPTOPP_HAVE_ARM_SM3)
+-            list(APPEND CRYPTOPP_SM3_FLAGS -march=armv8.4-a+sm3)
+-            list(APPEND CRYPTOPP_SM4_FLAGS -march=armv8.4-a+sm3)
++            list(APPEND CRYPTOPP_SM3_FLAGS -march=armv8.4-a+sm4)
++            list(APPEND CRYPTOPP_SM4_FLAGS -march=armv8.4-a+sm4)
+         else()
+             # list(APPEND CRYPTOPP_COMPILE_DEFINITIONS "CRYPTOPP_DISABLE_ARM_SM3=1")
+             # list(APPEND CRYPTOPP_COMPILE_DEFINITIONS "CRYPTOPP_DISABLE_ARM_SM4=1")
+@@ -865,9 +895,9 @@ if(CRYPTOPP_ARMV8)
+         check_compile_link_option(
+-          "-march=armv8.4-a+sha512"     CRYPTOPP_HAVE_ARM_SHA512
++          "-march=armv8.4-a+sha3"     CRYPTOPP_HAVE_ARM_SHA512
+           "${TEST_PROG_DIR}/test_arm_sha512.cpp"
+         )
+         if(CRYPTOPP_HAVE_ARM_SHA512)
+-            list(APPEND CRYPTOPP_SHA3_FLAGS -march=armv8.4-a+sha512)
++            list(APPEND CRYPTOPP_SHA3_FLAGS -march=armv8.4-a+sha3)
+         else()
+             # list(APPEND CRYPTOPP_COMPILE_DEFINITIONS
+             # "CRYPTOPP_DISABLE_ARM_SHA512=1")
+@@ -1240,8 +1270,8 @@ set_source_files_properties(
+ # ------------------------------------------------------------------------------
+ # Compiler: MSVC
+ # ------------------------------------------------------------------------------
+-if(MSVC AND NOT CRYPTOPP_DISABLE_ASM)
+-    if(${CMAKE_GENERATOR_PLATFORM} MATCHES "ARM")
++if(MSVC AND NOT MSVC_CLANG_CL AND NOT CRYPTOPP_DISABLE_ASM)
++    if(CMAKE_GENERATOR_PLATFORM MATCHES "ARM")
+         message(
+             STATUS
+             "[cryptopp] Disabling ASM because ARM is specified as target platform."
+@@ -1365,6 +1395,7 @@ set_target_properties(
+     PROPERTIES
+         VERSION ${cryptopp-cmake_VERSION}
+         SOVERSION ${cryptopp-cmake_VERSION_MAJOR}
++        CXX_STANDARD 23
+ )
+ set_target_properties(cryptopp PROPERTIES LINKER_LANGUAGE CXX)
+ if(${CRYPTOPP_BUILD_SHARED})
+@@ -1383,6 +1414,10 @@ target_include_directories(
+         $<BUILD_INTERFACE:${CRYPTOPP_PREFIXED_INCLUDE_DIR}>
+         $<INSTALL_INTERFACE:include>
+ )
++if(ANDROID OR "${TARGET_OS}" STREQUAL "ANDROID")
++    find_package(cpu_features CONFIG REQUIRED)
++    target_link_libraries(cryptopp cpu_features)
++endif()
+
+ if(CMAKE_CXX_COMPILER_ID STREQUAL "SunPro")
+     target_link_options(cryptopp PRIVATE ${CRYPTOPP_SUN_LDFLAGS})

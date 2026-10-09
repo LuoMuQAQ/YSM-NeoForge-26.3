@@ -1,0 +1,12 @@
+// Modified by LuoMuQAQ: use the same JDK 25 for the build helper and the 26.3 port.
+plugins {
+    id 'java'
+}
+
+dependencies {
+    implementation gradleApi()
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
+}

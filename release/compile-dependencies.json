@@ -1,0 +1,100 @@
+[
+  {
+    "project": "Jade",
+    "filename": "Jade-mc26.3-NeoForge-26.3.5.jar",
+    "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/dVB8U7Td/Jade-mc26.3-NeoForge-26.3.5.jar",
+    "sha256": "c981ed9ad46613d0805dd10a435190d92e6850a61df3c5f4f6d653e24ef0b712",
+    "sha512": "32219fb2a8b004d027179bdf2707647be4c08ab374ca5204432d63601e7e4cbc4f4574273289bb867a8afa476db63a69a5a0d08746e9bc134d52eb41489e3add"
+  },
+  {
+    "project": "curios",
+    "filename": "curios-neoforge-17.0.0-beta.2+26.3.jar",
+    "url": "https://cdn.modrinth.com/data/vvuO3ImH/versions/LeVAnMq4/curios-neoforge-17.0.0-beta.2%2B26.3.jar",
+    "sha256": "c71f480af023b69598f7ac3cf4e677f8eed9291c1d9a4022fa17163e231238cb",
+    "sha512": "4eca404d26fee1d78d148fe563c6d6b227da831da93e48afc2dc79e6867ce8ff71906fc1bf1087d5aad809f958157e00d07808863d76018c9f5dde392f057a1f"
+  },
+  {
+    "project": "carry-on",
+    "filename": "carryon-neoforge-26.3-2.12.0.jar",
+    "url": "https://cdn.modrinth.com/data/joEfVgkn/versions/EQXsdrdI/carryon-neoforge-26.3-2.12.0.jar",
+    "sha256": "5e966771a3a1b21597e635c03fdbeb929e7f579d533f6cf48e193a4007832e22",
+    "sha512": "e888ee1265c7828bab48bd489e50d32eb2fb9998ac05ccc55d3ef15147157611a50c7a6c031efb09650b5b376d700cd5f7232dd03c187519db961ac5403c959b"
+  },
+  {
+    "project": "first-person-model",
+    "filename": "firstperson-neoforge-2.7.3-mc26.3.jar",
+    "url": "https://cdn.modrinth.com/data/H5XMjpHi/versions/fhSP8fWj/firstperson-neoforge-2.7.3-mc26.3.jar",
+    "sha256": "d71256b645068d00929d6db5fc38d48a003ae75e500a5cdcb9abc0844baf783e",
+    "sha512": "b1aebec69ac3e01c26cf34420863f633082e80a8f78d3f3b2792fdffb0bc6b0d5ee9b6ed29f1389aaf9aa972fe195004d03249f273a246f90f9a98096bc5154f"
+  },
+  {
+    "project": "better-combat",
+    "filename": "bettercombat-neoforge-3.2.2+26.3.jar",
+    "url": "https://cdn.modrinth.com/data/5sy6g3kz/versions/RbEnSa47/bettercombat-neoforge-3.2.2%2B26.3.jar",
+    "sha256": "633af208c681a51b83586925f6a70c2a4b947165394728daf0b5e8ed6bcb4da1",
+    "sha512": "2ad3584995acc8bc7693942a150d674a9147651c2103f6d8225eb61203c04cd19c8cd8f0fdf530ff6ddd6fc7c061f5d80ecd1df225b84390675d78b69fcb4843"
+  },
+  {
+    "project": "iris",
+    "filename": "iris-neoforge-1.11.7+mc26.3.jar",
+    "url": "https://cdn.modrinth.com/data/YL57xq9U/versions/Ag5S66CF/iris-neoforge-1.11.7%2Bmc26.3.jar",
+    "sha256": "2260506334a17ac566ea30169ab491201208f55c1c7212bb987bc0c7c59a8d93",
+    "sha512": "302659f09e50d02a6cd96075be93aade2a2f9d709afe21d56465228fb7d7f4717566e3702a7872479df2fff9b7a5ff5b1b6047cc95e09ee6120fad5ea5857eec"
+  },
+  {
+    "project": "shoulder-surfing-reloaded",
+    "filename": "ShoulderSurfing-NeoForge-26.3-5.2.0.jar",
+    "url": "https://cdn.modrinth.com/data/kepjj2sy/versions/NLtlz49E/ShoulderSurfing-NeoForge-26.3-5.2.0.jar",
+    "sha256": "88fe4848649804a08299a4c11f73e635fbf95ac9df3524848ac3733322d73913",
+    "sha512": "9436584234cc485144de36078f67c10abb3959ab17227a593fd7a465f137b47baef524904d3296a31c5e1794cae54fb82fd2312925c9dd106fa3bb802a6d37ed"
+  },
+  {
+    "project": "sodium",
+    "filename": "sodium-neoforge-0.9.2+mc26.3.jar",
+    "url": "https://cdn.modrinth.com/data/AANobbMI/versions/VHtnT9Q4/sodium-neoforge-0.9.2%2Bmc26.3.jar",
+    "sha256": "5514d68728f7d332da26a0809acf633fd2f9bbfe956891c85d3194dcb2aaf590",
+    "sha512": "f5b62730bbee7d116a83c765b8e7cdb660da97ab7f122f180293eda3e56b5ca4d701b0bf18c36f087e9a7349f8ec113f1f8c0d462a8893c551a2f3e163bd0cb8"
+  },
+  {
+    "project": "real-camera",
+    "filename": "realcamera-26.3-neoforge-0.7.8-beta.jar",
+    "url": "https://cdn.modrinth.com/data/fYYSAh4R/versions/UlS34FcA/realcamera-26.3-neoforge-0.7.8-beta.jar",
+    "sha256": "b8aaaffc18a9328449f88a31a42dfa6edd350c8f41f5fbd5e31b3ddc9eefeaac",
+    "sha512": "4e7039437201a406473789aeabea3ec72ab57445839b355486357d3872f02219978fe763fb72459b8569efdd33d7db5d63152938c8259b9f7e5e457384988246"
+  },
+  {
+    "project": "sophisticated-backpacks",
+    "filename": "sophisticatedbackpacks-26.3-3.26.10.2196.jar",
+    "url": "https://cdn.modrinth.com/data/TyCTlI4b/versions/EoQZzGA8/sophisticatedbackpacks-26.3-3.26.10.2196.jar",
+    "sha256": "d4525e1692faacb42ed9f474a9ecbe02da943c307bec36c22d87a05e8693f2ff",
+    "sha512": "48c9fba5f6cbb6243902ceed0c5cb815da4a6070743b0cab3575581a4fa3550aacb3fcc8fb4a053dae363ce5b89a21565e17529c6599784ce2767198e68bcbf7"
+  },
+  {
+    "project": "sophisticated-core",
+    "filename": "sophisticatedcore-26.3-1.5.6.2382.jar",
+    "url": "https://cdn.modrinth.com/data/nmoqTijg/versions/5sfweEnF/sophisticatedcore-26.3-1.5.6.2382.jar",
+    "sha256": "2321b7cd859c100c56311d8680953d741c9a7536f15cb3ff461c182e3e42e5f3",
+    "sha512": "e53b1e62ea77b3000c2d0b528e3a5b64133d6d5f05be7dd035a4e3ac9eb8bd7e87f3781f8fbef0dc24a26563b290d787d930883030fbbc8a2d2fe7ef0c6d63e9"
+  },
+  {
+    "project": "cloth-config",
+    "filename": "cloth-config-neoforge-26.3.159.jar",
+    "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/GchRXPnb/cloth-config-neoforge-26.3.159.jar",
+    "sha256": "24adcf323c6a439226aced11d2cd4f8e6e629b82de6f1c7d71a7b9ba37ebf81d",
+    "sha512": "941dd8aab50d658cfa6da071dacd05802c7097643ad569935d0073b39231a2137f2ade2403b791f70cf5ebf1649d7b6337862568a8b340c88e5d364569f94431"
+  },
+  {
+    "project": "not-enough-animations",
+    "filename": "notenoughanimations-neoforge-1.12.6-mc26.3.jar",
+    "url": "https://cdn.modrinth.com/data/MPCX6s5C/versions/YEeJ72Hz/notenoughanimations-neoforge-1.12.6-mc26.3.jar",
+    "sha256": "55366363c1156d2ba3a48fa06b26b5d3d7553091e86ed91ce07d1b097be55f05",
+    "sha512": "7395b23f1fa4b5f2c907fd4d84e7fbf0342e23f99e0eece6ef46707529eba9120051c9f0fc8354e9f5c1d161ddadeff943c8954a6c479c27de07ef9517d52ed6"
+  },
+  {
+    "project": "player-animation-library",
+    "filename": "PlayerAnimationLibMerged-1.2.8+mc.26.3.jar",
+    "url": "https://cdn.modrinth.com/data/ha1mEyJS/versions/xJ30QmpE/PlayerAnimationLibMerged-1.2.8%2Bmc.26.3.jar",
+    "sha256": "7d0454a358cd86a1ec1a0054e335be6adb6da5b2844893c74226282b489d5409",
+    "sha512": "d6870759e2f5f83c6a74b2d02aeabab937d6d8da8c46245566646bc6e8efaeeb06c978edc43a50b57a0de2d015b341c284382bc5d4ae2e450d1b6aa5f8e2e97e"
+  }
+]

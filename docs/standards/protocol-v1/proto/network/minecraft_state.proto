@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package ysm.network;
+
+import "network/common.proto";
+
+message ProjectileModelState {
+  EntityRef entity = 1;
+  ModelReference model = 2;
+  repeated MolangVariable molang_variables = 3;
+}
+
+message VehicleModelState {
+  EntityRef entity = 1;
+  ModelReference model = 2;
+  repeated MolangVariable molang_variables = 3;
+}

@@ -1,0 +1,29 @@
+sources:
+  8.0.0:
+    local: true
+patches:
+  8.0.0: []
+requirements: []
+build:
+  options: {}
+  install: false
+package:
+  cmake_file_name: jni
+  cmake_target_name: jni
+  platform_includedirs:
+    Android:
+    - include
+    - include/linux
+    Linux:
+    - include
+    - include/linux
+    Macos:
+    - include
+    - include/darwin
+    Windows:
+    - include
+    - include/win32
+  manual_headers:
+  - dst: include
+    pattern: '*'
+    src: .

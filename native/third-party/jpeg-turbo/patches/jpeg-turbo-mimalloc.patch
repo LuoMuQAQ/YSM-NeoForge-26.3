@@ -1,0 +1,106 @@
+diff --git a/src/jdatadst-tj.c b/src/jdatadst-tj.c
+index ecfaccb..55209c8 100644
+--- a/src/jdatadst-tj.c
++++ b/src/jdatadst-tj.c
+@@ -23,6 +23,7 @@
+ #include "jinclude.h"
+ #include "jpeglib.h"
+ #include "jerror.h"
++#include <mimalloc-override.h>
+ 
+ void jpeg_mem_dest_tj(j_compress_ptr cinfo, unsigned char **outbuffer,
+                       size_t *outsize, boolean alloc);
+diff --git a/src/jdatadst.c b/src/jdatadst.c
+index 529f93b..51f3354 100644
+--- a/src/jdatadst.c
++++ b/src/jdatadst.c
+@@ -22,6 +22,7 @@
+ #include "jinclude.h"
+ #include "jpeglib.h"
+ #include "jerror.h"
++#include <mimalloc-override.h>
+ 
+ 
+ /* Expanded data destination object for stdio output */
+diff --git a/src/jdicc.c b/src/jdicc.c
+index 50aa9a9..613a2a2 100644
+--- a/src/jdicc.c
++++ b/src/jdicc.c
+@@ -17,6 +17,7 @@
+ #include "jinclude.h"
+ #include "jpeglib.h"
+ #include "jerror.h"
++#include <mimalloc-override.h>
+ 
+ 
+ #define ICC_MARKER  (JPEG_APP0 + 2)     /* JPEG marker code for ICC */
+diff --git a/src/jmemnobs.c b/src/jmemnobs.c
+index 692775f..6a9f9e7 100644
+--- a/src/jmemnobs.c
++++ b/src/jmemnobs.c
+@@ -21,6 +21,7 @@
+ #include "jinclude.h"
+ #include "jpeglib.h"
+ #include "jmemsys.h"            /* import the system-dependent declarations */
++#include <mimalloc-override.h>
+ 
+ 
+ /*
+diff --git a/src/jpegint.h b/src/jpegint.h
+index 2ec6f13..e1d8ed5 100644
+--- a/src/jpegint.h
++++ b/src/jpegint.h
+@@ -1,3 +1,4 @@
++#include <mimalloc.h>
+ /*
+  * jpegint.h
+  *
+@@ -515,9 +516,9 @@ struct jpeg_color_quantizer {
+ #define MIN(a, b)       ((a) < (b) ? (a) : (b))
+ 
+ #ifdef ZERO_BUFFERS
+-#define MALLOC(size)  calloc(1, size)
++#define MALLOC(size)  mi_calloc(1, size)
+ #else
+-#define MALLOC(size)  malloc(size)
++#define MALLOC(size)  mi_malloc(size)
+ #endif
+ 
+ 
+diff --git a/src/spng/spng.c b/src/spng/spng.c
+index ef9f130..daa7d5d 100644
+--- a/src/spng/spng.c
++++ b/src/spng/spng.c
+@@ -26,6 +26,8 @@
+     #include <pthread.h>
+ #endif
+ 
++#include <mimalloc-override.h>
++
+ /* Not build options, edit at your own risk! */
+ #define SPNG_READ_SIZE (8192)
+ #define SPNG_WRITE_SIZE SPNG_READ_SIZE
+diff --git a/src/turbojpeg.c b/src/turbojpeg.c
+index 7eb5983..c81d492 100644
+--- a/src/turbojpeg.c
++++ b/src/turbojpeg.c
+@@ -46,6 +46,7 @@
+ #include "transupp.h"
+ #include "jpegapicomp.h"
+ #include "cdjpeg.h"
++#include <mimalloc-override.h>
+ 
+ #undef tj3Init
+ DLLEXPORT tjhandle tj3Init(int initType);
+diff --git a/src/wrpng.c b/src/wrpng.c
+index 3eacbf8..2793fab 100644
+--- a/src/wrpng.c
++++ b/src/wrpng.c
+@@ -20,6 +20,7 @@
+ #include "cmyk.h"
+ #include "cdjpeg.h"             /* Common decls for cjpeg/djpeg applications */
+ #include "spng/spng.h"
++#include <mimalloc-override.h>
+ 
+ #if defined(PNG_SUPPORTED) && \
+     (BITS_IN_JSAMPLE != 16 || defined(D_LOSSLESS_SUPPORTED))

@@ -1,0 +1,29 @@
+sources:
+  2.3.3:
+    url: https://github.com/zlib-ng/zlib-ng
+    tag: 2.3.3
+    commit: 12731092979c6d07f42da27da673a9f6c7b13586
+patches:
+  2.3.3:
+  - patch_file: patches/zlib-ng.patch
+requirements:
+- mimalloc/3.5.3@ysm/stable
+build:
+  global_link_targets:
+  - mimalloc-static
+  options:
+    BUILD_SHARED_LIBS: false
+    BUILD_TESTING: false
+    INSTALL_UTILS: false
+    WITH_ALL_FALLBACKS: false
+    WITH_BENCHMARKS: false
+    WITH_BENCHMARK_APPS: false
+    WITH_CODE_COVERAGE: false
+    WITH_FUZZERS: false
+    WITH_GTEST: false
+    WITH_SANITIZER: false
+    ZLIB_COMPAT: true
+  install: true
+package:
+  cmake_file_name: zlib-ng
+  cmake_target_name: zlib-ng-static
