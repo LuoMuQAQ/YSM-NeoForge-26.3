@@ -54,6 +54,15 @@ pivot directly as their shoulder root, without the extra 1.5-block vertical
 translation. The host dimensions, texture selection and foil remain in use;
 Alt+Y and attachment positions still require manual verification.
 
+Unofficial 6 development candidate binds catalog and texture card preview players
+directly to the card's ready resource lease, including the requested texture and
+initialization flag. The player borrows the lease; the card retains ownership and
+current-resource validation. Binding no longer starts a second acquisition on an
+unticked GUI player. Bounded debug messages record PIP entry and vertex extraction.
+The reported blank cards have not been reproduced by the agent, and ready cache
+hits could also bind synchronously on the old path; the screenshot's final cause
+and the candidate's visible result require manual verification.
+
 Native business code is unchanged from the recorded upstream revision. The
 Windows DLL is built from that source with the profile in release/windows-clang-profile.
 No Minecraft/NeoForge binary or external optional-mod JAR is bundled in this repository.

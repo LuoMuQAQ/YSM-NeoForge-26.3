@@ -1,10 +1,12 @@
 // Modified by LuoMuQAQ for the unofficial Minecraft 26.3 / NeoForge port (2026).
 package com.elfmcys.ysm.client.gui;
 
+import com.elfmcys.ysm.YesSteveModel;
 import com.elfmcys.ysm.client.animation.molang.PhysicsManager;
 import com.elfmcys.ysm.client.entity.CustomPlayerEntity;
 import com.elfmcys.ysm.client.entity.IPreviewEntity;
 import com.elfmcys.ysm.client.event.ClientTickEvent;
+import com.elfmcys.ysm.model.resource.client.AcquireResult;
 import com.elfmcys.ysm.model.resource.client.ResourceLease;
 import com.elfmcys.ysm.model.resource.client.ResourceRequest;
 import com.elfmcys.ysm.geckolib3.core.event.predicate.AnimationEvent;
@@ -23,14 +25,20 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class CustomGuiPlayerEntity extends CustomPlayerEntity implements IPreviewEntity {
     private final PreviewAnimationInfo guiAnimationInfo;
     private boolean allowEmitting;
+    private boolean reportedDrawState;
 
     public CustomGuiPlayerEntity() {
         super(new FakePlayer(), false, false);
         guiAnimationInfo = new PreviewAnimationInfo();
     }
 
-    void installPreviewResource(ResourceRequest request, ResourceLease lease) {
-        super.installReadyForPreview(request, lease);
+    /** The page/readback owner keeps and releases the parent lease. */
+    public void installPreviewResource(ResourceRequest request, ResourceLease lease) {
+        setInitialized();
+        textureName = request.requestedTexture();
+        super.installReadyForPreview(request, new BorrowedPreviewLease(request, lease));
+        YesSteveModel.LOGGER.debug("Bound GUI preview model={} texture={}",
+                request.modelId(), request.requestedTexture());
     }
 
     @Override
@@ -39,6 +47,7 @@ public final class CustomGuiPlayerEntity extends CustomPlayerEntity implements I
         guiAnimationInfo.setPreview("");
         guiAnimationInfo.setHover("");
         allowEmitting = false;
+        reportedDrawState = false;
         super.reset();
     }
 
@@ -87,7 +96,18 @@ public final class CustomGuiPlayerEntity extends CustomPlayerEntity implements I
         if (!updatePreviewLevel()) {
             return null;
         }
-        return super.update(partialTicks, context);
+        var data = super.update(partialTicks, context);
+        if (!reportedDrawState) {
+            reportedDrawState = true;
+            if (data == null || !data.modelState.isValid() || data.modelState.getVertexCount() == 0) {
+                YesSteveModel.LOGGER.warn("GUI preview has no drawable model: model={} bound={} initialized={}",
+                        getModelHash(), getModelRenderTarget() != null, isInitialized());
+            } else {
+                YesSteveModel.LOGGER.debug("Extracted GUI preview model={} texture={} vertices={}",
+                        getModelHash(), data.texture, data.modelState.getVertexCount());
+            }
+        }
+        return data;
     }
 
     boolean updatePreviewLevel() {
@@ -106,6 +126,26 @@ public final class CustomGuiPlayerEntity extends CustomPlayerEntity implements I
     @Override
     protected @NotNull HumanoidResourceHolder createResourceHolder(ResourceLease lease, boolean isFallback) {
         return new HumanoidResourceHolder(lease, isFallback);
+    }
+
+    private record BorrowedPreviewLease(ResourceRequest request, ResourceLease owner) implements ResourceLease {
+        @Override
+        public AcquireResult poll() {
+            return owner.poll();
+        }
+
+        @Override
+        public boolean isCurrent(ResourceRequest candidate) {
+            return request.equals(candidate) && owner.isCurrent(request);
+        }
+
+        @Override
+        public void cancelPending() {
+        }
+
+        @Override
+        public void close() {
+        }
     }
 
     private static class FakePlayer extends AbstractClientPlayer {

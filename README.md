@@ -35,7 +35,7 @@ Maintained by LuoMuQAQ. This project is not affiliated with or endorsed by the Y
 
 ## 当前状态
 
-当前 `main` 源码及本地测试包为 `3.0-unofficial.5+mc26.3-nf58`，包含鞘翅装备层/HUD、尺寸与锚点、Alt+Y 虚拟玩家 ID、动画显示及重启后模型选择恢复修复。该候选 JAR 尚未上传 Release，上方下载链接仍对应已发布的 Unofficial 2。
+当前 `main` 源码及本地测试包为 `3.0-unofficial.6+mc26.3-nf58`，包含鞘翅装备层/HUD、尺寸与锚点、Alt+Y 虚拟玩家 ID、动画显示及重启后模型选择恢复修复。模型与贴图卡片直接绑定自身已就绪资源，补齐虚拟玩家纹理/初始化并增加预览诊断；本次全部空白反馈的最终原因与修复后的画面尚待实机确认。该候选 JAR 尚未上传 Release，上方下载链接仍对应已发布的 Unofficial 2。
 
 这是公开测试版。维护者已开始 NeoForge 58 实测，并据反馈修复了 Iris PBR 模型加载与攻击动画重播判定；
 本次攻击修复的连续攻击表现和完整组合仍待游戏内复测。

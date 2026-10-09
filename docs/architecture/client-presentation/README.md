@@ -42,6 +42,8 @@ Catalog snapshot 替换后由 `tick()` 触发页面重建；如果实际页面�
 
 ## 选择与显示的分离
 
+模型卡与贴图卡把自身持有的 Ready lease 直接绑定到 GUI entity，绑定成功后才发布动态预览状态。GUI entity 同时设置请求纹理与初始化标记；它借用父 lease，`isCurrent` 委托给父 owner，reset 不关闭父 lease。关闭页面先 reset entity，再撤销卡片 lease；目录失效由卡片停止发布预览并重新取得当前资源。这使卡片 Ready 与实体绑定在同一 client owner 动作内完成，避免依赖不参与世界 tick 的虚拟玩家再次轮询另一份请求。截图沿用自身的 readback owner。资源绑定与首轮 PIP/顶点提取写入 debug 日志，无可绘制状态按每次 entity reset 至多警告一次；这些事实仍不能证明最终纹理已显示在屏幕上。
+
 界面与控件通过 `GuiGraphicsExtractor` 提取状态，背景由宿主 `Screen.extractRenderStateWithTooltipAndSubtitles()` 在页面内容之前处理；模型页和贴图页的 `extractRenderState()` 只提取内容，不再次调用背景提取。宿主每帧只允许一次背景 blur。轮盘扇区在提取时固定顶点、二维矩阵和裁剪矩形，后续 `GuiElementRenderState` 回放不读取页面对象或 hover 状态；配置滚动使用二维 pose，点击事件保留按钮和修饰键并换算滚动偏移，裁剪区外的配置控件不接收点击。文本、图片和 tooltip 分别进入宿主对应状态通道，界面不直接切换全局混合或 shader 状态。
 
 Config form 的滑块使用 `ExtendedSlider`；原位显示刷新在 `setValue` 触发的回调期间抑制写入，用户拖动和键盘操作仍经原有 Molang/网络动作入口。加载状态和动画调试 HUD 使用 `GuiLayer` 注册；女仆调试目标通过已安装检查后的可选联动边界取得，其 capability 适配仍属于未完成联动范围。上述界面与输入行为尚未实机验收。

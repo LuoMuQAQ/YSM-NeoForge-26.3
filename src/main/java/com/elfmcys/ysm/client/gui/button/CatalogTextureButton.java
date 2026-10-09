@@ -106,10 +106,10 @@ public final class CatalogTextureButton extends Button implements AutoCloseable 
             error = failed.failure().cause();
             releaseLease();
         } else if (result instanceof AcquireResult.Ready ready) {
-            renderTarget = ready.target();
             entity.reset();
+            entity.installPreviewResource(request, lease);
             entity.getPreviewInfo().setPreview(AnimationRegister.IDLE);
-            entity.updateModelAndTexture(modelHash, texture);
+            renderTarget = ready.target();
         }
     }
 

@@ -22,6 +22,8 @@
 
 Alt+Y 的宿主状态提取曾因 GUI 虚拟玩家实体 ID 为零而崩溃。虚拟玩家现在构造时分配稳定、独立的负数 ID，保留完整的宿主 avatar、持物和装备状态提取。模型页、贴图页和重进世界后的结果待用户实机复测。
 
+后续用户反馈 Alt+Y 卡片全部空白，左侧玩家预览正常，卡片名称与边框正常。日志有模型资源加载完成事实，没有新的预览异常；尚不能确定全部空白的最终原因。模型卡与贴图卡现直接借用自身 Ready lease 绑定 GUI entity，补齐纹理与初始化，消除未 tick 虚拟玩家重新取得资源的绑定隐患，并增加有界的 PIP/提取诊断。Ready cache 命中时旧路径也可能立即绑定，因此该隐患不能单独当作本次截图的已证实根因。新卡片画面、翻页、hover/focus、贴图页及资源重载待用户实机复测，机制见[客户端展示](../../architecture/client-presentation/README.md)。
+
 - `ModelState::Extract` 会先使旧状态失效；失败后 `GeoModelState` 没有完整失败分支，同一逻辑帧可能不再重试。Native render 失败时不会改用其他输出路径或 `VertexConsumer` fallback，本次模型直接无顶点。
 - Serialized baked cache payload 不能独立证明 SIMD capability 匹配；读取虽校验结构、层级、索引和计数，却未重新验证几何浮点值的有限性及语义域。Bake 对极端有限输入派生的 plane / tangent 也缺少完整结果域验证。
 - 上层必须提供与 position matrix 匹配的 normal matrix；native 只校验数值有限，不验证二者一致，该组合目前也没有端到端验证。

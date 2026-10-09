@@ -1,3 +1,4 @@
+// Modified by LuoMuQAQ for the unofficial Minecraft 26.3 / NeoForge port (2026).
 package com.elfmcys.ysm.client.gui.button;
 
 import com.elfmcys.ysm.YesSteveModel;
@@ -221,7 +222,7 @@ final class CatalogModelCardState implements AutoCloseable {
 
     private void applyRenderTarget(ModelRenderTarget nextRenderTarget) {
         entity.reset();
-        entity.updateModelAndTexture(entry.modelHash(), metadata.defaultTexture());
+        entity.installPreviewResource(targetState.request(), targetState.readyLease());
         var playerResources = Objects.requireNonNull(nextRenderTarget.playerResources(),
                 "Catalog model card requires a player render target");
         var animations = playerResources.animations();
@@ -326,6 +327,10 @@ final class CatalogModelCardState implements AutoCloseable {
             return request;
         }
 
+        ResourceLease readyLease() {
+            return Objects.requireNonNull(lease, "Ready card requires its resource lease");
+        }
+
         void accept(@Nullable Optional<ResourceLease> acquired, @Nullable Throwable error) {
             var next = acquired == null ? null : acquired.orElse(null);
             if (closed) {
@@ -384,8 +389,8 @@ final class CatalogModelCardState implements AutoCloseable {
                 failure = failed.failure().cause();
                 releaseLease();
             } else if (result instanceof AcquireResult.Ready loaded) {
+                ready.accept(loaded.target());
                 renderTarget = loaded.target();
-                ready.accept(renderTarget);
             }
             return renderTarget;
         }
