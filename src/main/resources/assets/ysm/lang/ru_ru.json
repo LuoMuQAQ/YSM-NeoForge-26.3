@@ -10,6 +10,7 @@
   "gui.yes_steve_model.star_models": "Избранные модели",
   "gui.yes_steve_model.config": "Открыть настройки конфигурации",
   "gui.yes_steve_model.download": "Открыть загрузчик",
+  "gui.yes_steve_model.model_id_toggle": "ID модели",
   "gui.yes_steve_model.roulette.path": "Путь: root%s",
   "gui.yes_steve_model.roulette.too_long": "Путь к рулетке слишком длинный",
   "gui.yes_steve_model.roulette.lock_on": "Фиксация: ВКЛ.",

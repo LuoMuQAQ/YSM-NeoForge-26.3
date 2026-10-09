@@ -381,6 +381,7 @@
   "gui.yes_steve_model.hide_or_show": "숨기기/표시",
   "gui.yes_steve_model.skin": "YSM 스킨 GUI 열기",
   "gui.yes_steve_model.show_model_id_first": "모델 ID 먼저 표시",
+  "gui.yes_steve_model.model_id_toggle": "모델 ID",
   "gui.yes_steve_model.search.tip": "● 기본: 모델, 정보, 제작자, 폴더 검색\n● @로 시작하면 제작자만, #으로 시작하면 폴더만 검색",
   "gui.yes_steve_model.model.file": "§2§l▌ §3파일: %s",
   "gui.yes_steve_model.model.hash": "§2§l▌ §3해시: %s",

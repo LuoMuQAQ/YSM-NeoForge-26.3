@@ -72,6 +72,14 @@ successful click is retained for forms without an inferable value mapping, and
 late action callbacks cannot update a replaced page. Gameplay verification is
 pending.
 
+Unofficial 8 development candidate places the model name/ID toggle inside the
+left sidebar, below its toolbar, with a short localized label and the full option
+as a tooltip. The player preview viewport starts below that control row. This
+avoids the negative Y position of the old control above the centered fixed-height
+panel when the GUI has little vertical margin. It keeps the existing saved
+SHOW_MODEL_ID_FIRST setting; it does not switch the game's language. Window and
+GUI-scale verification is pending.
+
 Native business code is unchanged from the recorded upstream revision. The
 Windows DLL is built from that source with the profile in release/windows-clang-profile.
 No Minecraft/NeoForge binary or external optional-mod JAR is bundled in this repository.

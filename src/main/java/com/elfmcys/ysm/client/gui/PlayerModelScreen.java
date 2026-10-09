@@ -40,6 +40,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.input.CharacterEvent;
@@ -175,14 +176,16 @@ public class PlayerModelScreen extends Screen {
                     ignored -> backToParent()).setTooltips("gui.back"));
         }
 
-        addRenderableWidget(Checkbox.builder(Component.translatable("gui.yes_steve_model.show_model_id_first"), font)
-                .pos(x + 5, y - 22)
+        var modelIdToggle = Checkbox.builder(Component.translatable("gui.yes_steve_model.model_id_toggle"), font)
+                .pos(x + 5, y + 29)
                 .selected(ClientConfig.SHOW_MODEL_ID_FIRST.get())
                 .onValueChange((checkbox, selected) -> {
                     ClientConfig.SHOW_MODEL_ID_FIRST.set(selected);
                     ClientConfig.SHOW_MODEL_ID_FIRST.save();
                 })
-                .build());
+                .build();
+        modelIdToggle.setTooltip(Tooltip.create(Component.translatable("gui.yes_steve_model.show_model_id_first")));
+        addRenderableWidget(modelIdToggle);
 
         addCategoryButton(x + 328, 32, CatalogBrowserState.Category.ALL, "gui.yes_steve_model.all_models");
         addCategoryButton(x + 308, 48, CatalogBrowserState.Category.AUTH, "gui.yes_steve_model.auth_models");
@@ -351,9 +354,9 @@ public class PlayerModelScreen extends Screen {
         if (player == null) {
             return;
         }
-        graphics.enableScissor(x + 5, y + 29, x + 130, y + 200);
+        graphics.enableScissor(x + 5, y + 50, x + 130, y + 200);
         try {
-            InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, x + 5, y + 29, x + 130, y + 200, 70,
+            InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, x + 5, y + 50, x + 130, y + 200, 70,
                     0.0625F, mouseX, mouseY, player);
         } finally {
             graphics.disableScissor();
