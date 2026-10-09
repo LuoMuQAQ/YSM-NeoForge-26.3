@@ -14,6 +14,7 @@
 | 登录与退出 | `ClientLoggedEvent`、`ServerStartingEvent` | 将 exact connection 或 server lifecycle 交给对应 session/service owner |
 | 客户端输入与命令 | `client.input`、`client.command`、`command` | 产生选择、动画或管理意图，继续经过所属领域入口 |
 | Entity 替换绘制 | `GeoReplacedEntityRenderer`、`client.renderer` | 在 submit 时消费有效 `ModelState`，生成顶点快照并交给 `SubmitNodeCollector` |
+| Renderer 与装备资源重载 | `EntityRenderersEvent.AddLayers` | 从宿主当前 `EntityRendererProvider.Context` 建立替换 renderer，取得已加载的模型集与 `EquipmentLayerRenderer`，资源重载时同步重建 |
 | 可选模组适配 | `client.compat` 与 controller collection | 把外部动作、装备、视角和材质条件投影为当前输入或绘制行为 |
 
 模型选择、授权、收藏及服务端投射物/载具状态由正式注册的 NeoForge `AttachmentType` 持有。持久字段通过 `ValueInput` / `ValueOutput` 与 `CompoundTag.CODEC` 写入；复制时由 NeoForge 的 attachment clone 生命周期统一处理，玩家选择通过专用 copy handler 转移 roaming 与 properties tracker，授权和收藏独立复制。数据不使用 NeoForge 自动同步，权威同步仍走 YSM typed messages。

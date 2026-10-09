@@ -3,6 +3,7 @@
  * Author: Bernie G. (Gecko)
  */
 
+// Modified by LuoMuQAQ for the unofficial Minecraft 26.3 / NeoForge port (2026).
 package com.elfmcys.ysm.geckolib3.core.snapshot;
 
 import com.elfmcys.ysm.geckolib3.core.processor.BoneView;
@@ -30,7 +31,7 @@ public class BoneSnapshot {
                 bone.getRotationZ() - bone.getInitialRotationZ());
         scale.set(bone.getScaleX(), bone.getScaleY(), bone.getScaleZ());
 
-        hidden = bone.areChildrenHidden();  // TODO
+        hidden = bone.areCubesHidden();
         childrenHidden = bone.areChildrenHidden();
     }
 

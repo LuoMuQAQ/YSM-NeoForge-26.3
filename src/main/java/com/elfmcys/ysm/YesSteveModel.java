@@ -39,7 +39,7 @@ public class YesSteveModel {
         if (FMLEnvironment.getDist() == Dist.CLIENT) {
             EVENT_BUS.addListener(com.elfmcys.ysm.client.renderer.YsmClientRenderSetup::registerRenderState);
             EVENT_BUS.addListener(com.elfmcys.ysm.client.renderer.YsmClientRenderSetup::registerPreviewRenderer);
-            EVENT_BUS.addListener(com.elfmcys.ysm.client.event.RegisterEntityRenderersEvent::onAddClientReloadListeners);
+            EVENT_BUS.addListener(com.elfmcys.ysm.client.event.RegisterEntityRenderersEvent::onAddLayers);
         }
 
         NativeLibUtil.load();

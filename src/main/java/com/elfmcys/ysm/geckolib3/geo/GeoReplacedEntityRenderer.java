@@ -9,7 +9,6 @@ import com.elfmcys.ysm.capability.VehicleAnimatableCapabilityProvider;
 import com.elfmcys.ysm.client.entity.CustomHumanoidEntity;
 import com.elfmcys.ysm.client.renderer.YsmSubmitContext;
 import com.elfmcys.ysm.geckolib3.core.util.Color;
-import com.elfmcys.ysm.mixin.client.LivingEntityAccessor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -111,12 +110,6 @@ public abstract class GeoReplacedEntityRenderer<TEntity extends LivingEntity, T 
     protected void setupRotations(TEntity entity, PoseStack poseStack, float ageInTicks, float bodyRot, float partialTick) {
         int deathTime = entity.deathTime;
         boolean autoSpin = entity.isAutoSpinAttack();
-        if (deathTime > 0) {
-            entity.deathTime = 0;
-        }
-        if (autoSpin) {
-            ((LivingEntityAccessor) entity).setFlag(4, false);
-        }
 
         var inventoryPose = YsmSubmitContext.inventoryPose(entity);
         if (inventoryPose == null && entity.onClimbable()) {
@@ -152,12 +145,6 @@ public abstract class GeoReplacedEntityRenderer<TEntity extends LivingEntity, T 
             poseStack.rotateDegrees(Axis.YP, 270.0F);
         }
 
-        if (deathTime > 0) {
-            entity.deathTime = deathTime;
-        }
-        if (autoSpin) {
-            ((LivingEntityAccessor) entity).setFlag(4, true);
-        }
     }
 
     private static float sleepDirectionToRotation(Direction direction) {

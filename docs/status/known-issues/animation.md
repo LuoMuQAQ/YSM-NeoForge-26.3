@@ -9,9 +9,9 @@
 
 ## 求值与语义
 
-- `isMoving` 当前有逻辑错误，会影响依赖该字段的 `CodedAnimationController`。
-- 头部 yaw / pitch 输入已经计算，但 coded head-bone 应用仍被禁用；第一人称手臂也使用独立且未完成的动画运行时，未共享完整 controller 进度。
-- 骨骼基准 snapshot 错误地以 `children_hidden` 初始化 `cubes_hidden`，两个可见性通道可能互相污染。
+- `AnimationEvent.isMoving()` 已按绝对步态幅度超过阈值判断，修复静止/小幅步态被标为移动、正常正向步态反而被标为静止的错误。当前默认主动作另用位置差值选择移动状态，该修复不等于重写全部移动查询，相关外部 predicate 仍需实机确认。
+- 头部 yaw / pitch 由当前输入计算并应用到 head locator，主帧推进与其他 pass 的恢复路径均存在；此前“coded head-bone 被禁用”的记录已不符合实现。第一人称手臂通过独立 owner 和手臂 controller factory 推进，未共享身体 controller 进度；具有定制双视角同步需求的模型仍需核对。
+- 骨骼基准 snapshot 已分别读取 `cubes_hidden` 和 `children_hidden`，修复自身与后代可见性互相污染；带独立隐藏通道的模型、locator 与动画混合仍待实机确认。
 - Controller 的旋转混合仍保留不完整的历史行为；当前 Schema 的 `State` 已没有 `blend_via_shortest_path` 字段（field 7 空置），reader 一律按 `false` 处理，因此该行为无法由模型表达。
 - 骨骼绝对轴心由 `ysm.bone_pivot_abs` 提供；引用旧 `ysm.bone_absolute_pivot` 名称的模型不会解析到该函数，依赖它的行为缺口仍存在。
 - Sound keyframe 与 controller-state sound effect 都能进入同一 `SoundInstanceManager`：无冒号名称解析当前 render target 的模型声音，有冒号名称继续播放 Minecraft `SoundEvent`。模型声音的内容与播放主链已有局部自动化覆盖，但真实 Forge world 的 once-only 触发、音量、OpenAL adoption、设备容量和停止时序仍未验收；`ysm.play_sound` 使用相同路由。
@@ -36,7 +36,7 @@
 
 - 异步求值没有不可变输入快照，会直接读取 live `Entity`、`level`、`Minecraft` 输入和可选模组 API；同次求值可能混入不同时间点数据，也可能违反外部 API 的线程限制。
 - Forge world 中 controller、instruction、defer、config 与多 `RenderContext` 的实际 once-only 行为尚未端到端验证。`AnimatableEntity.executeMolangExp` 只把任务排入 `AnimationProcessor` 的待执行队列，队列的排空时机与同一次逻辑推进内的执行次数没有实机证据，也没有对应自动化覆盖。
-- Canonical pose 可以跨兼容 pass 复用，但当前逐次 draw metadata 可能随输出一起复用；例如同帧 shadow pass 可能观察到上一 `RenderContext`。
+- Canonical pose 可以跨兼容 pass 复用，复用时仍刷新 `RenderContext`，但 `partialTick` 和 `animationData` 沿用首次提取结果。多 pass 的输入差异是否都被 immutable context 判断排除，尚缺实机证据。
 - 同一 render target 内热替换会保留动画状态并依赖烘焙兼容；兼容性门禁和第一人称独立运行时尚缺完整闭环。
 - `AnimationProcessor` 原地修改共享 snapshot 与 attribute，没有事务 staging、异常回滚或模型 revision 二次校验，失败可能留下部分更新。
 

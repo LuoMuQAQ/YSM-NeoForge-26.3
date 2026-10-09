@@ -8,25 +8,30 @@ import com.elfmcys.ysm.geckolib3.geo.GeoRenderData;
 import com.elfmcys.ysm.util.EquipmentUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.object.equipment.ElytraModel;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.layers.EquipmentLayerRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.EquipmentClientInfo;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
-/**
- * Cutout elytra at the model locator. Equipment-asset layers and foil are not submitted:
- * the host equipment renderer needs an {@code EquipmentAssetManager} that Minecraft does not expose.
- */
+/** Submits the host's WINGS equipment layers at the model's elytra locators. */
 public class CustomPlayerElytraLayer extends GeoLayerRenderer<CustomPlayerEntity> {
-    private static final Identifier WINGS_LOCATION = Identifier.withDefaultNamespace("textures/entity/elytra.png");
-    private @Nullable ElytraModel elytraModel;
+    private final ElytraModel elytraModel;
+    private final ElytraModel elytraBabyModel;
+    private final EquipmentLayerRenderer equipmentRenderer;
+
+    public CustomPlayerElytraLayer(EntityRendererProvider.Context context) {
+        this.elytraModel = new ElytraModel(context.bakeLayer(ModelLayers.ELYTRA));
+        this.elytraBabyModel = new ElytraModel(context.bakeLayer(ModelLayers.ELYTRA_BABY));
+        this.equipmentRenderer = context.getEquipmentRenderer();
+    }
 
     @Override
     public void submit(PoseStack poseStack, SubmitNodeCollector collector, CustomPlayerEntity animatable, GeoRenderData renderData,
@@ -39,27 +44,22 @@ public class CustomPlayerElytraLayer extends GeoLayerRenderer<CustomPlayerEntity
         if (stack.isEmpty()) {
             return;
         }
+        var equippable = stack.get(DataComponents.EQUIPPABLE);
+        if (equippable == null || equippable.assetId().isEmpty()) {
+            return;
+        }
         Identifier texture = wingsTexture(avatarState);
-        ElytraModel model = model();
+        ElytraModel model = avatarState.isBaby ? this.elytraBabyModel : this.elytraModel;
         renderData.modelState.visitLocatorGroup(PlayerLocator.get().elytra, poseStack, locatorPose -> {
             locatorPose.translate(0, 1.5, 0);
             locatorPose.rotate(Axis.ZP.rotationDegrees(180));
             locatorPose.scale(2.0F, 2.0F, 2.0F);
-            collector.submitModel(model, avatarState, locatorPose, RenderTypes.entityCutout(texture),
-                    packedLight, OverlayTexture.NO_OVERLAY, avatarState.outlineColor);
+            equipmentRenderer.renderLayers(EquipmentClientInfo.LayerType.WINGS, equippable.assetId().get(),
+                    model, avatarState, stack, locatorPose, collector, packedLight, texture, avatarState.outlineColor, 0);
         });
     }
 
-    private ElytraModel model() {
-        ElytraModel model = this.elytraModel;
-        if (model == null) {
-            model = new ElytraModel(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.ELYTRA));
-            this.elytraModel = model;
-        }
-        return model;
-    }
-
-    private static Identifier wingsTexture(AvatarRenderState state) {
+    private static @Nullable Identifier wingsTexture(AvatarRenderState state) {
         var skin = state.skin;
         if (skin.elytra() != null) {
             return skin.elytra().texturePath();
@@ -67,6 +67,7 @@ public class CustomPlayerElytraLayer extends GeoLayerRenderer<CustomPlayerEntity
         if (skin.cape() != null && state.showCape) {
             return skin.cape().texturePath();
         }
-        return WINGS_LOCATION;
+        // A null player override selects the resource pack's WINGS equipment asset.
+        return null;
     }
 }

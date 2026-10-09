@@ -30,6 +30,16 @@ prevents the same swing from restarting across ticks or repeated render passes;
 model controller overrides keep their existing precedence. Repeated-attack gameplay
 after this change still requires manual verification.
 
+The Unofficial 3 development candidate obtains the host equipment renderer from
+the AddLayers resource-generation event and submits WINGS equipment assets,
+including the host's texture overrides and foil. GUI player previews extract their
+own avatar state for wings and shoulder parrots after refreshing the preview
+player's current world reference. HUD body yaw uses angular
+interpolation; bone snapshots keep their two visibility channels separate; the
+AnimationEvent movement threshold is corrected. Replacement rendering no longer
+temporarily changes entity death ticks or the auto-spin flag. Gameplay verification
+of these changes is pending.
+
 Native business code is unchanged from the recorded upstream revision. The
 Windows DLL is built from that source with the profile in release/windows-clang-profile.
 No Minecraft/NeoForge binary or external optional-mod JAR is bundled in this repository.

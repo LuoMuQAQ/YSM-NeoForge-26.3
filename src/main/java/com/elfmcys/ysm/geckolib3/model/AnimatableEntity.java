@@ -339,7 +339,7 @@ public abstract class AnimatableEntity<TEntity extends Entity> {
         entityModelData.lerpedAge = entityTickCount + partialTicks;
         entityModelData.limbSwing = limbSwing;
         entityModelData.limbSwingAmount = limbSwingAmount;
-        entityModelData.isMoving =  (limbSwingAmount <= -getSwingMotionAniMathHelperreshold() || limbSwingAmount <= getSwingMotionAniMathHelperreshold());
+        entityModelData.isMoving = Math.abs(limbSwingAmount) > getSwingMotionAniMathHelperreshold();
 
         return new AnimationEvent<>(this,
                 entityTickCount, partialTicks, realPartialTicks,

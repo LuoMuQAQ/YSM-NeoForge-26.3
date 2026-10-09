@@ -1,8 +1,10 @@
+// Modified by LuoMuQAQ for the unofficial Minecraft 26.3 / NeoForge port (2026).
 package com.elfmcys.ysm.client.gui;
 
 import com.elfmcys.ysm.capability.PlayerAnimatableCapabilityProvider;
 import com.elfmcys.ysm.client.entity.CustomHumanoidEntity;
 import com.elfmcys.ysm.client.entity.IPreviewEntity;
+import com.elfmcys.ysm.client.entity.CustomPlayerEntity;
 import com.elfmcys.ysm.client.event.RegisterEntityRenderersEvent;
 import com.elfmcys.ysm.geckolib3.geo.GeoReplacedEntityRenderer;
 import com.elfmcys.ysm.geckolib3.model.AnimatableEntity;
@@ -12,11 +14,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.item.ItemStack;
 import org.joml.Quaternionf;
+import org.jspecify.annotations.Nullable;
 
 final class YsmPreviewDraw {
     static final int FULL_BRIGHT = 15728880;
@@ -36,7 +40,8 @@ final class YsmPreviewDraw {
                 PlayerAnimatableCapabilityProvider.get(player).ifPresent(cap ->
                         drawLiving(player, state, poseStack, () ->
                         RegisterEntityRenderersEvent.getPlayerRenderer().submitAnimatable(
-                                cap, null, state.partialTick(), poseStack, collector, FULL_BRIGHT, null)));
+                                cap, null, state.partialTick(), poseStack, collector, FULL_BRIGHT,
+                                extractAvatarState(player, state.partialTick()))));
             } finally {
                 RenderUtil.setRenderingInPaperDoll(false);
             }
@@ -82,7 +87,7 @@ final class YsmPreviewDraw {
                 poseStack.rotate(new Quaternionf().rotateZ((float) Math.PI)
                         .mul(Axis.XP.rotationDegrees(-10.0F + state.pitch())));
             } else if (state.kind() == YsmModelPreviewState.Kind.PLAYER) {
-                float bodyYaw = net.minecraft.util.Mth.lerp(state.partialTick(), yBodyRotO, yBodyRot);
+                float bodyYaw = net.minecraft.util.Mth.rotLerp(state.partialTick(), yBodyRotO, yBodyRot);
                 // Cancel the player's world body yaw, then retain the configured
                 // screen offset. Applying it to the entity too would cancel it.
                 poseStack.rotate(new Quaternionf().rotateZ((float) Math.toRadians(180.1F))
@@ -160,7 +165,17 @@ final class YsmPreviewDraw {
     @SuppressWarnings({"rawtypes", "unchecked"})
     private static void submitAnimatable(GeoReplacedEntityRenderer renderer, AnimatableEntity<?> animatable, float partialTick,
                                           PoseStack poseStack, SubmitNodeCollector collector) {
-        renderer.submitAnimatable((CustomHumanoidEntity) animatable, null, partialTick, poseStack, collector, FULL_BRIGHT, null);
+        if (animatable instanceof CustomGuiPlayerEntity guiPlayer && !guiPlayer.updatePreviewLevel()) {
+            return;
+        }
+        var avatarState = animatable instanceof CustomPlayerEntity
+                ? extractAvatarState((LivingEntity) animatable.getEntity(), partialTick) : null;
+        renderer.submitAnimatable((CustomHumanoidEntity) animatable, null, partialTick, poseStack, collector, FULL_BRIGHT, avatarState);
+    }
+
+    private static @Nullable AvatarRenderState extractAvatarState(LivingEntity entity, float partialTick) {
+        var extracted = Minecraft.getInstance().getEntityRenderDispatcher().extractEntity(entity, partialTick);
+        return extracted instanceof AvatarRenderState avatar ? avatar : null;
     }
 
     private static ItemStack[] hideEquipment(LivingEntity living) {

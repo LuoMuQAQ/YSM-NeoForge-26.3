@@ -7,10 +7,10 @@ import com.elfmcys.ysm.client.renderer.CustomFirstPersonArmRenderer;
 import com.elfmcys.ysm.client.renderer.CustomPlayerRenderer;
 import com.elfmcys.ysm.client.renderer.CustomProjectileRenderer;
 import com.elfmcys.ysm.client.renderer.CustomVehicleRenderer;
-import net.minecraft.resources.Identifier;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
-import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+
+import java.util.Objects;
 
 public class RegisterEntityRenderersEvent {
     private static CustomPlayerRenderer CUSTOM_PLAYER_RENDERER;
@@ -18,48 +18,36 @@ public class RegisterEntityRenderersEvent {
     private static CustomFirstPersonArmRenderer CUSTOM_FIRST_PERSON_RENDERER;
     private static CustomVehicleRenderer CUSTOM_VEHICLE_RENDERER;
 
-    private static void init(ResourceManager resourceManager) {
-        CUSTOM_PLAYER_RENDERER = new CustomPlayerRenderer();
+    private static void init(EntityRendererProvider.Context context) {
+        CUSTOM_PLAYER_RENDERER = new CustomPlayerRenderer(context);
         CUSTOM_PROJECTILE_RENDERER = new CustomProjectileRenderer();
         CUSTOM_FIRST_PERSON_RENDERER = new CustomFirstPersonArmRenderer();
         CUSTOM_VEHICLE_RENDERER = new CustomVehicleRenderer();
         SophisticatedCompat.addLayer();
     }
 
-    public static void onAddClientReloadListeners(AddClientReloadListenersEvent event) {
+    public static void onAddLayers(EntityRenderersEvent.AddLayers event) {
         if (!YesSteveModel.isAvailable()) {
             return;
         }
-        event.addListener(
-                Identifier.fromNamespaceAndPath(YesSteveModel.MOD_ID, "renderer_init"),
-                (ResourceManagerReloadListener) RegisterEntityRenderersEvent::init);
+        // The host has baked this resource generation's models and exposes its
+        // equipment renderer here. Rebuild our layers at the same reload boundary.
+        init(event.getContext());
     }
 
     public static CustomPlayerRenderer getPlayerRenderer() {
-        if (CUSTOM_PLAYER_RENDERER == null) {
-            init(null);
-        }
-        return CUSTOM_PLAYER_RENDERER;
+        return Objects.requireNonNull(CUSTOM_PLAYER_RENDERER, "YSM player renderer is not initialized by AddLayers");
     }
 
     public static CustomProjectileRenderer getProjectRenderer() {
-        if (CUSTOM_PROJECTILE_RENDERER == null) {
-            init(null);
-        }
-        return CUSTOM_PROJECTILE_RENDERER;
+        return Objects.requireNonNull(CUSTOM_PROJECTILE_RENDERER, "YSM projectile renderer is not initialized by AddLayers");
     }
 
     public static CustomFirstPersonArmRenderer getFirstPersonArmRenderer() {
-        if (CUSTOM_FIRST_PERSON_RENDERER == null) {
-            init(null);
-        }
-        return CUSTOM_FIRST_PERSON_RENDERER;
+        return Objects.requireNonNull(CUSTOM_FIRST_PERSON_RENDERER, "YSM arm renderer is not initialized by AddLayers");
     }
 
     public static CustomVehicleRenderer getVehicleRenderer() {
-        if (CUSTOM_VEHICLE_RENDERER == null) {
-            init(null);
-        }
-        return CUSTOM_VEHICLE_RENDERER;
+        return Objects.requireNonNull(CUSTOM_VEHICLE_RENDERER, "YSM vehicle renderer is not initialized by AddLayers");
     }
 }

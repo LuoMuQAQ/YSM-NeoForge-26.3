@@ -1,3 +1,4 @@
+// Modified by LuoMuQAQ for the unofficial Minecraft 26.3 / NeoForge port (2026).
 package com.elfmcys.ysm.client.gui;
 
 import com.elfmcys.ysm.client.animation.molang.PhysicsManager;
@@ -82,10 +83,14 @@ public final class CustomGuiPlayerEntity extends CustomPlayerEntity implements I
 
     @Override
     protected GeoRenderData update(float partialTicks, RenderContext context) {
-        if (entity instanceof FakePlayer fakePlayer && !fakePlayer.updateClientLevel()) {
+        if (!updatePreviewLevel()) {
             return null;
         }
         return super.update(partialTicks, context);
+    }
+
+    boolean updatePreviewLevel() {
+        return entity instanceof FakePlayer fakePlayer && fakePlayer.updateClientLevel();
     }
 
     public static boolean isFakePlayer(Player player) {

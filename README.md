@@ -35,6 +35,8 @@ Maintained by LuoMuQAQ. This project is not affiliated with or endorsed by the Y
 
 ## 当前状态
 
+当前开发候选为 `3.0-unofficial.3+mc26.3-nf58`，包含鞘翅装备层、HUD 状态和动画显示审查修复，尚未发布。上方下载链接仍对应已发布的 Unofficial 2。
+
 这是公开测试版。维护者已开始 NeoForge 58 实测，并据反馈修复了 Iris PBR 模型加载与攻击动画重播判定；
 本次攻击修复的连续攻击表现和完整组合仍待游戏内复测。
 源码编译、资源打包成功不等于所有模型、设备和模组组合都已经验证。

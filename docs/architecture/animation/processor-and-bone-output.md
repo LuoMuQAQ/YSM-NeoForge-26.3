@@ -16,6 +16,8 @@ flowchart LR
 
 绑定阶段按 `BakedModel` 的骨骼 preorder 建立稳定映射，使 Java attribute 与 native hierarchy 使用同一顺序。动画资源绑定及其 Java cache 不是 renderer 的 geometry bake，也不能替代 `BakedModel`。
 
+基准 snapshot 分别复制 `cubes_hidden` 与 `children_hidden`，播放混合和复位时仍保留两个通道的独立语义；当前骨骼几何/locator 隐藏不自动改变后代隐藏标志。
+
 更新使用模型基准、上次连续状态和本次逻辑时间。Controller 按稳定顺序合成，其冲突结果共同受 blend 与 transition 进度影响；未驱动通道渐进复位。正常路径逐骨骼原位写入共享数组再同步 Extract，当前没有事务式 staging、回滚或模型 revision 复核。
 
 ## `BoneAttribute`

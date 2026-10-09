@@ -13,14 +13,15 @@ import com.elfmcys.ysm.event.api.SpecialPlayerRenderEvent;
 import com.elfmcys.ysm.geckolib3.geo.GeoReplacedEntityRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class CustomPlayerRenderer extends GeoReplacedEntityRenderer<Player, CustomPlayerEntity> {
-    public CustomPlayerRenderer() {
+    public CustomPlayerRenderer(EntityRendererProvider.Context context) {
         addLayer(new CustomPlayerItemInHandLayer());
-        addLayer(new CustomPlayerElytraLayer());
+        addLayer(new CustomPlayerElytraLayer(context));
         addLayer(new CustomParrotOnShoulderLayer());
         addLayer(new CustomPlayerHeadLayer());
     }

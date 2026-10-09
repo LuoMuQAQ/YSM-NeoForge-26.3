@@ -11,7 +11,7 @@
 - 半透明 `RenderType` 使用带 `BlendFunction.TRANSLUCENT` 的实体管线，因此 `hasBlending()` 为真，自定义几何进入宿主半透明阶段；工厂不调用 `sortOnUpload()`。Java 为 native 转换反向深度约定，单模型远近排序仍由 native 完成，见[顶点输出](../../architecture/rendering/vertex-output.md)。跨实体、跨模型和跨 draw 的次序仍由上层决定。Iris shadow 不执行透明排序。实际混合结果尚未在游戏里核对。
 - PBR 效果依赖 Iris 版本、shader pack 和 companion texture 接入，不能仅凭 baked tangent 存在保证一致。
 - 加入 Iris 1.11.7 后，用户反馈部分原在52实例正常的模型显示 `Model texture publication failed`。该 provider 的新 holder 取得会排队到下一帧，原接入立即核对默认 holder 而拒绝带 PBR 组件的模型；已在发布窗口消费 Iris 加载队列后重新核对实际 holder，并为发布失败补充 cause 日志。修复后的模型、光影开关和资源重载仍待实机确认，不将等待状态误判为内容损坏。
-- 右手持物和头部物品走宿主物品提交。鞘翅只提交 cutout 模型，没有箔片，也没有装备资源层。鹦鹉每侧肩使用新的渲染状态并提交模型。普通副手使用左手 locator 与物品上下文提交；TaCZ/Superb Warfare 的专用副手没有适用 locator、查询失败或未提交时回退普通物品。Sophisticated 背包使用真实渲染状态与提交 API，Iris PBR 要核对上传后实际组件身份。这些接线已编译，左右惯用手、特殊武器、背包位置和 PBR 外观尚未实机验收。
+- 右手持物和头部物品走宿主物品提交。用户反馈装备鞘翅时物品栏预览为紫黑缺图、HUD 不显示；旧默认纹理路径在宿主资源中已不存在，HUD 也未传入 avatar 状态。鞘翅现接到宿主 WINGS 装备层，HUD/玩家模型与贴图预览补齐独立提取的 AvatarRenderState，肩部鹦鹉共享该状态，具体机制见[逐帧状态与调度](../../architecture/rendering/frame-execution.md)。普通、附魔、披风纹理、蹲伏/飞行、资源重载和多视角显示仍待用户实机确认。普通副手使用左手 locator 与物品上下文提交；TaCZ/Superb Warfare 的专用副手没有适用 locator、查询失败或未提交时回退普通物品。Sophisticated 背包使用真实渲染状态与提交 API，Iris PBR 要核对上传后实际组件身份。这些接线已编译，左右惯用手、特殊武器、背包位置和 PBR 外观尚未实机验收。
 - 女仆小银狼的主手物品在第三人称和左上角预览缺失、第一人称右手正常有用户反馈。只读几何检查确认模型有左右手定位点而没有背包定位点；组大小查询曾误读相邻组，右手因而检查了空的背包组。查询已按与提取及遍历一致的 `sequence - 1` 修正，仍尊重动画对定位点的隐藏及零缩放。修复后的主副手画面待实机确认。
 - 取消玩家 `Pre` 后，原版模型、层和名字牌不会绘制；名字牌由替换渲染器按提取状态另行提交。火焰和阴影仍按提取状态由宿主绘制。小坐骑偏移和计分板名字隐藏没有接上。调试动画与加载状态 HUD 已适配 `GuiLayer` 并注册，女仆调试依赖通过门禁的可选 provider，未取得可验证的目标组合。
 - 未经 `ProjectionMatrixBuffer` 上传的外部投影 slice 没有 CPU 矩阵关联，YSM 在这类 pass 中跳过模型提交。缓存复用与恢复已按绑定 slice 查询，未知投影不会污染后续已知 pass。完整视觉、发光队伍色、预览视口和读回失败处理仍待实机检查。
