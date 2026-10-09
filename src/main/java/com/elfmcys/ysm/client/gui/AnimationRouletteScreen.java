@@ -288,7 +288,9 @@ public class AnimationRouletteScreen extends Screen {
     private void addRatioButtons(ConfigForms radioForms, String result, int[] yOffset, int[] index,
                                  List<ConfigReadBinding> ownerBindings) {
         var labels = radioForms.labels();
-        var selectedIndex = radioIndex(result, labels.size());
+        var selection = ConfigRadioSelection.from(radioForms.readProgram().source(),
+                labels.stream().map(label -> label.actionProgram().source()).toList());
+        var selectedIndex = selection.selectedIndex(result, -1);
         var committedIndex = new int[]{selectedIndex};
         var radioButtons = new ArrayList<FlatCheckbox>(labels.size());
 
@@ -326,13 +328,25 @@ public class AnimationRouletteScreen extends Screen {
 
             Component labelName = Component.literal(labelStr);
             String labelValue = label.actionProgram().source();
+            int clickedIndex = i;
 
             int perWidth = Math.round(110f / countPerLine);
             int xOffset = this.x + 127 + perWidth * (i % countPerLine);
 
             FlatCheckbox checkbox = new FlatCheckbox(xOffset, this.y + tempYOffset, perWidth, labelName, data -> {
                 applyRadioSelection(radioButtons, committedIndex[0]);
-                executeMolang(labelValue, ignored -> minecraft.execute(this::refreshConfigValues));
+                executeMolang(labelValue, actionResult -> minecraft.execute(() -> {
+                    if (minecraft.gui.screen() != this || this.configReadBindings != ownerBindings) {
+                        return;
+                    }
+                    if (actionResult.startsWith("Error: ")) {
+                        YesSteveModel.LOGGER.warn("Radio action failed: {}", actionResult);
+                        return;
+                    }
+                    committedIndex[0] = clickedIndex;
+                    applyRadioSelection(radioButtons, clickedIndex);
+                    this.refreshConfigValues();
+                }));
                 if (!CustomMolangParser.hasOnlyRoamingAssignment(labelValue) && NetworkHandler.isRemoteChannelPresent() && !ServerConfig.LOW_BANDWIDTH_USAGE.get()) {
                     // 同步到周围的玩家
                     ClientProtocolGateway.submitRouletteExpression(this.animatableEntity.getEntity(), labelValue);
@@ -357,10 +371,7 @@ public class AnimationRouletteScreen extends Screen {
         this.maxScrollY = Math.max(0, yOffset[0] - 110);
 
         ownerBindings.add(new ConfigReadBinding(radioForms.readProgram().source(), next -> {
-            int nextIndex = radioIndex(next, labels.size());
-            if (nextIndex < 0) {
-                return;
-            }
+            int nextIndex = selection.selectedIndex(next, committedIndex[0]);
             committedIndex[0] = nextIndex;
             applyRadioSelection(radioButtons, nextIndex);
         }));
@@ -428,15 +439,6 @@ public class AnimationRouletteScreen extends Screen {
             return BooleanUtils.toBoolean(result) ? 1f : 0f;
         }
         return null;
-    }
-
-    static int radioIndex(String result, int labelCount) {
-        Float number = transformNumber(result);
-        if (number == null) {
-            return -1;
-        }
-        int selectedIndex = Math.round(number);
-        return 0 <= selectedIndex && selectedIndex < labelCount ? selectedIndex : -1;
     }
 
     private static void applyRadioSelection(List<FlatCheckbox> radioButtons, int selectedIndex) {

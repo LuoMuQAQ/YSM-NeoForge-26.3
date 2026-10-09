@@ -42,6 +42,8 @@
 
 ## Molang 与同步
 
+- 轮盘 radio 曾把模型 read 的数值直接当作 labels 下标。女仆小银狼的“吐舌头”写入6，但显示在下标1，因此被错误勾选为下标6的“笑”。现从原动作的无条件字面量赋值推导显示映射，初次打开和刷新使用同一映射；动态/不可推导的动作仅保留本页成功点击，不猜测重开后的选择。原动作和模型文件未改，两个表情组、滚动后点击与重开页面仍待用户实机复测。
+
 - 模型内 Molang 已回到本地解释器直接执行 source：加载与绑定会解析 execution-bearing 字段，求值在渲染路径上逐次进行。求值路径没有专门的单元测试，热路径的解析/求值成本、allocation、表达式复杂度上限与 tick/render 影响都尚未测量，不能声明主循环成本可接受；expression runtime 在 Minecraft/Forge world 层也没有端到端验证。
 - Roaming 的 full 与 delta 已由玩家状态报告路径携带并在消费端按协议验证，但网络 inactive storage 仍按模型派生的 32-bit 短键分组，短键碰撞和协议无变量删除语义仍未解决。
 - `ysm.sync` 只携带有限 F32 参数并把参数个数限制为 16，没有目标 identity、独立频率限制，按设计也没有 sequence、ACK、重放或持久化。实体缺失、generation/model 不一致或会话变化时事件会丢失，真实双端 relay/disconnect 路径尚未验证。

@@ -63,6 +63,15 @@ The reported blank cards have not been reproduced by the agent, and ready cache
 hits could also bind synchronously on the old path; the screenshot's final cause
 and the candidate's visible result require manual verification.
 
+Unofficial 7 development candidate matches radio selection against the literal
+value each label action assigns to the form's read variable, rather than treating
+that value as a display index. This corrects the maid Silver Wolf's reordered
+expression labels without changing their actions. Projection parses assignments
+without executing them; dynamic or ambiguous forms do not guess an index. A
+successful click is retained for forms without an inferable value mapping, and
+late action callbacks cannot update a replaced page. Gameplay verification is
+pending.
+
 Native business code is unchanged from the recorded upstream revision. The
 Windows DLL is built from that source with the profile in release/windows-clang-profile.
 No Minecraft/NeoForge binary or external optional-mod JAR is bundled in this repository.
@@ -261,6 +270,7 @@ The two upstream QuickBuffers build JARs and Gradle wrapper are retained with th
 - `src/main/java/com/elfmcys/ysm/client/event/VanillaPlayerRenderEvent.java`
 - `src/main/java/com/elfmcys/ysm/client/gui/AndroidCompat.java`
 - `src/main/java/com/elfmcys/ysm/client/gui/AnimationRouletteScreen.java`
+- `src/main/java/com/elfmcys/ysm/client/gui/ConfigRadioSelection.java`
 - `src/main/java/com/elfmcys/ysm/client/gui/ConfigScreen.java`
 - `src/main/java/com/elfmcys/ysm/client/gui/DisclaimerScreen.java`
 - `src/main/java/com/elfmcys/ysm/client/gui/DownloadScreen.java`

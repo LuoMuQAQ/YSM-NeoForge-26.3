@@ -48,6 +48,8 @@ Catalog snapshot 替换后由 `tick()` 触发页面重建；如果实际页面�
 
 Config form 的滑块使用 `ExtendedSlider`；原位显示刷新在 `setValue` 触发的回调期间抑制写入，用户拖动和键盘操作仍经原有 Molang/网络动作入口。加载状态和动画调试 HUD 使用 `GuiLayer` 注册；女仆调试目标通过已安装检查后的可选联动边界取得，其 capability 适配仍属于未完成联动范围。上述界面与输入行为尚未实机验收。
 
+Config form 的单选组由 `ConfigRadioSelection` 投影显示状态。显示顺序与模型变量值独立：在同一解析绑定作用域内读取 read target 和各 label action，仅对无条件字面量赋值建立值到选项的映射，不执行动作来探测结果。打开页面及动作后的原位刷新都使用该映射；找不到匹配时清空勾选，重复值仅在本页明确点击过对应选项时消歧。动态/无法推导的动作不把 read 结果当下标，成功执行后的点击保留当前页选择，重开页面不猜测。动作回调检查 screen 与 bindings owner，旧页结果不修改新页。模型原动作与网络入口保持既有语义。
+
 `PlayerModelScreen.selectModel()` 在 Local 模式更新本地 capability，在 Active session 通过 `ClientProtocolGateway.selectModel()` 发出请求；已有 Roaming storage 时还存在本地 capability 更新路径。服务端最终裁决与后续 PlayerState 顺序由[玩家状态与控制](../network/player-state.md)定义。
 
 Selection 和运行资源请求分别持有自己的连续需求状态。当前缺件且前项持续不超过 0.7 秒时，新项必须连续停留严格超过 0.7 秒才发出相应效果；首次无前项、前项已持续更久和已有有效内容立即推进。Local player 与每个 remote entity 各自计时，不能互相阻塞；selection 的发送终态也不成为资源请求计时的门禁。
