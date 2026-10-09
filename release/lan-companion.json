@@ -1,0 +1,31 @@
+{
+  "modId": "mcwifipnp",
+  "name": "LAN World Plug-n-Play",
+  "version": "2.1.4",
+  "authors": [
+    "Satxm",
+    "Rikka0w0"
+  ],
+  "license": "Apache-2.0",
+  "minecraft": "26.3",
+  "loader": "neoforge",
+  "declaredMinecraftRange": "[26.3-alpha.1, 27)",
+  "declaredNeoForgeRange": "[26.3.0.0-beta,)",
+  "filename": "mcwifipnp-2.1.4-26.3-neoforge.jar",
+  "size": 126809,
+  "sha256": "e9293e6e9c504ca6434667d9976926f6781818bc1b54f7c0ce5dee8db5ca9570",
+  "sha512": "f703cd5f2df31711c748b9efec8d3a9e3fc8181edd52edf72a06ea11b81b0c10c301f2b5b805f3a570e9c88f344fbff1283fdde42fb6c7e6f6b84a538714d1b5",
+  "sha1": "93d3c7da7fac72a7be0140d353d7645eb9901ec2",
+  "projectUrl": "https://github.com/Satxm/mcwifipnp",
+  "versionUrl": "https://modrinth.com/mod/mcwifipnp/version/m51OXj2s",
+  "downloadUrl": "https://cdn.modrinth.com/data/RTWpcTBp/versions/m51OXj2s/mcwifipnp-2.1.4-26.3-neoforge.jar",
+  "bundledInYsm": false,
+  "requiredForYsm": false,
+  "purpose": "Optional integrated-server LAN settings, including offline player login and UUID mapping.",
+  "validation": {
+    "authorHashes": "matched",
+    "zipIntegrity": "passed",
+    "declaredDependencies": "cover Minecraft 26.3 / NeoForge 26.3.0.58-beta",
+    "combinedOfflineLanGameplay": "not verified"
+  }
+}

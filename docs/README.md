@@ -4,6 +4,7 @@
 ## 文档目录
 
 - [构建指南](build.md)：配置本地 native 库、运行开发客户端和构建最终 JAR。
+- [局域网与离线登录](lan.md)：可选联机设置模组、房主设置及当前验证边界。
 - [迁移概览](migration-overview.md)：旧版架构困境、迁移方向与当前进度。
 - [术语表](glossary.md) / [文档政策](governance/documentation-policy.md)：统一名称与信息取舍规则。
 - [产品决策](product-decisions/README.md)：声明范围内产品目标、需求、业务约束、领域决策、理由与稳定行为契约的 Root Authority。

@@ -100,6 +100,14 @@ documentation and provenance only. The native DLL is unchanged. The package
 contains 24 licensed upstream builtin models and their notices, with no private
 third-party models, user configurations, worlds or logs.
 
+## LAN setup documentation
+
+Publication documentation now links the author's separate LAN World Plug-n-Play
+2.1.4 artifact for Minecraft 26.3 / NeoForge, records its hashes, and explains
+host-side online-mode, UUID and port settings. The companion is not embedded in
+YSM and this update changes no runtime code. Combined offline guest login,
+resource transfer, visibility and reconnection remain unverified.
+
 ## Files changed during the port relative to the pinned Java upstream
 
 - `build.gradle`

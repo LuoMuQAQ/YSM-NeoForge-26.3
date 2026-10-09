@@ -15,6 +15,7 @@ Maintained by LuoMuQAQ. This project is not affiliated with or endorsed by the Y
 3. 确保实例中仅有一个 YSM JAR；更新时替换旧文件。
 4. 进入游戏后按 `Alt+Y` 打开模型选择，按 `Z` 打开动作轮盘。
 5. 自行取得合法授权的第三方模型放入实例游戏目录的 `ysm/custom/`。
+6. 需要离线玩家加入局域网时，按 [局域网与离线登录指南](docs/lan.md) 安装独立的 mcwifipnp 2.1.4，并由房主设置在线验证和端口。固定下载信息见 [伴随模组清单](release/lan-companion.json)；该组合仍待实际联机验收。
 
 此版仅提供 Windows x86_64 native DLL。Linux、macOS、Android 没有本项目的发行二进制。
 加载器版本精确锁定到上述版本；更新 NeoForge 不代表这个 JAR 自动兼容。

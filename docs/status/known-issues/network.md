@@ -8,4 +8,5 @@
 - 协议有意不维护 catalog revision、缺号检测或 resync；exact connection 会丢弃重连前的迟到工作，但同一 active connection 内普通消息的残余跨消息乱序仍可能保留较旧 collection view，需要实机确认。
 - Local、YSM channel 缺席、版本不匹配、intrinsic-default-only fail-closed，以及迟到 typed fragment/player-state/entity/notice、preview replacement 与页面关闭的真实 Forge 排队组合仍需实机覆盖。
 - 独立 Backend 未实现，不属于当前验证范围。
+- 可选 LAN World Plug-n-Play 2.1.4 的发行声明、依赖范围及文件哈希覆盖目标宿主；与 YSM 的离线访客登录、首次模型资源传输、互见和重连组合仍未实机验收。登录超时不能单独作为 YSM 协议冲突的依据；设置及排查入口见[局域网与离线登录](../../lan.md)。
 - 用户反馈完全关闭游戏后模型选择回到默认。目录未就绪时的 resolve 曾把缺件选择直接改写为默认；现在运行兜底保留保存意图，初次握手与目录发布后经当前 session 校验恢复，显式选择可替换它，见[存档选择与运行兜底](../../architecture/network/player-state.md#存档选择与运行兜底)。当前存档中已经被旧构建覆盖的选择无法由该机制推断恢复；重新选择后保存、退出世界、完整重启及多人权限组合仍待实机确认。
