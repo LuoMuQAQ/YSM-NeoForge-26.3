@@ -53,7 +53,8 @@ public class CustomPlayerElytraLayer extends GeoLayerRenderer<CustomPlayerEntity
         renderData.modelState.visitLocatorGroup(PlayerLocator.get().elytra, poseStack, locatorPose -> {
             locatorPose.translate(0, 1.5, 0);
             locatorPose.rotate(Axis.ZP.rotationDegrees(180));
-            locatorPose.scale(2.0F, 2.0F, 2.0F);
+            // The host model already uses block units. Keep the authored locator
+            // scale and avoid doubling the vanilla wing dimensions.
             equipmentRenderer.renderLayers(EquipmentClientInfo.LayerType.WINGS, equippable.assetId().get(),
                     model, avatarState, stack, locatorPose, collector, packedLight, texture, avatarState.outlineColor, 0);
         });

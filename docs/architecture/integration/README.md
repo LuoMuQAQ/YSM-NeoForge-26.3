@@ -17,7 +17,7 @@
 | Renderer 与装备资源重载 | `EntityRenderersEvent.AddLayers` | 从宿主当前 `EntityRendererProvider.Context` 建立替换 renderer，取得已加载的模型集与 `EquipmentLayerRenderer`，资源重载时同步重建 |
 | 可选模组适配 | `client.compat` 与 controller collection | 把外部动作、装备、视角和材质条件投影为当前输入或绘制行为 |
 
-模型选择、授权、收藏及服务端投射物/载具状态由正式注册的 NeoForge `AttachmentType` 持有。持久字段通过 `ValueInput` / `ValueOutput` 与 `CompoundTag.CODEC` 写入；复制时由 NeoForge 的 attachment clone 生命周期统一处理，玩家选择通过专用 copy handler 转移 roaming 与 properties tracker，授权和收藏独立复制。数据不使用 NeoForge 自动同步，权威同步仍走 YSM typed messages。
+模型选择、授权、收藏及服务端投射物/载具状态由正式注册的 NeoForge `AttachmentType` 持有。持久字段通过 `ValueInput` / `ValueOutput` 与 `CompoundTag.CODEC` 写入；复制时由 NeoForge 的 attachment clone 生命周期统一处理，玩家选择通过专用 copy handler 转移 roaming、properties tracker 与尚未恢复的保存选择，授权和收藏独立复制。目录缺件时的运行兜底不覆盖存档选择，恢复窗口与权限见[玩家状态与控制](../network/player-state.md#存档选择与运行兜底)。数据不使用 NeoForge 自动同步，权威同步仍走 YSM typed messages。
 
 客户端动画使用单独的 transient attachment。Common registry 只引用不含 Minecraft client 类的 holder，实际玩家动画 owner 在客户端按实体建立；投射物/载具动画只在收到对应模型状态后创建。实体离开世界时仅释放已经存在的动画 owner，再移除 transient slot，不为 cleanup 创建新的动画对象。客户端玩家 Clone 将原实体已存在的 owner 状态转移到新实体。
 

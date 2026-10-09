@@ -18,6 +18,8 @@
 
 ## 正确性与失败处理
 
+用户后续截图表明鞘翅贴图已经正常，但尺寸明显偏大。鞘翅层已移除沿用旧层的固定两倍缩放，保留 authored locator scale，按宿主标准几何尺寸提交。各模型的尺寸、背部位置、蹲伏/滑翔与资源重载后的结果仍需实机确认。
+
 - `ModelState::Extract` 会先使旧状态失效；失败后 `GeoModelState` 没有完整失败分支，同一逻辑帧可能不再重试。Native render 失败时不会改用其他输出路径或 `VertexConsumer` fallback，本次模型直接无顶点。
 - Serialized baked cache payload 不能独立证明 SIMD capability 匹配；读取虽校验结构、层级、索引和计数，却未重新验证几何浮点值的有限性及语义域。Bake 对极端有限输入派生的 plane / tangent 也缺少完整结果域验证。
 - 上层必须提供与 position matrix 匹配的 normal matrix；native 只校验数值有限，不验证二者一致，该组合目前也没有端到端验证。

@@ -1,3 +1,4 @@
+<!-- Modified by LuoMuQAQ for the unofficial Minecraft 26.3 / NeoForge port (2026). -->
 # 玩家状态与控制
 
 ## 权威模型
@@ -20,6 +21,14 @@ Selection、PlayerState 与其余 C2S 控制请求在握手 ACCEPT 后即属于�
 Local player 的选择发送和运行资源请求在进入各自网络/资源 owner 前，分别应用[当前连续意图](../client-presentation/README.md#选择与显示的分离)门槛。该门槛只过滤快速切换产生的尚未发送效果，不改变服务端 authority，也不创建发送等待、完成或失败恢复状态；每个 remote entity 的资源需求独立计时，不能借另一个玩家的稳定选择提前发送。
 
 PlayerState、Roaming 与 `ysm.sync` 如何进入客户端动画运行时，见[动画状态输入与同步](../animation/state-inputs-and-sync.md)。
+
+## 存档选择与运行兜底
+
+玩家 attachment 保存该世界中最后一次被接受的模型选择。登录时 local catalog 可能只有默认内容；缺失模型或纹理的运行兜底使用默认表现，同时在该玩家 attachment 内保留原 ModelId、纹理及原有的同模型 command ignore-grants 标记。NBT 的既有字段继续保存原选择，不能把目录尚未就绪时的临时默认写成玩家的新选择；mandatory、disabled 与 Roaming storage 的含义不变。
+
+初次握手提交目录后及每次 catalog publication 在 server owner 提交新目录和当前 grants 后，尝试通过该 exact session 的选择校验恢复保留项，原合法 command ignore-grants 标记仍只适用于原模型。只有模型、纹理和权限都成立才恢复 attachment 当前值，先尝试发送权威 FULL，再发布包含恢复选择的目录 full/delta。缺失或拒绝不重复逐帧执行，不产生新的授权，也不把旧 connection 的选择带到另一世界或服务器。
+
+显式接受的新模型/纹理选择、选择默认或模型命令替换保留项；玩家 clone 继承仍未恢复的保存意图。缺失期间保存、退出和重启仍能保留它。该机制只保留已经存在的记录，不能推断被旧构建覆盖掉的选择。
 
 ## 客户端报告机会
 

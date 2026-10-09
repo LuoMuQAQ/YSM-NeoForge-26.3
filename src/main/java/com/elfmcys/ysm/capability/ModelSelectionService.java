@@ -1,3 +1,4 @@
+// Modified by LuoMuQAQ for the unofficial Minecraft 26.3 / NeoForge port (2026).
 package com.elfmcys.ysm.capability;
 
 import com.elfmcys.ysm.config.ServerConfig;
@@ -14,6 +15,11 @@ public final class ModelSelectionService {
 
     public static boolean selectDefault(ModelInfoCapability capability,
                                         ServerCatalog snapshot) {
+        return selectDefault(capability, snapshot, false);
+    }
+
+    private static boolean selectDefault(ModelInfoCapability capability,
+                                         ServerCatalog snapshot, boolean fallback) {
         var model = snapshot.findPath(ServerConfig.DEFAULT_MODEL_PATH.get())
                 .or(snapshot::defaultModel).orElse(null);
         if (model == null) {
@@ -26,7 +32,11 @@ public final class ModelSelectionService {
         var texture = view.getPlayer().getTextureNames().contains(requested)
                 ? requested : view.getPlayer().getTextureNames().stream()
                 .sorted().findFirst().orElse("");
-        capability.setModelAndTexture(model.representation().modelId(), texture);
+        if (fallback) {
+            capability.setFallbackModelAndTexture(model.representation().modelId(), texture);
+        } else {
+            capability.setModelAndTexture(model.representation().modelId(), texture);
+        }
         return true;
     }
 
@@ -58,9 +68,8 @@ public final class ModelSelectionService {
         var model = snapshot.find(capability.getModelId()).orElse(null);
         if (model == null || !model.view().getPlayer().getTextureNames()
                 .contains(capability.getSelectTexture())) {
-            capability.clearIgnoreGrants();
-            if (!selectDefault(capability, snapshot)) {
-                capability.setModelAndTexture(null, "");
+            if (!selectDefault(capability, snapshot, true)) {
+                capability.setFallbackModelAndTexture(null, "");
                 return Optional.empty();
             }
             model = snapshot.find(capability.getModelId()).orElse(null);

@@ -440,7 +440,7 @@ public final class SessionProtocolHandler {
         });
         var catalog = SessionCollectionPublication.distributableCatalog(serverCatalog.catalog());
         var beforeSelection = session.selection();
-        final ServerModelSession.CatalogTransition transition;
+        ServerModelSession.CatalogTransition transition;
         try {
             transition = session.commitCatalog(catalog);
         } catch (RuntimeException invalidPublication) {
@@ -448,6 +448,10 @@ public final class SessionProtocolHandler {
                     "Failed to commit initial model-session authority for {}",
                     player.getGameProfile().name(), invalidPublication);
             return;
+        }
+        if (restoreSavedSelection(player, session, false)) {
+            transition = new ServerModelSession.CatalogTransition(
+                    transition.previous(), session.authority());
         }
         if (beforeSelection instanceof Selection.Model
                 && transition.current().selection() instanceof Selection.IntrinsicDefault) {
@@ -472,7 +476,7 @@ public final class SessionProtocolHandler {
                 .ifPresent(capability -> requestedGrants.addAll(capability.getAuthModels()));
         var catalog = SessionCollectionPublication.distributableCatalog(globalCatalog);
         var previousSelection = session.selection();
-        final ServerModelSession.CatalogTransition transition;
+        ServerModelSession.CatalogTransition transition;
         try {
             transition = session.commitCatalog(catalog, requestedGrants);
         } catch (RuntimeException invalidPublication) {
@@ -483,9 +487,19 @@ public final class SessionProtocolHandler {
         ModelInfoCapabilityProvider.get(player)
                 .ifPresent(capability -> ModelSelectionService.resolve(
                         capability, new ServerCatalog(globalCatalog)));
+        if (restoreSavedSelection(player, session, true)) {
+            transition = new ServerModelSession.CatalogTransition(
+                    transition.previous(), session.authority());
+        }
         if (previousSelection instanceof Selection.Model
                 && transition.current().selection() instanceof Selection.IntrinsicDefault) {
-            ControlHandler.applyAcceptedModelSelection(player, null, "");
+            var pendingFallback = ModelInfoCapabilityProvider.get(player)
+                    .flatMap(ModelInfoCapability::savedSelection).isPresent();
+            if (pendingFallback) {
+                PlayerStateHandler.sendAuthoritativeFull(player, true);
+            } else {
+                ControlHandler.applyAcceptedModelSelection(player, null, "");
+            }
         }
         if (!SessionCollectionPublication.hasDelta(transition)) {
             return;
@@ -494,6 +508,23 @@ public final class SessionProtocolHandler {
         sendPublication(player, service, session,
                 SessionCollectionPublication.deltaFragments(transition, transferId),
                 "model-session catalog delta");
+    }
+
+    private static boolean restoreSavedSelection(ServerPlayer player, ServerModelSession session, boolean publishState) {
+        var capability = ModelInfoCapabilityProvider.get(player).orElse(null);
+        var saved = capability == null ? null : capability.savedSelection().orElse(null);
+        if (saved == null || session.selectForced(new Selection.Model(saved.modelId(), saved.texture()),
+                saved.ignoreGrants()) != ServerModelSession.SelectionResult.ACCEPTED) {
+            return false;
+        }
+        capability.restoreSavedSelection();
+        YesSteveModel.LOGGER.debug("Restored saved model {} for {} after catalog publication",
+                saved.modelId(), player.getGameProfile().name());
+        if (publishState && PlayerStateHandler.sendAuthoritativeFull(player, true)
+                && player.getVehicle() != null && player.getVehicle().getFirstPassenger() == player) {
+            com.elfmcys.ysm.event.CapabilityEvent.onVehicleSetModel(player.getVehicle(), player);
+        }
+        return true;
     }
 
     private static void sendAuthorityDelta(ServerPlayer player) {

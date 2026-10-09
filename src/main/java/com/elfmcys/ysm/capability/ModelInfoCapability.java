@@ -19,11 +19,17 @@ public final class ModelInfoCapability {
     private boolean ignoreGrants;
     private boolean disabled;
     private boolean dirty;
+    private SavedSelection savedSelection;
     private final RoamingVariableStore roamingVariables = new RoamingVariableStore();
     private ServerDrivenPlayerPropertiesTracker propertiesTracker =
             new ServerDrivenPlayerPropertiesTracker();
 
     public void setModelAndTexture(Hash256 modelId, String selectTexture) {
+        clearSavedSelection();
+        applyModelAndTexture(modelId, selectTexture);
+    }
+
+    private void applyModelAndTexture(Hash256 modelId, String selectTexture) {
         var keepIgnoreGrants = modelId != null && Objects.equals(this.modelId, modelId)
                 && ignoreGrants;
         if (Objects.equals(this.modelId, modelId)
@@ -41,6 +47,7 @@ public final class ModelInfoCapability {
                                     boolean ignoreGrants) {
         Objects.requireNonNull(modelId, "modelId");
         Objects.requireNonNull(selectTexture, "selectTexture");
+        clearSavedSelection();
         if (modelId.equals(this.modelId)
                 && selectTexture.equals(this.selectTexture)
                 && mandatory
@@ -65,12 +72,47 @@ public final class ModelInfoCapability {
         }
     }
 
+    /** Runtime fallback must not replace the last saved choice while catalog work is pending. */
+    public void setFallbackModelAndTexture(Hash256 modelId, String texture) {
+        if (savedSelection == null && this.modelId != null) {
+            savedSelection = new SavedSelection(this.modelId, selectTexture, ignoreGrants);
+        }
+        applyModelAndTexture(modelId, texture);
+        clearIgnoreGrants();
+    }
+
+    public Optional<SavedSelection> savedSelection() {
+        return Optional.ofNullable(savedSelection);
+    }
+
+    /** Called only after the current session accepts the saved choice. */
+    public void restoreSavedSelection() {
+        var saved = savedSelection;
+        if (saved == null) {
+            return;
+        }
+        savedSelection = null;
+        applyModelAndTexture(saved.modelId(), saved.texture());
+        ignoreGrants = saved.ignoreGrants();
+        markDirty();
+    }
+
+    private void clearSavedSelection() {
+        if (savedSelection != null) {
+            savedSelection = null;
+            markDirty();
+        }
+    }
+
+    public record SavedSelection(Hash256 modelId, String texture, boolean ignoreGrants) {}
+
     public void moveFrom(ModelInfoCapability source) {
         modelId = source.modelId;
         selectTexture = source.selectTexture;
         mandatory = source.mandatory;
         ignoreGrants = source.ignoreGrants;
         disabled = source.disabled;
+        savedSelection = source.savedSelection;
         propertiesTracker = source.propertiesTracker;
         roamingVariables.moveFrom(source.roamingVariables);
         markDirty();
@@ -85,6 +127,7 @@ public final class ModelInfoCapability {
     }
 
     public void setSelectTexture(String selectTexture) {
+        clearSavedSelection();
         this.selectTexture = selectTexture;
         markDirty();
     }
@@ -174,16 +217,19 @@ public final class ModelInfoCapability {
 
     public CompoundTag serializeNBT() {
         var tag = new CompoundTag();
-        tag.putString("model_hash", modelId == null ? "" : modelId.toString());
-        tag.putString("select_texture", selectTexture);
+        var storedModelId = savedSelection == null ? modelId : savedSelection.modelId();
+        var storedTexture = savedSelection == null ? selectTexture : savedSelection.texture();
+        tag.putString("model_hash", storedModelId == null ? "" : storedModelId.toString());
+        tag.putString("select_texture", storedTexture);
         tag.putBoolean("mandatory", mandatory);
-        tag.putBoolean("ignore_grants", ignoreGrants);
+        tag.putBoolean("ignore_grants", savedSelection == null ? ignoreGrants : savedSelection.ignoreGrants());
         tag.putBoolean("disabled", disabled);
         tag.put("molang_storage", roamingVariables.serialize());
         return tag;
     }
 
     public void deserializeNBT(CompoundTag tag) {
+        savedSelection = null;
         var storedHash = tag.getStringOr("model_hash", "");
         try {
             modelId = storedHash.isEmpty() ? null : Hash256.parse(storedHash);

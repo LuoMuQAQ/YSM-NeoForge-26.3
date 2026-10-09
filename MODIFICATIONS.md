@@ -40,6 +40,13 @@ AnimationEvent movement threshold is corrected. Replacement rendering no longer
 temporarily changes entity death ticks or the auto-spin flag. Gameplay verification
 of these changes is pending.
 
+Unofficial 4 development candidate removes the fixed extra factor of two from the
+host elytra model. Runtime catalog fallback preserves the player's saved selection
+in the existing NBT fields, and catalog publication restores it only after the
+current session accepts the model, texture and permissions. Explicit selections
+and commands replace the saved intent. Restart and multi-view verification are
+pending; no world files are rewritten by the build or installation.
+
 Native business code is unchanged from the recorded upstream revision. The
 Windows DLL is built from that source with the profile in release/windows-clang-profile.
 No Minecraft/NeoForge binary or external optional-mod JAR is bundled in this repository.
